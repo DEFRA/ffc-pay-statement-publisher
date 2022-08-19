@@ -10,7 +10,13 @@
       </column>
       <column name="frn" type="BIGINT" />
       <column name="sbi" type="INTEGER" />
-      <column name="address" type="VARCHAR(255)" />
+      <column name="businessName" type="VARCHAR(255)" />
+      <column name="addressLine1" type="VARCHAR(255)" />
+      <column name="addressLine2" type="VARCHAR(255)" />
+      <column name="addressLine3" type="VARCHAR(255)" />
+      <column name="addressLine4" type="VARCHAR(255)" />
+      <column name="addressLine5" type="VARCHAR(255)" />
+      <column name="postcode" type="VARCHAR(10)" />
       <column name="email" type="VARCHAR(255)" />
       <column name="filename" type="VARCHAR(255)">
         <constraints nullable="false" />
