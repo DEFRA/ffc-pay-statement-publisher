@@ -30,19 +30,19 @@ const initialiseFolders = async () => {
   await client.upload(placeHolderText, placeHolderText.length)
 }
 
-const getOutboundBlobClient = async (filename) => {
+const getBlob = async (filename) => {
   containersInitialised ?? await initialiseContainers()
   return container.getBlockBlobClient(`${config.folder}/${filename}`)
 }
 
 const getFile = async (filename) => {
-  const client = await getOutboundBlobClient(filename)
-  return client.downloadToBuffer()
+  const blob = await getBlob(filename)
+  return blob.downloadToBuffer()
 }
 
 module.exports = {
   initialiseContainers,
   blobServiceClient,
-  getOutboundBlobClient,
+  getBlob,
   getFile
 }
