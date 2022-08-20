@@ -7,7 +7,7 @@ const start = async () => {
   } catch (err) {
     console.error(err)
   } finally {
-    setTimeout(start, config.deliveryStatusCheckInterval)
+    setTimeout(start, config.deliveryCheckInterval)
   }
 }
 

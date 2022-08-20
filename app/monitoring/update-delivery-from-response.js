@@ -9,10 +9,10 @@ const updateDeliveryFromResponse = async (delivery, response) => {
       await completeDelivery(delivery.deliveryId)
       break
     case PERMANENT_FAILURE:
-      await createFailure(delivery.deliveryId, 'invalid email address')
+      await createFailure(delivery, 'invalid email address')
       break
     case TEMPORARY_FAILURE:
-      await createFailure(delivery.deliveryId, 'inbox full or rejected as spam')
+      await createFailure(delivery, 'inbox full or rejected as spam')
       break
     case TECHNICAL_FAILURE:
       await rescheduleDelivery(delivery)
