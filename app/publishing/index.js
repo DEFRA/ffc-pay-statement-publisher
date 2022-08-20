@@ -1,4 +1,4 @@
-const { EMAIL } = require('../delivery-methods')
+const { EMAIL } = require('../methods')
 const { getFile } = require('../storage')
 const publishByEmail = require('./publish-by-email')
 const saveDelivery = require('./save-delivery')

@@ -1,5 +1,5 @@
 const config = require('../config')
-const updateDeliveries = require('./update-deliver')
+const updateDeliveries = require('./update-deliveries')
 
 const start = async () => {
   try {
