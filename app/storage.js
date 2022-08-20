@@ -35,8 +35,14 @@ const getOutboundBlobClient = async (filename) => {
   return container.getBlockBlobClient(`${config.folder}/${filename}`)
 }
 
+const getFile = async (filename) => {
+  const client = await getOutboundBlobClient(filename)
+  return client.download()
+}
+
 module.exports = {
   initialiseContainers,
   blobServiceClient,
-  getOutboundBlobClient
+  getOutboundBlobClient,
+  getStatement: getFile
 }
