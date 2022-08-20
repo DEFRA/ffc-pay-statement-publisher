@@ -1,4 +1,3 @@
 module.exports = {
-  EMAIL: 'email',
-  LETTER: 'letter'
+  EMAIL: 'email'
 }
