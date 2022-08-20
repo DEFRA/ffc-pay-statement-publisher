@@ -27,7 +27,7 @@ const saveStatement = async (request, timestamp, transaction) => {
     email: request.email,
     filename: request.filename,
     received: timestamp
-  }, {transaction})
+  }, { transaction })
 }
 
 const saveDelivery = async (statementId, method, reference, timestamp, transaction) => {
@@ -36,7 +36,7 @@ const saveDelivery = async (statementId, method, reference, timestamp, transacti
     method,
     reference,
     requested: timestamp
-  }, {transaction})
+  }, { transaction })
 }
 
 module.exports = saveRequest
