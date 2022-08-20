@@ -1,6 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const delivery = sequelize.define('delivery', {
     deliveryId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    statementId: DataTypes.INTEGER,
     method: DataTypes.STRING,
     reference: DataTypes.UUID,
     requested: DataTypes.DATE,
