@@ -37,12 +37,12 @@ const getOutboundBlobClient = async (filename) => {
 
 const getFile = async (filename) => {
   const client = await getOutboundBlobClient(filename)
-  return client.download()
+  return client.downloadToBuffer()
 }
 
 module.exports = {
   initialiseContainers,
   blobServiceClient,
   getOutboundBlobClient,
-  getStatement: getFile
+  getFile
 }

@@ -1,10 +1,10 @@
 const db = require('../data')
 
-const saveDelivery = async (request, response, method) => {
+const saveDelivery = async (request, reference, method) => {
   await db.delivery.create({
     statementId: request.statementId,
     method,
-    reference: response.id,
+    reference,
     requested: new Date()
   })
 }
