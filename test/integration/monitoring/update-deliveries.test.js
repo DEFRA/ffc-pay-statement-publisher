@@ -32,6 +32,7 @@ let container
 
 describe('update deliveries', () => {
   beforeEach(async () => {
+    await db.sequelize.truncate({ cascade: true })
     jest.clearAllMocks()
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
     blobServiceClient = BlobServiceClient.fromConnectionString(config.connectionStr)
@@ -41,7 +42,6 @@ describe('update deliveries', () => {
     const blockBlobClient = container.getBlockBlobClient(`${config.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
 
-    await db.sequelize.truncate({ cascade: true })
     await db.statement.bulkCreate([mockStatement1, mockStatement2])
     await db.delivery.bulkCreate([mockDelivery1, mockDelivery2])
 
