@@ -151,14 +151,14 @@ describe('update deliveries', () => {
   test('should create new delivery if status technical failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
     await updateDeliveries()
-    const deliveries = await db.delivery.findAll({ where: { statementId: 1 } })
+    const deliveries = await db.delivery.findAll({ where: { statementId: mockStatement1.statementId } })
     expect(deliveries.length).toBe(2)
   })
 
   test('should create new delivery with requested date if status technical failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
     await updateDeliveries()
-    const delivery = await db.delivery.findOne({ where: { statementId: 1, completed: null } })
+    const delivery = await db.delivery.findOne({ where: { statementId: mockStatement1.statementId, completed: null } })
     expect(delivery.requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
