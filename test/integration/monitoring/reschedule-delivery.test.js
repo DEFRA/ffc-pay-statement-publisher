@@ -17,14 +17,17 @@ const config = require('../../../app/config/storage')
 const db = require('../../../app/data')
 const rescheduleDelivery = require('../../../app/monitoring/reschedule-delivery')
 const path = require('path')
-const { mockStatement1, mockStatement2 } = require('../../mocks/statement')
-const { mockDelivery1, mockDelivery2 } = require('../../mocks/delivery')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
 
 let blobServiceClient
 let container
+
+let mockDelivery1
+let mockDelivery2
+let mockStatement1
+let mockStatement2
 
 describe('reschedule deliveries', () => {
   beforeEach(async () => {
@@ -36,6 +39,11 @@ describe('reschedule deliveries', () => {
     await container.createIfNotExists()
     const blockBlobClient = container.getBlockBlobClient(`${config.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
+
+    mockStatement1 = JSON.parse(JSON.stringify(require('../../mocks/statement').mockStatement1))
+    mockStatement2 = JSON.parse(JSON.stringify(require('../../mocks/statement').mockStatement2))
+    mockDelivery1 = JSON.parse(JSON.stringify(require('../../mocks/delivery').mockDelivery1))
+    mockDelivery2 = JSON.parse(JSON.stringify(require('../../mocks/delivery').mockDelivery2))
 
     await db.sequelize.truncate({ cascade: true })
     await db.statement.bulkCreate([mockStatement1, mockStatement2])

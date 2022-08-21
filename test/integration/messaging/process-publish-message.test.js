@@ -16,7 +16,6 @@ jest.mock('ffc-messaging')
 const { BlobServiceClient } = require('@azure/storage-blob')
 const config = require('../../../app/config/storage')
 const db = require('../../../app/data')
-const mockRequest = require('../../mocks/request')
 const processPublishMessage = require('../../../app/messaging/process-publish-message')
 const path = require('path')
 const { EMAIL } = require('../../../app/methods')
@@ -24,6 +23,7 @@ const { EMAIL } = require('../../../app/methods')
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
 
+let mockRequest
 let blobServiceClient
 let container
 let receiver
@@ -31,6 +31,7 @@ let message
 
 describe('publish statement', () => {
   beforeEach(async () => {
+    mockRequest = JSON.parse(JSON.stringify(require('../../mocks/request')))
     jest.clearAllMocks()
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
     blobServiceClient = BlobServiceClient.fromConnectionString(config.connectionStr)

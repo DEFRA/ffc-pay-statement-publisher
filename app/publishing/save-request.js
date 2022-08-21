@@ -18,7 +18,6 @@ const saveStatement = async (statement, timestamp, transaction) => {
   if (existingStatement) {
     return existingStatement
   }
-  delete statement.statementId
   return db.statement.create({
     ...statement,
     received: timestamp
