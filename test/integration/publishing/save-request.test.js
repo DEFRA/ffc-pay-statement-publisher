@@ -1,8 +1,7 @@
 const db = require('../../../app/data')
-const { mockStatement1 } = require('../../mocks/statement')
+const mockRequest = require('../../mocks/request')
 const saveRequest = require('../../../app/publishing/save-request')
 const { EMAIL } = require('../../../app/methods')
-const { mockDelivery1 } = require('../../mocks/delivery')
 const MOCK_REFERENCE = 'c8363cba-2093-4447-8812-697c09820614'
 
 describe('save request', () => {
@@ -18,152 +17,105 @@ describe('save request', () => {
   })
 
   test('saves one statement', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findAll()
     expect(statement.length).toBe(1)
   })
 
   test('saves statement with business name', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.businessName).toBe(mockStatement1.businessName)
+    expect(statement.businessName).toBe(mockRequest.businessName)
   })
 
   test('saves statement with sbi', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.sbi).toBe(mockStatement1.sbi)
+    expect(statement.sbi).toBe(mockRequest.sbi)
   })
 
   test('saves statement with frn', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.frn).toBe(mockStatement1.frn.toString())
+    expect(statement.frn).toBe(mockRequest.frn.toString())
   })
 
   test('saves statement with email', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.email).toBe(mockStatement1.email)
+    expect(statement.email).toBe(mockRequest.email)
   })
 
   test('saves statement with filename', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.filename).toBe(mockStatement1.filename)
+    expect(statement.filename).toBe(mockRequest.filename)
   })
 
   test('saves statement with address line 1', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.addressLine1).toBe(mockStatement1.addressLine1)
+    expect(statement.addressLine1).toBe(mockRequest.address.line1)
   })
 
   test('saves statement with address line 2', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.addressLine2).toBe(mockStatement1.addressLine2)
+    expect(statement.addressLine2).toBe(mockRequest.address.line2)
   })
 
   test('saves statement with address line 3', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.addressLine3).toBe(mockStatement1.addressLine3)
+    expect(statement.addressLine3).toBe(mockRequest.address.line3)
   })
 
   test('saves statement with address line 4', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.addressLine4).toBe(mockStatement1.addressLine4)
+    expect(statement.addressLine4).toBe(mockRequest.address.line4)
   })
 
   test('saves statement with address line 5', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.addressLine5).toBe(mockStatement1.addressLine5)
+    expect(statement.addressLine5).toBe(mockRequest.address.line5)
   })
 
   test('saves statement with address postcode', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
-    expect(statement.postcode).toBe(mockStatement1.postcode)
+    expect(statement.postcode).toBe(mockRequest.address.postcode)
   })
 
   test('saves one delivery', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const delivery = await db.delivery.findAll()
     expect(delivery.length).toBe(1)
   })
 
   test('saves delivery with statement id', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const statement = await db.statement.findOne()
     const delivery = await db.delivery.findOne()
     expect(delivery.statementId).toBe(statement.statementId)
   })
 
   test('saves delivery with email method', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const delivery = await db.delivery.findOne()
     expect(delivery.method).toBe(EMAIL)
   })
 
   test('saves delivery with requested date', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const delivery = await db.delivery.findOne()
     expect(delivery.requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('saves delivery with null completed date', async () => {
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    await saveRequest(mockRequest, MOCK_REFERENCE, EMAIL)
     const delivery = await db.delivery.findOne()
     expect(delivery.completed).toBeNull()
-  })
-
-  test('does not add statement if statement already exists', async () => {
-    await db.statement.create(mockStatement1)
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
-    const statement = await db.statement.findAll()
-    expect(statement.length).toBe(1)
-  })
-
-  test('saves new delivery if statement already exists', async () => {
-    await db.statement.create(mockStatement1)
-    await db.delivery.create(mockDelivery1)
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
-    const deliveries = await db.delivery.findAll()
-    expect(deliveries.length).toBe(2)
-  })
-
-  test('saves new delivery with statement id if statement already exists', async () => {
-    await db.statement.create(mockStatement1)
-    await db.delivery.create(mockDelivery1)
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
-    const deliveries = await db.delivery.findAll()
-    expect(deliveries[1].statementId).toBe(mockStatement1.statementId)
-  })
-
-  test('saves new delivery with reference if statement already exists', async () => {
-    await db.statement.create(mockStatement1)
-    await db.delivery.create(mockDelivery1)
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
-    const deliveries = await db.delivery.findAll()
-    expect(deliveries[1].reference).toBe(MOCK_REFERENCE)
-  })
-
-  test('saves new delivery with requested date if statement already exists', async () => {
-    await db.statement.create(mockStatement1)
-    await db.delivery.create(mockDelivery1)
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
-    const deliveries = await db.delivery.findAll()
-    expect(deliveries[1].requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
-  })
-
-  test('saves new delivery with null completed date if statement already exists', async () => {
-    await db.statement.create(mockStatement1)
-    await db.delivery.create(mockDelivery1)
-    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
-    const deliveries = await db.delivery.findAll()
-    expect(deliveries[1].completed).toBeNull()
   })
 })

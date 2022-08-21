@@ -65,15 +65,7 @@ describe('process publish message', () => {
       body: mockRequest
     }
     await processPublishMessage(message, receiver)
-    expect(mockPublish).toHaveBeenCalledWith({
-      ...message.body,
-      addressLine1: message.body.address.line1,
-      addressLine2: message.body.address.line2,
-      addressLine3: message.body.address.line3,
-      addressLine4: message.body.address.line4,
-      addressLine5: message.body.address.line5,
-      postcode: message.body.address.postcode
-    })
+    expect(mockPublish).toHaveBeenCalledWith(message.body)
   })
 
   test('calls publish with request only once', async () => {

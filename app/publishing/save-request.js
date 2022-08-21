@@ -1,11 +1,11 @@
 const db = require('../data')
 
-const saveRequest = async (statement, reference, method) => {
+const saveRequest = async (request, reference, method) => {
   const transaction = await db.sequelize.transaction()
   try {
     const timestamp = new Date()
-    const savedStatement = await saveStatement(statement, timestamp, transaction)
-    await saveDelivery(savedStatement.statementId, method, reference, timestamp, transaction)
+    const statement = await saveStatement(request, timestamp, transaction)
+    await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
     await transaction.commit()
   } catch (err) {
     await transaction.rollback()
@@ -13,30 +13,26 @@ const saveRequest = async (statement, reference, method) => {
   }
 }
 
-const saveStatement = async (statement, timestamp, transaction) => {
-  const existingStatement = await db.statement.findOne({ where: { filename: statement.filename }, transaction })
-  if (existingStatement) {
-    return existingStatement
-  }
+const saveStatement = async (request, timestamp, transaction) => {
   return db.statement.create({
-    ...statement,
+    ...request,
+    addressLine1: request.address.line1,
+    addressLine2: request.address.line2,
+    addressLine3: request.address.line3,
+    addressLine4: request.address.line4,
+    addressLine5: request.address.line5,
+    postcode: request.address.postcode,
     received: timestamp
   }, { transaction })
 }
 
 const saveDelivery = async (statementId, method, reference, timestamp, transaction) => {
-  try {
-    console.log('HEEEEEEEERRRRRRRRRRREEEEEEEEEE!!!')
-    await db.delivery.create({
-      statementId,
-      method,
-      reference,
-      requested: timestamp
-    }, { transaction })
-  } catch (err) {
-    console.error(err)
-    throw err
-  }
+  await db.delivery.create({
+    statementId,
+    method,
+    reference,
+    requested: timestamp
+  }, { transaction })
 }
 
 module.exports = saveRequest
