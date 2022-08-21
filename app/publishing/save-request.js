@@ -26,6 +26,7 @@ const saveStatement = async (statement, timestamp, transaction) => {
 
 const saveDelivery = async (statementId, method, reference, timestamp, transaction) => {
   try {
+    console.log('HEEEEEEEERRRRRRRRRRREEEEEEEEEE!!!')
     await db.delivery.create({
       statementId,
       method,
