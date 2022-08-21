@@ -3,10 +3,10 @@ const { getFile } = require('../storage')
 const publishByEmail = require('./publish-by-email')
 const saveRequest = require('./save-request')
 
-const publishStatement = async (request) => {
-  const file = await getFile(request.filename)
-  const response = await publishByEmail(request, file)
-  await saveRequest(request, response.data.id, EMAIL)
+const publishStatement = async (statement) => {
+  const file = await getFile(statement.filename)
+  const response = await publishByEmail(statement, file)
+  await saveRequest(statement, response.data.id, EMAIL)
 }
 
 module.exports = publishStatement

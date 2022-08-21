@@ -1,6 +1,7 @@
 const util = require('util')
 const { VALIDATION } = require('../errors')
 const publishStatement = require('../publishing')
+const convertRequestToStatement = require('./convert-request-to-statement')
 const validateRequest = require('./validate-request')
 
 const processPublishMessage = async (message, receiver) => {
@@ -8,7 +9,8 @@ const processPublishMessage = async (message, receiver) => {
     const publishRequest = message.body
     console.log('Statement publishing request received:', util.inspect(publishRequest, false, null, true))
     validateRequest(publishRequest)
-    await publishStatement(publishRequest)
+    const statement = convertRequestToStatement(publishRequest)
+    await publishStatement(statement)
     await receiver.completeMessage(message)
     console.log(`Statement published: ${publishRequest.filename}`)
   } catch (err) {

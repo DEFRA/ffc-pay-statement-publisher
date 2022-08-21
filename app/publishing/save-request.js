@@ -13,19 +13,13 @@ const saveRequest = async (request, reference, method) => {
   }
 }
 
-const saveStatement = async (request, timestamp, transaction) => {
+const saveStatement = async (statement, timestamp, transaction) => {
+  const existingStatement = await db.statement.findOne({ where: { filename: statement.filename }, lock: true, transaction })
+  if (existingStatement) {
+    return existingStatement
+  }
   return db.statement.create({
-    businessName: request.businessName,
-    sbi: request.sbi,
-    frn: request.frn,
-    addressLine1: request.address.line1,
-    addressLine2: request.address.line2,
-    addressLine3: request.address.line3,
-    addressLine4: request.address.line4,
-    addressLine5: request.address.line5,
-    postcode: request.address.postcode,
-    email: request.email,
-    filename: request.filename,
+    ...statement,
     received: timestamp
   }, { transaction })
 }

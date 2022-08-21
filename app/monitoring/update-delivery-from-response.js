@@ -15,6 +15,7 @@ const updateDeliveryFromResponse = async (delivery, response) => {
       await createFailure(delivery, 'inbox full or rejected as spam')
       break
     case TECHNICAL_FAILURE:
+      await createFailure(delivery, 'Notify service failure')
       await rescheduleDelivery(delivery)
       break
     default:
