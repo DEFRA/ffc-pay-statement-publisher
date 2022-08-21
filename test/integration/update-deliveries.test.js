@@ -18,7 +18,6 @@ jest.mock('ffc-messaging')
 const { BlobServiceClient } = require('@azure/storage-blob')
 const config = require('../../app/config/storage')
 const db = require('../../app/data')
-const mockRequest = require('../mocks/request')
 const updateDeliveries = require('../../app/monitoring/update-deliveries')
 const path = require('path')
 const { EMAIL } = require('../../app/methods')
@@ -179,5 +178,44 @@ describe('update deliveries', () => {
     await updateDeliveries()
     const delivery = await db.delivery.findByPk(1)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+  })
+
+  test('should create new delivery if status technical failure', async () => {
+    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+    await updateDeliveries()
+    const deliveries = await db.delivery.findAll({ where: { statementId: 1 } })
+    expect(deliveries.length).toBe(2)
+  })
+
+  test('should create new delivery with requested date if status technical failure', async () => {
+    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+    await updateDeliveries()
+    const delivery = await db.delivery.findOne({ where: { statementId: 1, completed: null } })
+    expect(delivery.requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+  })
+
+  test('should not create new statement if status technical failure', async () => {
+    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+    await updateDeliveries()
+    const statements = await db.statement.findAll()
+    expect(statements.length).toBe(2)
+  })
+
+  test('should send email via Notify once if status technical failure', async () => {
+    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+    await updateDeliveries()
+    expect(mockSendEmail).toHaveBeenCalledTimes(1)
+  })
+
+  test('should send email to requested email address if status technical failure', async () => {
+    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+    await updateDeliveries()
+    expect(mockSendEmail.mock.calls[0][1]).toBe('farmer1@farm.com')
+  })
+
+  test('should send email with file link if status technical failure', async () => {
+    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+    await updateDeliveries()
+    expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
   })
 })
