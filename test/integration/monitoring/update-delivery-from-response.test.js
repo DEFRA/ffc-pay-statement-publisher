@@ -18,8 +18,8 @@ const db = require('../../../app/data')
 const updateDeliveryFromResponse = require('../../../app/monitoring/update-delivery-from-response')
 const path = require('path')
 const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
-const { mockStatement1 } = require('../../mocks/mock-statement')
-const { mockDelivery1 } = require('../../mocks/mock-delivery')
+const { mockStatement1 } = require('../../mocks/statement')
+const { mockDelivery1 } = require('../../mocks/delivery')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')

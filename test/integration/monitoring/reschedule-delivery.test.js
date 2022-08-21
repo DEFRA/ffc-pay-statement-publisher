@@ -17,8 +17,8 @@ const config = require('../../../app/config/storage')
 const db = require('../../../app/data')
 const rescheduleDelivery = require('../../../app/monitoring/reschedule-delivery')
 const path = require('path')
-const { mockStatement1, mockStatement2 } = require('../../mocks/mock-statement')
-const { mockDelivery1, mockDelivery2 } = require('../../mocks/mock-delivery')
+const { mockStatement1, mockStatement2 } = require('../../mocks/statement')
+const { mockDelivery1, mockDelivery2 } = require('../../mocks/delivery')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')

@@ -10,7 +10,7 @@ jest.mock('notifications-node-client', () => {
   }
 })
 const checkDeliveryStatus = require('../../../app/monitoring/check-delivery-status')
-const { mockDelivery1 } = require('../../mocks/mock-delivery')
+const { mockDelivery1 } = require('../../mocks/delivery')
 
 describe('check delivery status', () => {
   test('calls notify endpoint once', async () => {

@@ -1,7 +1,7 @@
 const db = require('../../../app/data')
 const createFailure = require('../../../app/monitoring/create-failure')
-const { mockDelivery1 } = require('../../mocks/mock-delivery')
-const { mockStatement1 } = require('../../mocks/mock-statement')
+const { mockDelivery1 } = require('../../mocks/delivery')
+const { mockStatement1 } = require('../../mocks/statement')
 const MOCK_FAIL_REASON = 'some failure reason'
 
 describe('create failure', () => {

@@ -1,7 +1,7 @@
 const db = require('../../../app/data')
 const getOutstandingDeliveries = require('../../../app/monitoring/get-outstanding-deliveries')
-const { mockDelivery1, mockDelivery2 } = require('../../mocks/mock-delivery')
-const { mockStatement1, mockStatement2 } = require('../../mocks/mock-statement')
+const { mockDelivery1, mockDelivery2 } = require('../../mocks/delivery')
+const { mockStatement1, mockStatement2 } = require('../../mocks/statement')
 
 describe('get outstanding deliveries', () => {
   beforeEach(async () => {
