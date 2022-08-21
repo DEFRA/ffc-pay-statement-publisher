@@ -2,6 +2,7 @@ const db = require('../../../app/data')
 const { mockStatement1 } = require('../../mocks/statement')
 const saveRequest = require('../../../app/publishing/save-request')
 const { EMAIL } = require('../../../app/methods')
+const { mockDelivery1 } = require('../../mocks/delivery')
 const MOCK_REFERENCE = 'c8363cba-2093-4447-8812-697c09820614'
 
 describe('save request', () => {
@@ -117,5 +118,52 @@ describe('save request', () => {
     await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
     const delivery = await db.delivery.findOne()
     expect(delivery.completed).toBeNull()
+  })
+
+  test('does not add statement if statement already exists', async () => {
+    await db.statement.create(mockStatement1)
+    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    const statement = await db.statement.findAll()
+    expect(statement.length).toBe(1)
+  })
+
+  test('saves new delivery if statement already exists', async () => {
+    await db.statement.create(mockStatement1)
+    await db.delivery.create(mockDelivery1)
+    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    const deliveries = await db.delivery.findAll()
+    expect(deliveries.length).toBe(2)
+  })
+
+  test('saves new delivery with statement id if statement already exists', async () => {
+    await db.statement.create(mockStatement1)
+    await db.delivery.create(mockDelivery1)
+    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    const deliveries = await db.delivery.findAll()
+    expect(deliveries[1].statementId).toBe(mockStatement1.statementId)
+  })
+
+  test('saves new delivery with reference if statement already exists', async () => {
+    await db.statement.create(mockStatement1)
+    await db.delivery.create(mockDelivery1)
+    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    const deliveries = await db.delivery.findAll()
+    expect(deliveries[1].reference).toBe(MOCK_REFERENCE)
+  })
+
+  test('saves new delivery with requested date if statement already exists', async () => {
+    await db.statement.create(mockStatement1)
+    await db.delivery.create(mockDelivery1)
+    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    const deliveries = await db.delivery.findAll()
+    expect(deliveries[1].requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+  })
+
+  test('saves new delivery with null completed date if statement already exists', async () => {
+    await db.statement.create(mockStatement1)
+    await db.delivery.create(mockDelivery1)
+    await saveRequest(mockStatement1, MOCK_REFERENCE, EMAIL)
+    const deliveries = await db.delivery.findAll()
+    expect(deliveries[1].completed).toBeNull()
   })
 })
