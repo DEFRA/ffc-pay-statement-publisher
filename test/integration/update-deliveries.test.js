@@ -1,4 +1,3 @@
-const MOCK_REFERENCE = '78363cba-2093-4447-8812-697c09820614'
 let mockSendEmail
 const MOCK_PREPARED_FILE = 'mock-prepared-file'
 let mockPrepareUpload
@@ -20,8 +19,9 @@ const config = require('../../app/config/storage')
 const db = require('../../app/data')
 const updateDeliveries = require('../../app/monitoring/update-deliveries')
 const path = require('path')
-const { EMAIL } = require('../../app/methods')
 const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../app/statuses')
+const { mockStatement1, mockStatement2 } = require('../mocks/mock-statement')
+const { mockDelivery1, mockDelivery2 } = require('../mocks/mock-delivery')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../files/test.pdf')
@@ -42,43 +42,10 @@ describe('update deliveries', () => {
 
     await db.sequelize.truncate({ cascade: true })
 
-    await db.statement.bulkCreate([{
-      statementId: 1,
-      businessName: 'Business 1',
-      postcode: 'SW1 1AA',
-      filename: FILE_NAME,
-      sbi: 123456789,
-      frn: 1234567890,
-      email: 'farmer1@farm.com',
-      received: new Date(2022, 7, 5, 15, 30, 10, 120)
-    }, {
-      statementId: 2,
-      businessName: 'Business 2',
-      postcode: 'SW2 2AA',
-      filename: FILE_NAME,
-      sbi: 123456788,
-      frn: 1234567898,
-      email: 'farmer2@farm.com',
-      received: new Date(2022, 7, 5, 15, 30, 10, 120)
-    }])
+    await db.statement.bulkCreate([mockStatement1, mockStatement2])
+    await db.delivery.bulkCreate([mockDelivery1, mockDelivery2])
 
-    await db.delivery.bulkCreate([{
-      deliveryId: 1,
-      statementId: 1,
-      reference: MOCK_REFERENCE,
-      method: EMAIL,
-      requested: new Date(2022, 7, 5, 15, 30, 10, 120),
-      completed: null
-    }, {
-      deliveryId: 2,
-      statementId: 2,
-      reference: '88363cba-2093-4447-8812-697c09820617',
-      method: EMAIL,
-      requested: new Date(2022, 7, 5, 15, 30, 10, 120),
-      completed: new Date(2022, 7, 5, 15, 30, 10, 120)
-    }])
-
-    mockSendEmail = jest.fn().mockResolvedValue({ data: { id: MOCK_REFERENCE } })
+    mockSendEmail = jest.fn().mockResolvedValue({ data: { id: mockDelivery1.reference } })
     mockPrepareUpload = jest.fn().mockReturnValue(MOCK_PREPARED_FILE)
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: DELIVERED } })
   })
@@ -95,7 +62,7 @@ describe('update deliveries', () => {
 
   test('should check status of delivery for only outstanding delivery', async () => {
     await updateDeliveries()
-    expect(mockGetNotificationById).toHaveBeenCalledWith(MOCK_REFERENCE)
+    expect(mockGetNotificationById).toHaveBeenCalledWith(mockDelivery1.reference)
   })
 
   test('should complete delivery if status delivered', async () => {
