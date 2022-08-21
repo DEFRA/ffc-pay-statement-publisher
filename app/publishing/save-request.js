@@ -1,11 +1,11 @@
 const db = require('../data')
 
-const saveRequest = async (request, reference, method) => {
+const saveRequest = async (statement, reference, method) => {
   const transaction = await db.sequelize.transaction()
   try {
     const timestamp = new Date()
-    const statement = await saveStatement(request, timestamp, transaction)
-    await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
+    const savedStatement = await saveStatement(statement, timestamp, transaction)
+    await saveDelivery(savedStatement.statementId, method, reference, timestamp, transaction)
     await transaction.commit()
   } catch (err) {
     await transaction.rollback()
@@ -18,6 +18,7 @@ const saveStatement = async (statement, timestamp, transaction) => {
   if (existingStatement) {
     return existingStatement
   }
+  delete statement.statementId
   return db.statement.create({
     ...statement,
     received: timestamp
