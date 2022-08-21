@@ -15,16 +15,16 @@ jest.mock('notifications-node-client', () => {
 })
 jest.mock('ffc-messaging')
 const { BlobServiceClient } = require('@azure/storage-blob')
-const config = require('../../app/config/storage')
-const db = require('../../app/data')
-const updateDeliveries = require('../../app/monitoring/update-deliveries')
+const config = require('../../../app/config/storage')
+const db = require('../../../app/data')
+const updateDeliveries = require('../../../app/monitoring/update-deliveries')
 const path = require('path')
-const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../app/statuses')
-const { mockStatement1, mockStatement2 } = require('../mocks/mock-statement')
-const { mockDelivery1, mockDelivery2 } = require('../mocks/mock-delivery')
+const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
+const { mockStatement1, mockStatement2 } = require('../../mocks/mock-statement')
+const { mockDelivery1, mockDelivery2 } = require('../../mocks/mock-delivery')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
-const TEST_FILE = path.resolve(__dirname, '../files/test.pdf')
+const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
 
 let blobServiceClient
 let container
@@ -41,7 +41,6 @@ describe('update deliveries', () => {
     await blockBlobClient.uploadFile(TEST_FILE)
 
     await db.sequelize.truncate({ cascade: true })
-
     await db.statement.bulkCreate([mockStatement1, mockStatement2])
     await db.delivery.bulkCreate([mockDelivery1, mockDelivery2])
 
