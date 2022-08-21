@@ -25,12 +25,17 @@ const saveStatement = async (statement, timestamp, transaction) => {
 }
 
 const saveDelivery = async (statementId, method, reference, timestamp, transaction) => {
-  await db.delivery.create({
-    statementId,
-    method,
-    reference,
-    requested: timestamp
-  }, { transaction })
+  try {
+    await db.delivery.create({
+      statementId,
+      method,
+      reference,
+      requested: timestamp
+    }, { transaction })
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
 }
 
 module.exports = saveRequest
