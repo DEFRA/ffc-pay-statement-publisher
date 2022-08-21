@@ -1,7 +1,7 @@
 const db = require('../../../app/data')
 const completeDelivery = require('../../../app/monitoring/complete-delivery')
-const { mockDelivery2 } = require('../../mocks/mock-delivery')
-const { mockStatement2 } = require('../../mocks/mock-statement')
+const { mockDelivery1 } = require('../../mocks/mock-delivery')
+const { mockStatement1 } = require('../../mocks/mock-statement')
 
 describe('complete delivery', () => {
   beforeEach(async () => {
@@ -9,8 +9,8 @@ describe('complete delivery', () => {
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
 
     await db.sequelize.truncate({ cascade: true })
-    await db.statement.bulkCreate([mockStatement2])
-    await db.delivery.bulkCreate([mockDelivery2])
+    await db.statement.bulkCreate([mockStatement1])
+    await db.delivery.bulkCreate([mockDelivery1])
   })
 
   afterAll(async () => {
@@ -19,8 +19,8 @@ describe('complete delivery', () => {
   })
 
   test('sets delivery complete', async () => {
-    await completeDelivery(mockDelivery2.deliveryId)
-    const delivery = await db.delivery.findByPk(mockDelivery2.deliveryId)
+    await completeDelivery(mockDelivery1.deliveryId)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 })
