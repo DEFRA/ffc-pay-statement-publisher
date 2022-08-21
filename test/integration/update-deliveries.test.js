@@ -39,6 +39,7 @@ describe('update deliveries', () => {
     await container.createIfNotExists()
     const blockBlobClient = container.getBlockBlobClient(`${config.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
+
     await db.sequelize.truncate({ cascade: true })
 
     await db.statement.bulkCreate([{
