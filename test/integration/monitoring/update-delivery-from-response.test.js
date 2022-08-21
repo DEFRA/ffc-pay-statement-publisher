@@ -18,6 +18,8 @@ const db = require('../../../app/data')
 const updateDeliveryFromResponse = require('../../../app/monitoring/update-delivery-from-response')
 const path = require('path')
 const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
+const { mockStatement1 } = require('../../mocks/statement')
+const { mockDelivery1 } = require('../../mocks/delivery')
 const { REJECTED, INVALID } = require('../../../app/failure-reasons')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
@@ -25,9 +27,6 @@ const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
 
 let blobServiceClient
 let container
-
-let mockStatement1
-let mockDelivery1
 
 describe('update delivery from response', () => {
   beforeEach(async () => {
@@ -39,9 +38,6 @@ describe('update delivery from response', () => {
     await container.createIfNotExists()
     const blockBlobClient = container.getBlockBlobClient(`${config.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
-
-    mockStatement1 = JSON.parse(JSON.stringify(require('../../mocks/statement').mockStatement1))
-    mockDelivery1 = JSON.parse(JSON.stringify(require('../../mocks/delivery').mockDelivery1))
 
     await db.sequelize.truncate({ cascade: true })
     await db.statement.bulkCreate([mockStatement1])

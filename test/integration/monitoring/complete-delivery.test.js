@@ -1,15 +1,12 @@
 const db = require('../../../app/data')
 const completeDelivery = require('../../../app/monitoring/complete-delivery')
-let mockStatement1
-let mockDelivery1
+const { mockDelivery1 } = require('../../mocks/delivery')
+const { mockStatement1 } = require('../../mocks/statement')
 
 describe('complete delivery', () => {
   beforeEach(async () => {
     jest.clearAllMocks()
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
-
-    mockStatement1 = JSON.parse(JSON.stringify(require('../../mocks/statement').mockStatement1))
-    mockDelivery1 = JSON.parse(JSON.stringify(require('../../mocks/delivery').mockDelivery1))
 
     await db.sequelize.truncate({ cascade: true })
     await db.statement.bulkCreate([mockStatement1])

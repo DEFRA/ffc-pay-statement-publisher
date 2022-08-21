@@ -1,16 +1,13 @@
 const db = require('../../../app/data')
 const createFailure = require('../../../app/monitoring/create-failure')
-let mockStatement1
-let mockDelivery1
+const { mockDelivery1 } = require('../../mocks/delivery')
+const { mockStatement1 } = require('../../mocks/statement')
 const MOCK_FAIL_REASON = 'some failure reason'
 
 describe('create failure', () => {
   beforeEach(async () => {
     jest.clearAllMocks()
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
-
-    mockStatement1 = JSON.parse(JSON.stringify(require('../../mocks/statement').mockStatement1))
-    mockDelivery1 = JSON.parse(JSON.stringify(require('../../mocks/delivery').mockDelivery1))
 
     await db.sequelize.truncate({ cascade: true })
     await db.statement.bulkCreate([mockStatement1])
