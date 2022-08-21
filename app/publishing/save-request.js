@@ -15,7 +15,6 @@ const saveRequest = async (request, reference, method) => {
 
 const saveStatement = async (statement, timestamp, transaction) => {
   const existingStatement = await db.statement.findOne({ where: { filename: statement.filename }, transaction })
-  console.log('existingStatement', existingStatement)
   if (existingStatement) {
     return existingStatement
   }
@@ -26,7 +25,6 @@ const saveStatement = async (statement, timestamp, transaction) => {
 }
 
 const saveDelivery = async (statementId, method, reference, timestamp, transaction) => {
-  console.log('statementId', statementId)
   await db.delivery.create({
     statementId,
     method,
