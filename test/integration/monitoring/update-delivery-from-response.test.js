@@ -20,6 +20,7 @@ const path = require('path')
 const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
 const { mockStatement1 } = require('../../mocks/statement')
 const { mockDelivery1 } = require('../../mocks/delivery')
+const { REJECTED, INVALID } = require('../../../app/failure-reasons')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
@@ -84,7 +85,7 @@ describe('update delivery from response', () => {
   test('should create failure with reason if status temporary failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TEMPORARY_FAILURE } })
     const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
-    expect(failure.reason).toBe('inbox full or rejected as spam')
+    expect(failure.reason).toBe(REJECTED)
   })
 
   test('should create failure with date failed if status temporary failure', async () => {
@@ -108,7 +109,7 @@ describe('update delivery from response', () => {
   test('should create failure with reason if status permanent failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: PERMANENT_FAILURE } })
     const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
-    expect(failure.reason).toBe('invalid email address')
+    expect(failure.reason).toBe(INVALID)
   })
 
   test('should create failure with date failed if status permanent failure', async () => {
