@@ -1,7 +1,7 @@
 const { EMAIL } = require('../../app/methods')
 
 const mockDelivery1 = {
-  deliveryId: 1,
+  deliveryId: 98,
   statementId: 1,
   reference: '88363cba-2093-4447-8812-697c09820617',
   method: EMAIL,
@@ -10,7 +10,7 @@ const mockDelivery1 = {
 }
 
 const mockDelivery2 = {
-  deliveryId: 2,
+  deliveryId: 99,
   statementId: 2,
   reference: '88363cba-2093-4447-8812-697c09820617',
   method: EMAIL,

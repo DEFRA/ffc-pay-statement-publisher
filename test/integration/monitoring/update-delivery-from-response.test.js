@@ -54,85 +54,85 @@ describe('update delivery from response', () => {
 
   test('should complete delivery if status delivered', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: DELIVERED } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should not complete delivery if status sending', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: SENDING } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 
   test('should not complete delivery if status created', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: CREATED } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 
   test('should complete delivery if status temporary failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TEMPORARY_FAILURE } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should create failure if status temporary failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TEMPORARY_FAILURE } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure).not.toBeNull()
   })
 
   test('should create failure with reason if status temporary failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TEMPORARY_FAILURE } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.reason).toBe(REJECTED)
   })
 
   test('should create failure with date failed if status temporary failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TEMPORARY_FAILURE } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.failed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should complete delivery if status permanent failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: PERMANENT_FAILURE } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should create failure if status permanent failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: PERMANENT_FAILURE } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure).not.toBeNull()
   })
 
   test('should create failure with reason if status permanent failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: PERMANENT_FAILURE } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.reason).toBe(INVALID)
   })
 
   test('should create failure with date failed if status permanent failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: PERMANENT_FAILURE } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.failed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should complete delivery if status technical failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should create new delivery if status technical failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
-    const deliveries = await db.delivery.findAll({ where: { statementId: 1 } })
+    const deliveries = await db.delivery.findAll({ where: { statementId: mockDelivery1.statementId } })
     expect(deliveries.length).toBe(2)
   })
 
   test('should create new delivery with requested date if status technical failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
-    const delivery = await db.delivery.findOne({ where: { statementId: 1, completed: null } })
+    const delivery = await db.delivery.findOne({ where: { statementId: mockDelivery1.statementId, completed: null } })
     expect(delivery.requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
@@ -159,31 +159,31 @@ describe('update delivery from response', () => {
 
   test('should not complete delivery if status unknown', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: 'not an understood status' } })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 
   test('should not create failure if status unknown', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: 'not an understood status' } })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure).toBeNull()
   })
 
   test('should not complete delivery if status missing', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: {} })
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 
   test('should not create failure if status missing', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: {} })
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure).toBeNull()
   })
 
   test('should not complete delivery if response data missing', async () => {
     await updateDeliveryFromResponse(mockDelivery1, {})
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 })

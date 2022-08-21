@@ -17,12 +17,12 @@ jest.mock('ffc-messaging')
 const { BlobServiceClient } = require('@azure/storage-blob')
 const config = require('../../../app/config/storage')
 const db = require('../../../app/data')
-const updateDeliveries = require('../../../app/monitoring/update-deliveries')
 const path = require('path')
 const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
 const { mockStatement1, mockStatement2 } = require('../../mocks/statement')
 const { mockDelivery1, mockDelivery2 } = require('../../mocks/delivery')
 const { INVALID, REJECTED } = require('../../../app/failure-reasons')
+const updateDeliveries = require('../../../app/monitoring/update-deliveries')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
@@ -67,84 +67,84 @@ describe('update deliveries', () => {
 
   test('should complete delivery if status delivered', async () => {
     await updateDeliveries()
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should not complete delivery if status sending', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: SENDING } })
     await updateDeliveries()
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 
   test('should not complete delivery if status created', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: CREATED } })
     await updateDeliveries()
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toBeNull()
   })
 
   test('should complete delivery if status temporary failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TEMPORARY_FAILURE } })
     await updateDeliveries()
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should create failure if status temporary failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TEMPORARY_FAILURE } })
     await updateDeliveries()
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure).not.toBeNull()
   })
 
   test('should create failure with reason if status temporary failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TEMPORARY_FAILURE } })
     await updateDeliveries()
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.reason).toBe(REJECTED)
   })
 
   test('should create failure with date failed if status temporary failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TEMPORARY_FAILURE } })
     await updateDeliveries()
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.failed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should complete delivery if status permanent failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: PERMANENT_FAILURE } })
     await updateDeliveries()
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should create failure if status permanent failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: PERMANENT_FAILURE } })
     await updateDeliveries()
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure).not.toBeNull()
   })
 
   test('should create failure with reason if status permanent failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: PERMANENT_FAILURE } })
     await updateDeliveries()
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.reason).toBe(INVALID)
   })
 
   test('should create failure with date failed if status permanent failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: PERMANENT_FAILURE } })
     await updateDeliveries()
-    const failure = await db.failure.findOne({ where: { deliveryId: 1 } })
+    const failure = await db.failure.findOne({ where: { deliveryId: mockDelivery1.deliveryId } })
     expect(failure.failed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should complete delivery if status technical failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
     await updateDeliveries()
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 

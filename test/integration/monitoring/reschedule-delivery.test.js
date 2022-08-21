@@ -52,19 +52,19 @@ describe('reschedule deliveries', () => {
 
   test('should complete delivery', async () => {
     await rescheduleDelivery(mockDelivery1)
-    const delivery = await db.delivery.findByPk(1)
+    const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
     expect(delivery.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
   test('should create new delivery', async () => {
     await rescheduleDelivery(mockDelivery1)
-    const deliveries = await db.delivery.findAll({ where: { statementId: 1 } })
+    const deliveries = await db.delivery.findAll({ where: { statementId: mockDelivery1.statementId } })
     expect(deliveries.length).toBe(2)
   })
 
   test('should create new delivery with requested date', async () => {
     await rescheduleDelivery(mockDelivery1)
-    const delivery = await db.delivery.findOne({ where: { statementId: 1, completed: null } })
+    const delivery = await db.delivery.findOne({ where: { statementId: mockDelivery1.statementId, completed: null } })
     expect(delivery.requested).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
   })
 
