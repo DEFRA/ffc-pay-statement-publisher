@@ -1,4 +1,4 @@
-const retry = async (fn, retriesLeft = 10, interval = 1000, exponential = true) => {
+const retry = async (fn, retriesLeft = 10, interval = 5000, exponential = false) => {
   try {
     return (await fn())
   } catch (err) {
