@@ -20,7 +20,7 @@ services:
       NOTIFY_API_KEY: A_TEST_KEY
       NOTIFY_EMAIL_TEMPLATE_KEY: A_TEST_KEY
 
-  ffc-pay-statement-postgres:
+  ffc-pay-statement-publisher-postgres:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
