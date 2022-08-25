@@ -1,0 +1,92 @@
+asyncapi: 2.4.0
+info:
+  title: FFC Payment Statement Publisher
+  version: '1.0.0'
+  description: Publish PDF payment statements
+channels:
+  payment/request:
+    subscribe:
+      message:
+        $ref: '#/components/messages/PublishRequest'
+components:
+  messages:
+    PublishRequest:
+      name: Payment statement publish request
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PublishRequest'
+  schemas:
+    PublishRequest:
+      type: object
+      required:
+      - businessName
+      - sbi
+      - frn
+      - address
+      - filename
+      properties:
+        businessName:
+          $ref: '#/components/schemas/BusinessName'
+        sbi:
+          $ref: '#/components/schemas/SBI'
+        frn:
+          $ref: '#/components/schemas/FRN'
+        email:
+          $ref: '#/components/schemas/Email'
+        address:
+          $ref: '#/components/schemas/Address'
+        filename:
+          $ref: '#/components/schemas/Filename'
+    BusinessName:
+      type: string
+      description: The business name
+      example: 'FFC Ltd'
+    SBI:
+      type: number
+      description: Single Business Identifier
+      minimum: 105000000
+      maximum: 999999999
+      example: 123456789
+    FRN:
+      type: number
+      description: Firm Reference Number
+      minimum: 1000000000
+      maximum: 9999999999
+      example: 1234567890
+    Email:
+      type: string
+      description: The business email address
+      example: farm@farms.com
+    Address:
+      type: object
+      required:
+      - postcode
+      properties:
+        line1:
+          type: string
+          description: The first line of the address
+          example: 1 The Street
+        line2:
+          type: string
+          description: The second line of the address
+          example: The Area
+        line3:
+          type: string
+          description: The third line of the address
+          example: The Town
+        line4:
+          type: string
+          description: The fourth line of the address
+          example: The Region
+        line5:
+          type: string
+          description: The fifth line of the address
+          example: The County
+        postcode:
+          type: string
+          description: The postcode
+          example: AB1 2CD
+    Filename:
+      type: string
+      description: PDF filename
+      example: FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf

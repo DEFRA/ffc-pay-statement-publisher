@@ -25,6 +25,8 @@ services:
       POSTGRES_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
       AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME:-devstoreaccount1}
       AZURE_STORAGE_USE_CONNECTION_STRING: "true"
+      NOTIFY_API_KEY: ${NOTIFY_API_KEY}
+      NOTIFY_EMAIL_TEMPLATE_KEY: ${NOTIFY_EMAIL_TEMPLATE_KEY}
 
   ffc-pay-statement-publisher-postgres:
     image: postgres:11.4-alpine

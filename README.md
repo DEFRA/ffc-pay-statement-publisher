@@ -9,6 +9,38 @@ Optional:
 - Kubernetes
 - Helm
 
+## Azure Service Bus
+
+This service depends on a valid Azure Service Bus connection string for
+asynchronous communication.  The following environment variables need to be set
+in any non-production (`!config.isProd`) environment before the Docker
+container is started or tests are run. 
+
+When deployed into an appropriately configured AKS
+cluster (where [AAD Pod Identity](https://github.com/Azure/aad-pod-identity) is
+configured) the microservice will use AAD Pod Identity.
+
+| Name | Description |
+| ---| --- |
+| MESSAGE_QUEUE_HOST | Azure Service Bus hostname, e.g. `myservicebus.servicebus.windows.net` |
+| MESSAGE_QUEUE_PASSWORD | Azure Service Bus SAS policy key |
+| MESSAGE_QUEUE_USER | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey`    |
+| MESSAGE_QUEUE_SUFFIX | Developer initials |
+
+## GOV.UK Notify
+
+This service depends on GOV.UK Notify to distribute statements.  The following environment variables need to be set
+in any environment before the Docker container is started or tests are run. 
+
+| Name | Description |
+| ---| --- |
+| NOTIFY_API_KEY | API key for GOV.UK Notify account |
+| NOTIFY_EMAIL_TEMPLATE_KEY | Existing GOV.UK email template key |
+
+## Message schemas
+
+All message schemas are fully documented in an [AsyncAPI specification](docs/asyncapi.yaml).
+
 ## Running the application
 
 The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
@@ -18,10 +50,6 @@ The application is designed to run in containerised environments, using Docker C
 ### Build container image
 
 Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
-
-When using the Docker Compose files in development the local `app` folder will
-be mounted on top of the `app` folder within the Docker container, hiding the CSS files that were generated during the Docker build.  For the site to render correctly locally `npm run build` must be run on the host system.
-
 
 By default, the start script will build (or rebuild) images so there will
 rarely be a need to build images manually. However, this can be achieved
@@ -38,7 +66,7 @@ docker-compose build
 Use Docker Compose to run service locally.
 
 ```
-docker-compose up
+./scripts/start
 ```
 
 ## Test structure
