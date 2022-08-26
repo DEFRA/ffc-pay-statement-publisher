@@ -30,6 +30,5 @@ services:
 
 volumes:
   azurite_data:
-    name: ffc-pay-statement-storage
   postgres_data:
 
