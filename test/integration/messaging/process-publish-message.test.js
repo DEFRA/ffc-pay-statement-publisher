@@ -88,7 +88,7 @@ describe('publish statement', () => {
 
   test('should send email with scheme frequency', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockRequest.scheme.frequency)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockRequest.scheme.frequency.toLowerCase())
   })
 
   test('should send email with scheme year', async () => {

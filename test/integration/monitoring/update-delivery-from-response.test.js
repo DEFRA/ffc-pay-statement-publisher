@@ -169,7 +169,7 @@ describe('update delivery from response', () => {
 
   test('should send email with scheme frequency if status technical failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
-    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockStatement1.schemeFrequency)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockStatement1.schemeFrequency.toLowerCase())
   })
 
   test('should send email with scheme year if status technical failure', async () => {
