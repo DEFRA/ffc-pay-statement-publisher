@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     postcode: DataTypes.STRING,
     email: DataTypes.STRING,
     filename: DataTypes.STRING,
+    schemeName: DataTypes.STRING,
+    schemeShortName: DataTypes.STRING,
+    schemeYear: DataTypes.STRING,
+    schemeFrequency: DataTypes.STRING,
     received: DataTypes.DATE
   },
   {

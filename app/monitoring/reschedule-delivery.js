@@ -6,7 +6,8 @@ const rescheduleDelivery = async (delivery) => {
   try {
     const timestamp = new Date()
     const statement = await db.statement.findOne({ where: { statementId: delivery.statementId }, transaction })
-    const response = await publish(statement.email, statement.filename)
+    const personalisation = { schemeName: statement.schemeName, schemeShortName: statement.shortName, schemeYear: statement.schemeYear, schemeFrequency: statement.schemeFrequency }
+    const response = await publish(statement.email, statement.filename, personalisation)
     await db.delivery.create({ statementId: delivery.statementId, method: delivery.method, reference: response.data.id, requested: timestamp }, { transaction })
     await db.delivery.update({ completed: timestamp }, { where: { deliveryId: delivery.deliveryId }, transaction })
     await transaction.commit()
