@@ -76,6 +76,31 @@ describe('publish statement', () => {
     expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
   })
 
+  test('should send email with scheme name', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeName).toBe(mockRequest.scheme.name)
+  })
+
+  test('should send email with scheme short name', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(mockRequest.scheme.shortName)
+  })
+
+  test('should send email with scheme frequency', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockRequest.scheme.frequency)
+  })
+
+  test('should send email with scheme year', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(mockRequest.scheme.year)
+  })
+
+  test('should send email with business name', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.businessName).toBe(mockRequest.businessName)
+  })
+
   test('saves one statement', async () => {
     await processPublishMessage(message, receiver)
     const statement = await db.statement.findAll()
