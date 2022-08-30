@@ -22,6 +22,10 @@ const saveStatement = async (request, timestamp, transaction) => {
     addressLine4: request.address.line4,
     addressLine5: request.address.line5,
     postcode: request.address.postcode,
+    schemeName: request.scheme.name,
+    schemeShortName: request.scheme.shortName,
+    schemeYear: request.scheme.year,
+    schemeFrequency: request.scheme.frequency,
     received: timestamp
   }, { transaction })
 }
