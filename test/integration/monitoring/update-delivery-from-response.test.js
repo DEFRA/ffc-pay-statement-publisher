@@ -157,6 +157,31 @@ describe('update delivery from response', () => {
     expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
   })
 
+  test('should send email with scheme name if status technical failure', async () => {
+    await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeName).toBe(mockStatement1.schemeName)
+  })
+
+  test('should send email with scheme short name if status technical failure', async () => {
+    await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(mockStatement1.schemeShortName)
+  })
+
+  test('should send email with scheme frequency if status technical failure', async () => {
+    await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockStatement1.schemeFrequency)
+  })
+
+  test('should send email with scheme year if status technical failure', async () => {
+    await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(mockStatement1.schemeYear)
+  })
+
+  test('should send email with business name if status technical failure', async () => {
+    await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
+    expect(mockSendEmail.mock.calls[0][2].personalisation.businessName).toBe(mockStatement1.businessName)
+  })
+
   test('should not complete delivery if status unknown', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: 'not an understood status' } })
     const delivery = await db.delivery.findByPk(mockDelivery1.deliveryId)
