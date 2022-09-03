@@ -14,7 +14,9 @@
       <column name="schemeYear" type="VARCHAR(4)">
         <constraints nullable="false" />
       </column>
-      <column name="schemeFrequency" type="VARCHAR(50)" />
+      <column name="schemeFrequency" type="VARCHAR(50)">
+        <constraints nullable="false" />
+      </column>
     </addColumn>
   </changeSet>
 </databaseChangeLog>
