@@ -102,18 +102,26 @@ components:
       - frequency
       properties:
         name:
-          type: string
-          description: The name of the scheme
-          example: Sustainable Farming Incentive
+          ref: '#/components/schemas/SchemeName'
         shortName:
-          type: string
-          description: The short name of the scheme
-          example: SFI
+          ref: '#/components/schemas/SchemeShortName'
         year:
-          type: string
-          description: The marketing year
-          example: 2022
+          ref: '#/components/schemas/SchemeYear'
         frequency:
-          type: string
-          description: The frequency of payments
-          example: Quarterly
+          ref: '#/components/schemas/SchemeFrequency'
+    SchemeName:
+      type: string
+      description: The name of the scheme
+      example: Sustainable Farming Incentive
+    SchemeShortName:
+      type: string
+      description: The short name of the scheme
+      example: SFI
+    SchemeYear:
+      type: string
+      description: The marketing year
+      example: 2022
+    SchemeFrequency:
+      type: string
+      description: The frequency of payments
+      example: Quarterly
