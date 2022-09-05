@@ -1,3 +1,10 @@
+const mockScheme = {
+  schemeName: 'Sustainable Farming Incentive',
+  schemeShortName: 'SFI',
+  schemeYear: '2022',
+  schemeFrequency: 'Quarterly'
+}
+
 const mockStatement1 = {
   statementId: 1,
   businessName: 'Business 1',
@@ -12,10 +19,7 @@ const mockStatement1 = {
   frn: 1234567890,
   email: 'farmer1@farm.com',
   received: new Date(2022, 7, 5, 15, 30, 10, 120),
-  schemeName: 'Sustainable Farming Incentive',
-  schemeShortName: 'SFI',
-  schemeYear: '2022',
-  schemeFrequency: 'Quarterly'
+  ...mockScheme
 }
 
 const mockStatement2 = {
@@ -32,10 +36,7 @@ const mockStatement2 = {
   frn: 1234567898,
   email: 'farmer2@farm.com',
   received: new Date(2022, 7, 5, 15, 30, 10, 120),
-  schemeName: 'Sustainable Farming Incentive',
-  schemeShortName: 'SFI',
-  schemeYear: '2022',
-  schemeFrequency: 'Quarterly'
+  ...mockScheme
 }
 
 module.exports = {
