@@ -11,5 +11,11 @@ module.exports = {
     line4: 'Newcastle Upon Tyne',
     line5: 'Tyne & Wear',
     postcode: 'NE1 1AA'
+  },
+  scheme: {
+    name: 'Sustainable Farming Incentive',
+    shortName: 'SFI',
+    year: '2022',
+    frequency: 'Quarterly'
   }
 }

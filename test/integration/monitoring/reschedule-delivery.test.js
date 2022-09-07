@@ -88,4 +88,29 @@ describe('reschedule deliveries', () => {
     await rescheduleDelivery(mockDelivery1)
     expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
   })
+
+  test('should send email with scheme name', async () => {
+    await rescheduleDelivery(mockDelivery1)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeName).toBe(mockStatement1.schemeName)
+  })
+
+  test('should send email with scheme short name', async () => {
+    await rescheduleDelivery(mockDelivery1)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(mockStatement1.schemeShortName)
+  })
+
+  test('should send email with scheme frequency', async () => {
+    await rescheduleDelivery(mockDelivery1)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockStatement1.schemeFrequency.toLowerCase())
+  })
+
+  test('should send email with scheme year', async () => {
+    await rescheduleDelivery(mockDelivery1)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(mockStatement1.schemeYear)
+  })
+
+  test('should send email with business name', async () => {
+    await rescheduleDelivery(mockDelivery1)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.businessName).toBe(mockStatement1.businessName)
+  })
 })

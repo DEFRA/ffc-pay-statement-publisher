@@ -2,19 +2,20 @@ const MOCK_REFERENCE = '78363cba-2093-4447-8812-697c09820614'
 let mockSendEmail
 const MOCK_PREPARED_FILE = 'mock-prepared-file'
 let mockPrepareUpload
+const mockNotifyClient = jest.fn().mockImplementation(() => {
+  return {
+    sendEmail: mockSendEmail,
+    prepareUpload: mockPrepareUpload
+  }
+})
 jest.mock('notifications-node-client', () => {
   return {
-    NotifyClient: jest.fn().mockImplementation(() => {
-      return {
-        sendEmail: mockSendEmail,
-        prepareUpload: mockPrepareUpload
-      }
-    })
+    NotifyClient: mockNotifyClient
   }
 })
 jest.mock('ffc-messaging')
 const { BlobServiceClient } = require('@azure/storage-blob')
-const config = require('../../../app/config/storage')
+const { storageConfig, notifyApiKey } = require('../../../app/config')
 const db = require('../../../app/data')
 const processPublishMessage = require('../../../app/messaging/process-publish-message')
 const path = require('path')
@@ -34,11 +35,11 @@ describe('publish statement', () => {
     mockRequest = JSON.parse(JSON.stringify(require('../../mocks/request')))
     jest.clearAllMocks()
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
-    blobServiceClient = BlobServiceClient.fromConnectionString(config.connectionStr)
-    container = blobServiceClient.getContainerClient(config.container)
+    blobServiceClient = BlobServiceClient.fromConnectionString(storageConfig.connectionStr)
+    container = blobServiceClient.getContainerClient(storageConfig.container)
     await container.deleteIfExists()
     await container.createIfNotExists()
-    const blockBlobClient = container.getBlockBlobClient(`${config.folder}/${FILE_NAME}`)
+    const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
     await db.sequelize.truncate({ cascade: true })
 
@@ -60,6 +61,12 @@ describe('publish statement', () => {
     await db.sequelize.close()
   })
 
+  test('should use API key in Notify connection', async () => {
+    await processPublishMessage(message, receiver)
+
+    expect(mockNotifyClient).toHaveBeenCalledWith(notifyApiKey)
+  })
+
   test('should send email via Notify once', async () => {
     await processPublishMessage(message, receiver)
 
@@ -74,6 +81,31 @@ describe('publish statement', () => {
   test('should send email with file link', async () => {
     await processPublishMessage(message, receiver)
     expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
+  })
+
+  test('should send email with scheme name', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeName).toBe(mockRequest.scheme.name)
+  })
+
+  test('should send email with scheme short name', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(mockRequest.scheme.shortName)
+  })
+
+  test('should send email with scheme frequency', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockRequest.scheme.frequency.toLowerCase())
+  })
+
+  test('should send email with scheme year', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(mockRequest.scheme.year)
+  })
+
+  test('should send email with business name', async () => {
+    await processPublishMessage(message, receiver)
+    expect(mockSendEmail.mock.calls[0][2].personalisation.businessName).toBe(mockRequest.businessName)
   })
 
   test('saves one statement', async () => {

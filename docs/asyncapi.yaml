@@ -24,6 +24,7 @@ components:
       - frn
       - address
       - filename
+      - scheme
       properties:
         businessName:
           $ref: '#/components/schemas/BusinessName'
@@ -37,6 +38,8 @@ components:
           $ref: '#/components/schemas/Address'
         filename:
           $ref: '#/components/schemas/Filename'
+        scheme:
+          $ref: '#/components/schemas/Scheme'
     BusinessName:
       type: string
       description: The business name
@@ -90,3 +93,35 @@ components:
       type: string
       description: PDF filename
       example: FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf
+    Scheme:
+      type: object
+      required:
+      - name
+      - shortName
+      - year
+      - frequency
+      properties:
+        name:
+          ref: '#/components/schemas/SchemeName'
+        shortName:
+          ref: '#/components/schemas/SchemeShortName'
+        year:
+          ref: '#/components/schemas/SchemeYear'
+        frequency:
+          ref: '#/components/schemas/SchemeFrequency'
+    SchemeName:
+      type: string
+      description: The name of the scheme
+      example: Sustainable Farming Incentive
+    SchemeShortName:
+      type: string
+      description: The short name of the scheme
+      example: SFI
+    SchemeYear:
+      type: string
+      description: The marketing year
+      example: 2022
+    SchemeFrequency:
+      type: string
+      description: The frequency of payments
+      example: Quarterly

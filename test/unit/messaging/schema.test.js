@@ -130,10 +130,10 @@ describe('request schema', () => {
     expect(result.error).toBeUndefined()
   })
 
-  test('validates success if missing email', () => {
+  test('validates fail if missing email', () => {
     delete mockRequest.email
     const result = schema.validate(mockRequest)
-    expect(result.error).toBeUndefined()
+    expect(result.error).toBeDefined()
   })
 
   test('validates fail if invalid email', () => {
@@ -144,6 +144,54 @@ describe('request schema', () => {
 
   test('validates fail if missing filename', () => {
     delete mockRequest.filename
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if missing scheme name', () => {
+    delete mockRequest.scheme.name
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if empty scheme name', () => {
+    mockRequest.scheme.name = ''
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if missing scheme short name', () => {
+    delete mockRequest.scheme.shortName
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if empty scheme short name', () => {
+    mockRequest.scheme.shortName = ''
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if missing scheme year', () => {
+    delete mockRequest.scheme.year
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if empty scheme year', () => {
+    mockRequest.scheme.year = ''
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if missing scheme frequency', () => {
+    delete mockRequest.scheme.frequency
+    const result = schema.validate(mockRequest)
+    expect(result.error).toBeDefined()
+  })
+
+  test('validates fail if empty scheme frequency', () => {
+    mockRequest.scheme.frequency = ''
     const result = schema.validate(mockRequest)
     expect(result.error).toBeDefined()
   })
