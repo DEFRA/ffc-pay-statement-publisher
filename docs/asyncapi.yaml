@@ -2,7 +2,7 @@ asyncapi: 2.4.0
 info:
   title: FFC Payment Statement Publisher
   version: '1.0.0'
-  description: Publish PDF payment statements
+  description: Publish PDF payment statements for Future Farming
 channels:
   payment/request:
     subscribe:
@@ -109,6 +109,8 @@ components:
           ref: '#/components/schemas/SchemeYear'
         frequency:
           ref: '#/components/schemas/SchemeFrequency'
+        agreementNumber: 
+          ref: '#/components/schemas/AgreementNumber'
     SchemeName:
       type: string
       description: The name of the scheme
@@ -125,3 +127,7 @@ components:
       type: string
       description: The frequency of payments
       example: Quarterly
+    AgreementNumber:
+      type: string
+      description: The agreement number
+      example: SFI1234567
