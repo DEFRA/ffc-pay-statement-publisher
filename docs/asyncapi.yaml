@@ -100,17 +100,18 @@ components:
       - shortName
       - year
       - frequency
+      - agreementNumber
       properties:
         name:
-          ref: '#/components/schemas/SchemeName'
+          $ref: '#/components/schemas/SchemeName'
         shortName:
-          ref: '#/components/schemas/SchemeShortName'
+          $ref: '#/components/schemas/SchemeShortName'
         year:
-          ref: '#/components/schemas/SchemeYear'
+          $ref: '#/components/schemas/SchemeYear'
         frequency:
-          ref: '#/components/schemas/SchemeFrequency'
+          $ref: '#/components/schemas/SchemeFrequency'
         agreementNumber: 
-          ref: '#/components/schemas/AgreementNumber'
+          $ref: '#/components/schemas/AgreementNumber'
     SchemeName:
       type: string
       description: The name of the scheme
