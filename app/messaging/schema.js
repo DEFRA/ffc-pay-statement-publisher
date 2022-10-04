@@ -7,11 +7,11 @@ module.exports = Joi.object({
   sbi: Joi.number().integer().min(105000000).max(999999999).required(),
   email: Joi.string().email().required(),
   address: Joi.object({
-    line1: Joi.string().optional().allow(''),
-    line2: Joi.string().optional().allow(''),
-    line3: Joi.string().optional().allow(''),
-    line4: Joi.string().optional().allow(''),
-    line5: Joi.string().optional().allow(''),
+    line1: Joi.string().optional().allow('', null),
+    line2: Joi.string().optional().allow('', null),
+    line3: Joi.string().optional().allow('', null),
+    line4: Joi.string().optional().allow('', null),
+    line5: Joi.string().optional().allow('', null),
     postcode: Joi.string().required()
   }).required(),
   scheme: Joi.object({
