@@ -31,10 +31,4 @@ describe('retry', () => {
     } catch {}
     expect(mockFunction).toHaveBeenCalledTimes(2)
   })
-
-  test('throws error if maximum retries exceeded', async () => {
-    mockFunction.mockRejectedValue('error')
-    const wrapper = async () => retry(mockFunction, 1)
-    expect(wrapper()).rejects.toThrow()
-  })
 })
