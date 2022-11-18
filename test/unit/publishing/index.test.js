@@ -22,7 +22,7 @@ const MOCK_PERSONALISATION = {
 let request
 
 describe('publish statement', () => {
-  beforeEach(()=> {
+  beforeEach(() => {
     jest.clearAllMocks()
     request = JSON.parse(JSON.stringify(require('../../mocks/request')))
     publish.mockResolvedValue({ data: { id: MOCK_ID } })
@@ -83,5 +83,3 @@ describe('publish statement', () => {
     expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
   })
 })
-
-

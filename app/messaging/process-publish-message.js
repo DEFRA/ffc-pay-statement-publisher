@@ -9,7 +9,7 @@ const processPublishMessage = async (message, receiver) => {
     console.log('Statement publishing request received:', util.inspect(request, false, null, true))
     validateRequest(request)
     await publishStatement(request)
-    await receiver.completeMessage(message)    
+    await receiver.completeMessage(message)
   } catch (err) {
     console.error('Unable to publish statement:', err)
     if (err.category === VALIDATION) {
