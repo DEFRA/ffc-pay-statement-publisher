@@ -56,7 +56,3 @@ describe('validate email', () => {
     expect(validateEmail(email)).toBe(false)
   })
 })
-
-
-
-
