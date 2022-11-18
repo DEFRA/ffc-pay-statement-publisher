@@ -6,8 +6,8 @@ const saveRequest = async (request, reference, method) => {
     const timestamp = new Date()
     const statement = await saveStatement(request, timestamp, transaction)
     const delivery = await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
-    if (!request.email) {
-      const reason = 'No email address provided'
+    if (!reference) {
+      const reason = 'No valid email address provided'
       console.log(`Unable to deliver statement ${statement.filename}: ${reason}`)
       await saveFailure(delivery.deliveryId, reason, transaction)
     }
