@@ -27,4 +27,10 @@ describe('get outstanding deliveries', () => {
     const result = await getOutstandingDeliveries()
     expect(result[0].deliveryId).toBe(mockDelivery1.deliveryId)
   })
+
+  test('does not return delivery without reference', async () => {
+    await db.delivery.update({ reference: null }, { where: { deliveryId: mockDelivery1.deliveryId } })
+    const result = await getOutstandingDeliveries()
+    expect(result.length).toBe(0)
+  })
 })

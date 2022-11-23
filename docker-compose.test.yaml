@@ -23,6 +23,10 @@ services:
   ffc-pay-statement-publisher-postgres:
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  
+  ffc-pay-statement-azurite:
+    labels:
+      com.docker.compose.pay.role: test
 
 volumes:
   postgres_data:

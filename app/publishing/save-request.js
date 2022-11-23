@@ -5,7 +5,12 @@ const saveRequest = async (request, reference, method) => {
   try {
     const timestamp = new Date()
     const statement = await saveStatement(request, timestamp, transaction)
-    await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
+    const delivery = await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
+    if (!reference) {
+      const reason = 'No valid email address provided'
+      console.log(`Unable to deliver statement ${statement.filename}: ${reason}`)
+      await saveFailure(delivery.deliveryId, reason, transaction)
+    }
     await transaction.commit()
   } catch (err) {
     await transaction.rollback()
@@ -31,12 +36,16 @@ const saveStatement = async (request, timestamp, transaction) => {
 }
 
 const saveDelivery = async (statementId, method, reference, timestamp, transaction) => {
-  await db.delivery.create({
+  return db.delivery.create({
     statementId,
     method,
     reference,
     requested: timestamp
   }, { transaction })
+}
+
+const saveFailure = async (deliveryId, reason, transaction) => {
+  await db.failure.create({ deliveryId, reason, failed: new Date() }, { transaction })
 }
 
 module.exports = saveRequest

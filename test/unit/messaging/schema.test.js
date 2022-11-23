@@ -58,16 +58,16 @@ describe('request schema', () => {
     expect(result.error).toBeDefined()
   })
 
-  test('validates fail if missing postcode', () => {
+  test('validates success if missing postcode', () => {
     delete mockRequest.address.postcode
     const result = schema.validate(mockRequest)
-    expect(result.error).toBeDefined()
+    expect(result.error).toBeUndefined()
   })
 
-  test('validates fail if empty postcode', () => {
+  test('validates success if empty postcode', () => {
     mockRequest.address.postcode = ''
     const result = schema.validate(mockRequest)
-    expect(result.error).toBeDefined()
+    expect(result.error).toBeUndefined()
   })
 
   test('validates success if missing line 1', () => {
@@ -130,16 +130,16 @@ describe('request schema', () => {
     expect(result.error).toBeUndefined()
   })
 
-  test('validates fail if missing email', () => {
+  test('validates success if missing email', () => {
     delete mockRequest.email
     const result = schema.validate(mockRequest)
-    expect(result.error).toBeDefined()
+    expect(result.error).toBeUndefined()
   })
 
-  test('validates fail if invalid email', () => {
+  test('validates success if invalid email', () => {
     mockRequest.email = 'This is not an email'
     const result = schema.validate(mockRequest)
-    expect(result.error).toBeDefined()
+    expect(result.error).toBeUndefined()
   })
 
   test('validates fail if missing filename', () => {
