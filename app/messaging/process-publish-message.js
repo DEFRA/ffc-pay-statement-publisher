@@ -1,5 +1,5 @@
 const util = require('util')
-const { VALIDATION } = require('../errors')
+const { VALIDATION } = require('../constants/errors')
 const publishStatement = require('../publishing')
 const validateRequest = require('./validate-request')
 

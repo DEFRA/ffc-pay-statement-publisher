@@ -18,10 +18,10 @@ const { BlobServiceClient } = require('@azure/storage-blob')
 const config = require('../../../app/config/storage')
 const db = require('../../../app/data')
 const path = require('path')
-const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
+const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/constants/statuses')
 const { mockStatement1, mockStatement2 } = require('../../mocks/statement')
 const { mockDelivery1, mockDelivery2 } = require('../../mocks/delivery')
-const { INVALID, REJECTED } = require('../../../app/failure-reasons')
+const { INVALID, REJECTED } = require('../../../app/constants/failure-reasons')
 const updateDeliveries = require('../../../app/monitoring/update-deliveries')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'

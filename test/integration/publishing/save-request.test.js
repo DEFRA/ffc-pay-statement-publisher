@@ -1,6 +1,6 @@
 const db = require('../../../app/data')
 const saveRequest = require('../../../app/publishing/save-request')
-const { EMAIL } = require('../../../app/methods')
+const { EMAIL } = require('../../../app/constants/methods')
 const MOCK_REFERENCE = 'c8363cba-2093-4447-8812-697c09820614'
 let mockRequest
 let reference

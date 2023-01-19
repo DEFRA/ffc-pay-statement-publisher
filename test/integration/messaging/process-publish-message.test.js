@@ -19,7 +19,7 @@ const { storageConfig, notifyApiKey } = require('../../../app/config')
 const db = require('../../../app/data')
 const processPublishMessage = require('../../../app/messaging/process-publish-message')
 const path = require('path')
-const { EMAIL } = require('../../../app/methods')
+const { EMAIL } = require('../../../app/constants/methods')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')

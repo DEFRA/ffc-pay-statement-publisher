@@ -1,5 +1,5 @@
-const { INVALID, REJECTED } = require('../failure-reasons')
-const { DELIVERED, PERMANENT_FAILURE, TEMPORARY_FAILURE, TECHNICAL_FAILURE } = require('../statuses')
+const { INVALID, REJECTED } = require('../constants/failure-reasons')
+const { DELIVERED, PERMANENT_FAILURE, TEMPORARY_FAILURE, TECHNICAL_FAILURE } = require('../constants/statuses')
 const completeDelivery = require('./complete-delivery')
 const createFailure = require('./create-failure')
 const rescheduleDelivery = require('./reschedule-delivery')

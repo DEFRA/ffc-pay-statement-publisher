@@ -12,7 +12,7 @@ const validateEmail = require('../../../app/publishing/validate-email')
 
 const publishStatement = require('../../../app/publishing')
 
-const { EMAIL } = require('../../../app/methods')
+const { EMAIL } = require('../../../app/constants/methods')
 const MOCK_ID = 'c8363cba-2093-4447-8812-697c09820614'
 const MOCK_PERSONALISATION = {
   schemeName: 'Test Scheme',

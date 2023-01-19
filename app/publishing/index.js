@@ -1,4 +1,4 @@
-const { EMAIL } = require('../methods')
+const { EMAIL } = require('../constants/methods')
 const getPersonalisation = require('./get-personalisation')
 const publish = require('./publish')
 const saveRequest = require('./save-request')

@@ -1,4 +1,4 @@
-const { EMAIL } = require('../../app/methods')
+const { EMAIL } = require('../../app/constants/methods')
 
 const mockDelivery1 = {
   deliveryId: 98,
