@@ -1,5 +1,12 @@
 const _2022 = require('../components/marketing-year')
-const ADDRESS = require('../components/address')
+const {
+  CITY,
+  COUNTY,
+  LINE_1,
+  LINE_2,
+  LINE_3,
+  POSTCODE
+} = require('../components/address')
 const EMAIL_ADDRESS = require('../components/email-address')
 const FILENAME = require('../components/filename')
 const FRN = require('../components/frn')
@@ -15,7 +22,14 @@ module.exports = {
   frn: FRN,
   sbi: SBI,
   email: EMAIL_ADDRESS,
-  address: ADDRESS,
+  address: {
+    line1: LINE_1,
+    line2: LINE_2,
+    line3: LINE_3,
+    line4: CITY,
+    line5: COUNTY,
+    postcode: POSTCODE
+  },
   scheme: {
     name: LONG_NAMES.SFI,
     shortName: SHORT_NAMES.SFI,
