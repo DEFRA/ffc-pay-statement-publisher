@@ -1,4 +1,4 @@
-const createMessage = require('../../../../app/processing/crm/create-message')
+const mapMessage = require('../../../../app/processing/crm/map-message')
 
 let emailAddress
 let errorMessage
@@ -20,32 +20,32 @@ describe('Create CRM invalid email message from incoming message', () => {
     })
 
     test('should return an object', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result).toBeInstanceOf(Object)
     })
 
     test('should return an object with 3 keys', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(Object.keys(result)).toHaveLength(3)
     })
 
     test('should return an object with keys: "emailAddress", "errorMessage" and "frn"', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(Object.keys(result)).toStrictEqual(['emailAddress', 'errorMessage', 'frn'])
     })
 
     test('should return the emailAddress key with value emailAddress', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result.emailAddress).toStrictEqual(emailAddress)
     })
 
     test('should return the errorMessage key with value errorMessage', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result.errorMessage).toStrictEqual(errorMessage)
     })
 
     test('should return the frn key with value frn', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result.frn).toStrictEqual(frn)
     })
   })
@@ -62,32 +62,32 @@ describe('Create CRM invalid email message from incoming message', () => {
     })
 
     test('should return an object', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result).toBeInstanceOf(Object)
     })
 
     test('should return an object with 3 keys', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(Object.keys(result)).toHaveLength(3)
     })
 
     test('should return an object with keys: "emailAddress", "errorMessage" and "frn"', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(Object.keys(result)).toStrictEqual(['emailAddress', 'errorMessage', 'frn'])
     })
 
     test('should return the emailAddress key with value emailAddress', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result.emailAddress).toStrictEqual(emailAddress)
     })
 
     test('should return the errorMessage key with value errorMessage', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result.errorMessage).toStrictEqual(errorMessage)
     })
 
     test('should return the frn key with value frn', () => {
-      const result = createMessage(message)
+      const result = mapMessage(message)
       expect(result.frn).toStrictEqual(frn)
     })
   })

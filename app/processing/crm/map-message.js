@@ -1,4 +1,4 @@
-const createMessage = (message) => {
+const mapMessage = (message) => {
   return {
     emailAddress: message?.emailAddress,
     errorMessage: message?.errorMessage,
@@ -6,4 +6,4 @@ const createMessage = (message) => {
   }
 }
 
-module.exports = createMessage
+module.exports = mapMessage

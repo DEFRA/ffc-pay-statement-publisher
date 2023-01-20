@@ -1,5 +1,5 @@
-jest.mock('../../../../app/processing/crm/create-message')
-const createMessage = require('../../../../app/processing/crm/create-message')
+jest.mock('../../../../app/processing/crm/map-message')
+const mapMessage = require('../../../../app/processing/crm/map-message')
 
 jest.mock('../../../../app/processing/crm/validate-message')
 const validateMessage = require('../../../../app/processing/crm/validate-message')
@@ -21,23 +21,23 @@ describe('Create CRM invalid email message from incoming message', () => {
 
   describe('When incoming message is valid', () => {
     beforeEach(() => {
-      createMessage.mockReturnValue(incomingMessage)
+      mapMessage.mockReturnValue(incomingMessage)
       validateMessage.mockReturnValue(outgoingMessage)
     })
 
-    test('should call createMessage', () => {
+    test('should call mapMessage', () => {
       getMessage(incomingMessage)
-      expect(createMessage).toHaveBeenCalled()
+      expect(mapMessage).toHaveBeenCalled()
     })
 
-    test('should call createMessage once', () => {
+    test('should call mapMessage once', () => {
       getMessage(incomingMessage)
-      expect(createMessage).toHaveBeenCalledTimes(1)
+      expect(mapMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call createMessage with incomingMessage', () => {
+    test('should call mapMessage with incomingMessage', () => {
       getMessage(incomingMessage)
-      expect(createMessage).toHaveBeenCalledWith(incomingMessage)
+      expect(mapMessage).toHaveBeenCalledWith(incomingMessage)
     })
 
     test('should call validateMessage', () => {
@@ -50,8 +50,8 @@ describe('Create CRM invalid email message from incoming message', () => {
       expect(validateMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call validateMessage with createMessage return value', () => {
-      const message = createMessage()
+    test('should call validateMessage with mapMessage return value', () => {
+      const message = mapMessage()
       getMessage(incomingMessage)
       expect(validateMessage).toHaveBeenCalledWith(message)
     })
@@ -104,23 +104,23 @@ describe('Create CRM invalid email message from incoming message', () => {
         frn: 1
       }
 
-      createMessage.mockReturnValue(incomingMessage)
+      mapMessage.mockReturnValue(incomingMessage)
       validateMessage.mockImplementation(() => { throw new Error('') })
     })
 
-    test('should call createMessage', () => {
+    test('should call mapMessage', () => {
       try { getMessage(incomingMessage) } catch {}
-      expect(createMessage).toHaveBeenCalled()
+      expect(mapMessage).toHaveBeenCalled()
     })
 
-    test('should call createMessage once', () => {
+    test('should call mapMessage once', () => {
       try { getMessage(incomingMessage) } catch {}
-      expect(createMessage).toHaveBeenCalledTimes(1)
+      expect(mapMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call createMessage with incomingMessage', () => {
+    test('should call mapMessage with incomingMessage', () => {
       try { getMessage(incomingMessage) } catch {}
-      expect(createMessage).toHaveBeenCalledWith(incomingMessage)
+      expect(mapMessage).toHaveBeenCalledWith(incomingMessage)
     })
 
     test('should call validateMessage', () => {
@@ -133,8 +133,8 @@ describe('Create CRM invalid email message from incoming message', () => {
       expect(validateMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call validateMessage with createMessage return value', () => {
-      const message = createMessage()
+    test('should call validateMessage with mapMessage return value', () => {
+      const message = mapMessage()
       try { getMessage(incomingMessage) } catch {}
       expect(validateMessage).toHaveBeenCalledWith(message)
     })
