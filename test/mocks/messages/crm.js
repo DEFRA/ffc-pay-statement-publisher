@@ -1,4 +1,4 @@
-const EMAIL_ADDRESS = require('../components/email-address')
+const EMAIL_ADDRESS = require('../components/email')
 const ERROR_MESSAGE = 'bluh'
 const FRN = require('../components/frn')
 

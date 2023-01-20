@@ -8,7 +8,7 @@ let message
 describe('Create CRM invalid email message from incoming message', () => {
   describe('When incoming message is valid', () => {
     beforeEach(() => {
-      emailAddress = require('../../../mocks/components/email-address')
+      emailAddress = require('../../../mocks/components/email')
       errorMessage = 'bluh'
       frn = require('../../../mocks/components/frn')
 
