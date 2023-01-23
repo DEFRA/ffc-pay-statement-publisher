@@ -1,5 +1,5 @@
-const publishMessage = require('./publish-message')
+const getMessage = require('./get-message')
 
 module.exports = {
-  publishMessage
+  getMessage
 }

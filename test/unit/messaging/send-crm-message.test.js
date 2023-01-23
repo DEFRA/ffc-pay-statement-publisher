@@ -1,26 +1,26 @@
 const mockConfig = { crmTopic: 'mockCRMTopic' }
-jest.mock('../../../../app/config', () => {
+jest.mock('../../../app/config', () => {
   return mockConfig
 })
 
-jest.mock('../../../../app/processing/crm/get-message')
-const getMessage = require('../../../../app/processing/crm/get-message')
+jest.mock('../../../app/processing/crm/get-message')
+const getMessage = require('../../../app/processing/crm/get-message')
 
-jest.mock('../../../../app/messaging/send-message')
-const sendMessage = require('../../../../app/messaging/send-message')
+jest.mock('../../../app/messaging/send-message')
+const sendMessage = require('../../../app/messaging/send-message')
 
-const publishMessage = require('../../../../app/processing/crm/publish-message')
+const sendCrmMessage = require('../../../app/messaging/send-crm-message')
 
-const { CRM: CRM_MESSAGE_TYPE } = require('../../../../app/constants/message-type')
-const SOURCE = require('../../../../app/constants/message-source')
+const { CRM: CRM_MESSAGE_TYPE } = require('../../../app/constants/message-type')
+const SOURCE = require('../../../app/constants/message-source')
 
-const outgoingMessage = require('../../../mocks/messages/crm')
+const outgoingMessage = require('../../mocks/messages/crm')
 
 let incomingMessage
 
-describe('Publish invalid email message to CRM', () => {
+describe('Send invalid email message to CRM', () => {
   beforeEach(() => {
-    incomingMessage = JSON.parse(JSON.stringify(require('../../../mocks/objects/invalid-email')))
+    incomingMessage = JSON.parse(JSON.stringify(require('../../mocks/objects/invalid-email')))
   })
 
   afterEach(() => {
@@ -34,44 +34,44 @@ describe('Publish invalid email message to CRM', () => {
     })
 
     test('should call getMessage', async () => {
-      await publishMessage(incomingMessage)
+      await sendCrmMessage(incomingMessage)
       expect(getMessage).toHaveBeenCalled()
     })
 
     test('should call getMessage once', async () => {
-      await publishMessage(incomingMessage)
+      await sendCrmMessage(incomingMessage)
       expect(getMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call getMessage with incomingMessage', async () => {
-      await publishMessage(incomingMessage)
+      await sendCrmMessage(incomingMessage)
       expect(getMessage).toHaveBeenCalledWith(incomingMessage)
     })
 
     test('should call sendMessage', async () => {
-      await publishMessage(incomingMessage)
+      await sendCrmMessage(incomingMessage)
       expect(sendMessage).toHaveBeenCalled()
     })
 
     test('should call sendMessage once', async () => {
-      await publishMessage(incomingMessage)
+      await sendCrmMessage(incomingMessage)
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic and SOURCE', async () => {
       const message = getMessage()
-      await publishMessage(incomingMessage)
+      await sendCrmMessage(incomingMessage)
       expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic, source: SOURCE })
     })
 
     test('should not throw', async () => {
-      const wrapper = async () => { try { await publishMessage(incomingMessage) } catch {} }
+      const wrapper = async () => { try { await sendCrmMessage(incomingMessage) } catch {} }
       wrapper()
       expect(wrapper).not.toThrow()
     })
 
     test('should return undefined', async () => {
-      const result = await publishMessage(incomingMessage)
+      const result = await sendCrmMessage(incomingMessage)
       expect(result).toBeUndefined()
     })
   })
@@ -88,37 +88,37 @@ describe('Publish invalid email message to CRM', () => {
     })
 
     test('should call getMessage', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(getMessage).toHaveBeenCalled()
     })
 
     test('should call getMessage once', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(getMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call getMessage with incomingMessage', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(getMessage).toHaveBeenCalledWith(incomingMessage)
     })
 
     test('should not call sendMessage', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(sendMessage).not.toHaveBeenCalled()
     })
 
     test('should throw when getMessage throws', async () => {
-      const wrapper = async () => { await publishMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
       expect(wrapper).rejects.toThrow()
     })
 
     test('should throw Error when getMessage throws Error', async () => {
-      const wrapper = async () => { await publishMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
       expect(wrapper).rejects.toThrow(Error)
     })
 
     test('should throw error "" when getMessage throws error ""', async () => {
-      const wrapper = async () => { await publishMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
       expect(wrapper).rejects.toThrow('')
     })
   })
@@ -130,48 +130,48 @@ describe('Publish invalid email message to CRM', () => {
     })
 
     test('should call getMessage', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(getMessage).toHaveBeenCalled()
     })
 
     test('should call getMessage once', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(getMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call getMessage with incomingMessage', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(getMessage).toHaveBeenCalledWith(incomingMessage)
     })
 
     test('should call sendMessage', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(sendMessage).toHaveBeenCalled()
     })
 
     test('should call sendMessage once', async () => {
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic and SOURCE', async () => {
       const message = getMessage()
-      try { await publishMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(incomingMessage) } catch {}
       expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic, source: SOURCE })
     })
 
     test('should throw when sendMessage throws', async () => {
-      const wrapper = async () => { await publishMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
       expect(wrapper).rejects.toThrow()
     })
 
     test('should throw Error when sendMessage throws Error', async () => {
-      const wrapper = async () => { await publishMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
       expect(wrapper).rejects.toThrow(Error)
     })
 
     test('should throw error "" when sendMessage throws error ""', async () => {
-      const wrapper = async () => { await publishMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
       expect(wrapper).rejects.toThrow('')
     })
   })
