@@ -71,14 +71,14 @@ describe('Create CRM invalid email message from incoming message', () => {
       expect(Object.keys(result)).toHaveLength(3)
     })
 
-    test('should return an object with keys: "emailAddress", "errorMessage" and "frn"', () => {
+    test('should return an object with keys: "email", "errorMessage" and "frn"', () => {
       const result = getMessage(incomingMessage)
-      expect(Object.keys(result)).toStrictEqual(['emailAddress', 'errorMessage', 'frn'])
+      expect(Object.keys(result)).toStrictEqual(['email', 'errorMessage', 'frn'])
     })
 
-    test('should return the emailAddress key with value incomingMessage.emailAddress', () => {
+    test('should return the email key with value incomingMessage.email', () => {
       const result = getMessage(incomingMessage)
-      expect(result.emailAddress).toStrictEqual(incomingMessage.emailAddress)
+      expect(result.email).toStrictEqual(incomingMessage.email)
     })
 
     test('should return the errorMessage key with value incomingMessage.errorMessage', () => {
