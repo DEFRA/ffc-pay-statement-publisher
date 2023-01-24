@@ -1,6 +1,6 @@
 const mapMessage = (message) => {
   return {
-    emailAddress: message?.emailAddress,
+    email: message?.email,
     errorMessage: message?.errorMessage,
     frn: message?.frn
   }
