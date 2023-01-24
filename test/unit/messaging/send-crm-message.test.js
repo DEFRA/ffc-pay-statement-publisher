@@ -11,7 +11,7 @@ const sendMessage = require('../../../app/messaging/send-message')
 
 const sendCrmMessage = require('../../../app/messaging/send-crm-message')
 
-const { CRM: CRM_MESSAGE_TYPE } = require('../../../app/constants/message-type')
+const { CRM: CRM_MESSAGE_TYPE } = require('../../../app/constants/message-types')
 const SOURCE = require('../../../app/constants/message-source')
 
 const outgoingMessage = require('../../mocks/messages/crm')

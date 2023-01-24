@@ -14,7 +14,7 @@ jest.mock('ffc-messaging', () => {
 jest.mock('../../../app/messaging/create-message')
 const createMessage = require('../../../app/messaging/create-message')
 
-const { CRM: CRM_MESSAGE_TYPE } = require('../../../app/constants/message-type')
+const { CRM: CRM_MESSAGE_TYPE } = require('../../../app/constants/message-types')
 const SOURCE = require('../../../app/constants/message-source')
 
 const sendMessage = require('../../../app/messaging/send-message')
