@@ -1,9 +1,10 @@
 const db = require('../data')
 
 const createFailure = async (deliveryId, reason, transaction) => {
-  await db.failures.create({
+  await db.failure.create({
     deliveryId,
-    reason
+    reason,
+    failed: new Date()
   }, { transaction })
 }
 

@@ -18,7 +18,7 @@ const { mockStatement1: statement } = require('../../mocks/statement')
 const { mockDelivery1: delivery } = require('../../mocks/delivery')
 const { INVALID, REJECTED } = require('../../../app/constants/failure-reasons')
 
-describe('Notify failed to send', () => {
+describe('Notify failed to deliver', () => {
   beforeEach(() => {
     getStatementByStatementId.mockResolvedValue(statement)
     sendCrmMessage.mockResolvedValue(undefined)

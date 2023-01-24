@@ -81,7 +81,7 @@ describe('reschedule deliveries', () => {
 
   test('should send email to requested email address', async () => {
     await rescheduleDelivery(mockDelivery1)
-    expect(mockSendEmail.mock.calls[0][1]).toBe('farmer1@farm.com')
+    expect(mockSendEmail.mock.calls[0][1]).toBe(mockStatement1.email)
   })
 
   test('should send email with file link', async () => {

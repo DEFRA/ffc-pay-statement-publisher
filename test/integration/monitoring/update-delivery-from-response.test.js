@@ -149,7 +149,7 @@ describe('update delivery from response', () => {
 
   test('should send email to requested email address if status technical failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
-    expect(mockSendEmail.mock.calls[0][1]).toBe('farmer1@farm.com')
+    expect(mockSendEmail.mock.calls[0][1]).toBe(mockStatement1.email)
   })
 
   test('should send email with file link if status technical failure', async () => {

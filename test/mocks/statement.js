@@ -1,3 +1,5 @@
+const EMAIL = require('./components/email')
+
 const mockScheme = {
   schemeName: 'Sustainable Farming Incentive',
   schemeShortName: 'SFI',
@@ -17,7 +19,7 @@ const mockStatement1 = {
   filename: 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf',
   sbi: 123456789,
   frn: 1234567890,
-  email: 'farmer1@farm.com',
+  email: EMAIL,
   received: new Date(2022, 7, 5, 15, 30, 10, 120),
   ...mockScheme
 }
