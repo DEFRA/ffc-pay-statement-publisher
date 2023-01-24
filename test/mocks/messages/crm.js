@@ -1,5 +1,6 @@
+const ERROR_MESSAGE = require('../../../app/constants/crm-error-messages').INVALID
+
 const EMAIL = require('../components/email')
-const ERROR_MESSAGE = 'bluh'
 const FRN = require('../components/frn')
 
 module.exports = {

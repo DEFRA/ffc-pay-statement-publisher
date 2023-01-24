@@ -1,10 +1,10 @@
 const mapCrmErrorMessage = require('./map-crm-error-message')
 
-const mapMessage = (message) => {
+const mapMessage = (email, frn, reason) => {
   return {
-    email: message?.email,
-    errorMessage: mapCrmErrorMessage('Inbox full or rejected as spam'),
-    frn: message?.frn
+    email,
+    errorMessage: mapCrmErrorMessage(reason),
+    frn
   }
 }
 

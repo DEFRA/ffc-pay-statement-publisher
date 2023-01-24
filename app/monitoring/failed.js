@@ -11,7 +11,7 @@ const failed = async (delivery, reason) => {
     const statement = await getStatementByStatementId(delivery.statementId)
     const deliveryId = delivery.deliveryId
     console.log(`Unable to deliver statement ${statement.filename} to ${statement.email}: ${reason}`)
-    await sendCrmMessage({ email: statement.email, frn: statement.frn, errorMessage: 'b' })
+    await sendCrmMessage(statement.email, statement.frn, reason)
     await completeDelivery(deliveryId)
     await createFailure(deliveryId, reason, transaction)
     await transaction.commit()

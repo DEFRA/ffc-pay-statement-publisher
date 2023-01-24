@@ -16,11 +16,15 @@ const SOURCE = require('../../../app/constants/message-source')
 
 const outgoingMessage = require('../../mocks/messages/crm')
 
-let incomingMessage
+let email
+let frn
+let reason
 
 describe('Send invalid email message to CRM', () => {
   beforeEach(() => {
-    incomingMessage = JSON.parse(JSON.stringify(require('../../mocks/objects/invalid-email')))
+    email = require('../../mocks/components/email')
+    frn = require('../../mocks/components/frn')
+    reason = require('../../../app/constants/failure-reasons').INVALID
   })
 
   afterEach(() => {
@@ -34,91 +38,86 @@ describe('Send invalid email message to CRM', () => {
     })
 
     test('should call getMessage', async () => {
-      await sendCrmMessage(incomingMessage)
+      await sendCrmMessage(email, frn, reason)
       expect(getMessage).toHaveBeenCalled()
     })
 
     test('should call getMessage once', async () => {
-      await sendCrmMessage(incomingMessage)
+      await sendCrmMessage(email, frn, reason)
       expect(getMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call getMessage with incomingMessage', async () => {
-      await sendCrmMessage(incomingMessage)
-      expect(getMessage).toHaveBeenCalledWith(incomingMessage)
+    test('should call getMessage with email, frn and reason', async () => {
+      await sendCrmMessage(email, frn, reason)
+      expect(getMessage).toHaveBeenCalledWith(email, frn, reason)
     })
 
     test('should call sendMessage', async () => {
-      await sendCrmMessage(incomingMessage)
+      await sendCrmMessage(email, frn, reason)
       expect(sendMessage).toHaveBeenCalled()
     })
 
     test('should call sendMessage once', async () => {
-      await sendCrmMessage(incomingMessage)
+      await sendCrmMessage(email, frn, reason)
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic and SOURCE', async () => {
       const message = getMessage()
-      await sendCrmMessage(incomingMessage)
+      await sendCrmMessage(email, frn, reason)
       expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic, source: SOURCE })
     })
 
     test('should not throw', async () => {
-      const wrapper = async () => { try { await sendCrmMessage(incomingMessage) } catch {} }
+      const wrapper = async () => { try { await sendCrmMessage(email, frn, reason) } catch {} }
       wrapper()
       expect(wrapper).not.toThrow()
     })
 
     test('should return undefined', async () => {
-      const result = await sendCrmMessage(incomingMessage)
+      const result = await sendCrmMessage(email, frn, reason)
       expect(result).toBeUndefined()
     })
   })
 
   describe('When incoming message is invalid', () => {
     beforeEach(() => {
-      incomingMessage = {
-        ...incomingMessage,
-        frn: 1
-      }
-
       getMessage.mockImplementation(() => { throw new Error('ffd') })
       sendMessage.mockResolvedValue(undefined)
     })
 
     test('should call getMessage', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(getMessage).toHaveBeenCalled()
     })
 
     test('should call getMessage once', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(getMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call getMessage with incomingMessage', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
-      expect(getMessage).toHaveBeenCalledWith(incomingMessage)
+    test('should call getMessage with email, frn and reason', async () => {
+      try { await sendCrmMessage(email, frn, reason) } catch {}
+      expect(getMessage).toHaveBeenCalledWith(email, frn, reason)
     })
 
     test('should not call sendMessage', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(sendMessage).not.toHaveBeenCalled()
     })
 
     test('should throw when getMessage throws', async () => {
-      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(email, frn, reason) }
       expect(wrapper).rejects.toThrow()
     })
 
     test('should throw Error when getMessage throws Error', async () => {
-      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(email, frn, reason) }
       expect(wrapper).rejects.toThrow(Error)
     })
 
     test('should throw error "" when getMessage throws error ""', async () => {
-      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(email, frn, reason) }
       expect(wrapper).rejects.toThrow('')
     })
   })
@@ -130,48 +129,48 @@ describe('Send invalid email message to CRM', () => {
     })
 
     test('should call getMessage', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(getMessage).toHaveBeenCalled()
     })
 
     test('should call getMessage once', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(getMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call getMessage with incomingMessage', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
-      expect(getMessage).toHaveBeenCalledWith(incomingMessage)
+    test('should call getMessage with email, frn, reason', async () => {
+      try { await sendCrmMessage(email, frn, reason) } catch {}
+      expect(getMessage).toHaveBeenCalledWith(email, frn, reason)
     })
 
     test('should call sendMessage', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(sendMessage).toHaveBeenCalled()
     })
 
     test('should call sendMessage once', async () => {
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
     test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic and SOURCE', async () => {
       const message = getMessage()
-      try { await sendCrmMessage(incomingMessage) } catch {}
+      try { await sendCrmMessage(email, frn, reason) } catch {}
       expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic, source: SOURCE })
     })
 
     test('should throw when sendMessage throws', async () => {
-      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(email, frn, reason) }
       expect(wrapper).rejects.toThrow()
     })
 
     test('should throw Error when sendMessage throws Error', async () => {
-      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(email, frn, reason) }
       expect(wrapper).rejects.toThrow(Error)
     })
 
     test('should throw error "" when sendMessage throws error ""', async () => {
-      const wrapper = async () => { await sendCrmMessage(incomingMessage) }
+      const wrapper = async () => { await sendCrmMessage(email, frn, reason) }
       expect(wrapper).rejects.toThrow('')
     })
   })

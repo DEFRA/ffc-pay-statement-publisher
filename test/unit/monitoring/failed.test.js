@@ -18,8 +18,12 @@ const { mockStatement1: statement } = require('../../mocks/statement')
 const { mockDelivery1: delivery } = require('../../mocks/delivery')
 const { INVALID, REJECTED } = require('../../../app/constants/failure-reasons')
 
+let reason
+
 describe('Notify failed to deliver', () => {
   beforeEach(() => {
+    reason = require('../../../app/constants/failure-reasons').INVALID
+
     getStatementByStatementId.mockResolvedValue(statement)
     sendCrmMessage.mockResolvedValue(undefined)
     completeDelivery.mockResolvedValue(undefined)
@@ -56,10 +60,10 @@ describe('Notify failed to deliver', () => {
       expect(sendCrmMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendCrmMessage with { email: statement.email, frn: statement.frn, errorMessage: "b" }', async () => {
+    test('should call sendCrmMessage with statement.email, statement.frn and reason', async () => {
       const statement = await getStatementByStatementId()
       await failed(delivery, INVALID)
-      expect(sendCrmMessage).toHaveBeenCalledWith({ email: statement.email, frn: statement.frn, errorMessage: 'b' })
+      expect(sendCrmMessage).toHaveBeenCalledWith(statement.email, statement.frn, reason)
     })
 
     test('should call completeDelivery', async () => {
@@ -119,6 +123,10 @@ describe('Notify failed to deliver', () => {
   })
 
   describe('When reason is REJECTED', () => {
+    beforeEach(() => {
+      reason = require('../../../app/constants/failure-reasons').REJECTED
+    })
+
     test('should call getStatementByStatementId', async () => {
       await failed(delivery, REJECTED)
       expect(getStatementByStatementId).toHaveBeenCalled()
@@ -144,10 +152,10 @@ describe('Notify failed to deliver', () => {
       expect(sendCrmMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendCrmMessage with { email: statement.email, frn: statement.frn, errorMessage: "b" }', async () => {
+    test('should call sendCrmMessage with statement.email, statement.frn and reason', async () => {
       const statement = await getStatementByStatementId()
       await failed(delivery, REJECTED)
-      expect(sendCrmMessage).toHaveBeenCalledWith({ email: statement.email, frn: statement.frn, errorMessage: 'b' })
+      expect(sendCrmMessage).toHaveBeenCalledWith(statement.email, statement.frn, reason)
     })
 
     test('should call completeDelivery', async () => {
@@ -373,9 +381,9 @@ describe('Notify failed to deliver', () => {
       expect(sendCrmMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendCrmMessage with { email: statement.email, frn: statement.frn, errorMessage: "b" }', async () => {
+    test('should call sendCrmMessage with statement.email, statement.frn and reason', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(sendCrmMessage).toHaveBeenCalledWith({ email: statement.email, frn: statement.frn, errorMessage: 'b' })
+      expect(sendCrmMessage).toHaveBeenCalledWith(statement.email, statement.frn, reason)
     })
 
     test('should not call createFailure', async () => {
@@ -444,9 +452,9 @@ describe('Notify failed to deliver', () => {
       expect(sendCrmMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendCrmMessage with { email: statement.email, frn: statement.frn, errorMessage: "b" }', async () => {
+    test('should call sendCrmMessage with statement.email, statement.frn and reason', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(sendCrmMessage).toHaveBeenCalledWith({ email: statement.email, frn: statement.frn, errorMessage: 'b' })
+      expect(sendCrmMessage).toHaveBeenCalledWith(statement.email, statement.frn, reason)
     })
 
     test('should call completeDelivery', async () => {
@@ -525,9 +533,9 @@ describe('Notify failed to deliver', () => {
       expect(sendCrmMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendCrmMessage with { email: statement.email, frn: statement.frn, errorMessage: "b" }', async () => {
+    test('should call sendCrmMessage with statement.email, statement.frn and reason', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(sendCrmMessage).toHaveBeenCalledWith({ email: statement.email, frn: statement.frn, errorMessage: 'b' })
+      expect(sendCrmMessage).toHaveBeenCalledWith(statement.email, statement.frn, reason)
     })
 
     test('should call completeDelivery', async () => {

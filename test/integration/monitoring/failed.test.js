@@ -15,8 +15,6 @@ describe('Notify failed to deliver', () => {
   beforeEach(async () => {
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
 
-    mockMessage = JSON.parse(JSON.stringify(require('../../mocks/objects/message').CRM))
-
     await db.statement.create(statement)
     await db.delivery.create(delivery)
   })
@@ -31,6 +29,10 @@ describe('Notify failed to deliver', () => {
   })
 
   describe('When reason is INVALID', () => {
+    beforeEach(async () => {
+      mockMessage = JSON.parse(JSON.stringify(require('../../mocks/objects/message').CRM.EMPTY))
+    })
+
     test('should send message to CRM', async () => {
       await failed(delivery, INVALID)
 
@@ -85,6 +87,10 @@ describe('Notify failed to deliver', () => {
   })
 
   describe('When reason is REJECTED', () => {
+    beforeEach(async () => {
+      mockMessage = JSON.parse(JSON.stringify(require('../../mocks/objects/message').CRM.INVALID))
+    })
+
     test('should send message to CRM', async () => {
       await failed(delivery, REJECTED)
 
