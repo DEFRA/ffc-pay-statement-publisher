@@ -4,6 +4,8 @@ const db = require('../../../app/data')
 
 const failed = require('../../../app/monitoring/failed')
 
+const SYSTEM_TIME = require('../../mocks/components/system-time')
+
 const { mockStatement1: statement } = require('../../mocks/statement')
 const { mockDelivery1: delivery } = require('../../mocks/delivery')
 
@@ -13,7 +15,7 @@ let mockMessage
 
 describe('Notify failed to deliver', () => {
   beforeEach(async () => {
-    jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
+    jest.useFakeTimers().setSystemTime(SYSTEM_TIME)
 
     await db.statement.create(statement)
     await db.delivery.create(delivery)
@@ -61,7 +63,7 @@ describe('Notify failed to deliver', () => {
 
       const deliveryAfter = await db.delivery.findByPk(delivery.deliveryId)
       expect(deliveryBefore.completed).toBeNull()
-      expect(deliveryAfter.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+      expect(deliveryAfter.completed).toStrictEqual(SYSTEM_TIME)
     })
 
     test('should create one failure', async () => {
@@ -82,7 +84,7 @@ describe('Notify failed to deliver', () => {
       await failed(delivery, INVALID)
 
       const failure = await db.failure.findOne({ where: { deliveryId: delivery.deliveryId } })
-      expect(failure.failed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+      expect(failure.failed).toStrictEqual(SYSTEM_TIME)
     })
   })
 
@@ -119,7 +121,7 @@ describe('Notify failed to deliver', () => {
 
       const deliveryAfter = await db.delivery.findByPk(delivery.deliveryId)
       expect(deliveryBefore.completed).toBeNull()
-      expect(deliveryAfter.completed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+      expect(deliveryAfter.completed).toStrictEqual(SYSTEM_TIME)
     })
 
     test('should create one failure', async () => {
@@ -140,7 +142,7 @@ describe('Notify failed to deliver', () => {
       await failed(delivery, REJECTED)
 
       const failure = await db.failure.findOne({ where: { deliveryId: delivery.deliveryId } })
-      expect(failure.failed).toStrictEqual(new Date(2022, 7, 5, 15, 30, 10, 120))
+      expect(failure.failed).toStrictEqual(SYSTEM_TIME)
     })
   })
 })
