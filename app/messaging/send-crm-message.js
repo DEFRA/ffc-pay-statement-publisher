@@ -6,7 +6,7 @@ const { getMessage } = require('../processing/crm')
 const sendMessage = require('./send-message')
 
 const sendCrmMessage = async (email, frn, reason) => {
-  await sendMessage(getMessage(email, frn, reason), CRM_MESSAGE_TYPE, { ...config.crmTopic })
+  await sendMessage(getMessage(email, frn, reason), CRM_MESSAGE_TYPE, config.crmTopic)
 }
 
 module.exports = sendCrmMessage

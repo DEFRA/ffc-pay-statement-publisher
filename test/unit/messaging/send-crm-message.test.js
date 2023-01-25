@@ -64,7 +64,7 @@ describe('Send invalid email message to CRM', () => {
     test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic', async () => {
       const message = getMessage()
       await sendCrmMessage(email, frn, reason)
-      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic })
+      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, mockConfig.crmTopic)
     })
 
     test('should not throw', async () => {
@@ -155,7 +155,7 @@ describe('Send invalid email message to CRM', () => {
     test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic', async () => {
       const message = getMessage()
       try { await sendCrmMessage(email, frn, reason) } catch {}
-      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic })
+      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, mockConfig.crmTopic)
     })
 
     test('should throw when sendMessage throws', async () => {
