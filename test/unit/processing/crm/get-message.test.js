@@ -114,7 +114,7 @@ describe('Create CRM invalid email message from incoming message', () => {
   describe('When incoming incomingMessage is invalid', () => {
     beforeEach(() => {
       mapMessage.mockReturnValue(mappedMessage)
-      validateMessage.mockImplementation(() => { throw new Error('') })
+      validateMessage.mockImplementation(() => { throw new Error('Invalid message') })
     })
 
     test('should call mapMessage', () => {
@@ -148,19 +148,19 @@ describe('Create CRM invalid email message from incoming message', () => {
       expect(validateMessage).toHaveBeenCalledWith(message)
     })
 
-    test('should throw when validateMessage throws', () => {
+    test('should throw', () => {
       const wrapper = () => { getMessage(email, frn, reason) }
       expect(wrapper).toThrow()
     })
 
-    test('should throw Error when validateMessage throws Error', () => {
+    test('should throw Error', () => {
       const wrapper = () => { getMessage(email, frn, reason) }
       expect(wrapper).toThrow(Error)
     })
 
-    test('should throw error "" when validateMessage throws error ""', () => {
+    test('should throw error "Invalid message"', () => {
       const wrapper = () => { getMessage(email, frn, reason) }
-      expect(wrapper).toThrow('')
+      expect(wrapper).toThrow(/^Invalid message$/)
     })
   })
 })
