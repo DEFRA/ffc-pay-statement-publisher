@@ -1,6 +1,6 @@
 const SOURCE = require('../../../app/constants/message-source')
 const { CRM: TYPE } = require('../../../app/constants/message-types')
-const { EMPTY, INVALID } = require('../../../app/constants/crm-error-messages')
+const { EMPTY, ERRONEOUS } = require('../../../app/constants/crm-error-messages')
 
 const EMAIL = require('../components/email')
 const FRN = require('../components/frn')
@@ -15,7 +15,7 @@ const invalidMessage = {
   body: {
     email: EMAIL,
     frn: FRN,
-    errorMessage: INVALID
+    errorMessage: ERRONEOUS
   }
 }
 

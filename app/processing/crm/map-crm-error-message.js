@@ -1,8 +1,8 @@
 const { REJECTED } = require('../../constants/failure-reasons')
-const { EMPTY, INVALID } = require('../../constants/crm-error-messages')
+const { EMPTY, ERRONEOUS } = require('../../constants/crm-error-messages')
 
 const mapCrmErrorMessage = (reason) => {
-  return reason === REJECTED ? INVALID : EMPTY
+  return reason === REJECTED ? ERRONEOUS : EMPTY
 }
 
 module.exports = mapCrmErrorMessage
