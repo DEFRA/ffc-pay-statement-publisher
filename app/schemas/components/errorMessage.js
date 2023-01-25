@@ -8,7 +8,7 @@ module.exports = {
   errorMessage: Joi.string().valid(...ERROR_MESSAGES).required()
     .messages({
       'any.only': `The error message must be one of the following: ${ERROR_MESSAGES}.`,
-      'any.required': 'An error message is required.',
-      '*': `The error message is invalid and must be one of the following: ${ERROR_MESSAGES}.`
+      'any.required': 'An error message must be provided.',
+      '*': 'The error message is invalid.'
     })
 }
