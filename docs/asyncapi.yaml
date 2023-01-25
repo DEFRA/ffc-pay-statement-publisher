@@ -117,7 +117,7 @@ components:
     Filename:
       type: string
       description: PDF filename
-      example: FFC_PaymentStatement_SFI_2022_1234567890_2022110215555856.pdf
+      example: FFC_PaymentStatement_SFI_2022_1234567890_2022080515300000.pdf
     SBI:
       type: number
       description: Single Business Identifier
