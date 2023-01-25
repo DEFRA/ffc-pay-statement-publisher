@@ -9,3 +9,8 @@ module.exports = Joi.object({
   ...frn,
   ...errorMessage
 }).required()
+  .messages({
+    'object.base': 'CRM message must be an object.',
+    'any.required': 'CRM message must be provided.',
+    '*': 'The CRM message provided is invalid.'
+  })

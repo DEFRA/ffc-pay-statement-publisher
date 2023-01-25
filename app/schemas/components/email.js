@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 module.exports = {
-  email: Joi.string().email({ tlds: true }).required()
+  email: Joi.string().email().required()
     .messages({
       'string.base': 'Email must be a string.',
       'string.empty': 'Email cannot be empty.',
