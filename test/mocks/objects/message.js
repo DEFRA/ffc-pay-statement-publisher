@@ -22,7 +22,7 @@ const invalidMessage = {
 const emptyMessage = {
   ...baseMessage,
   body: {
-    email: '',
+    email: EMAIL,
     frn: FRN,
     errorMessage: EMPTY
   }

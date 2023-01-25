@@ -1,4 +1,5 @@
 const EMAIL = require('./components/email')
+const SYSTEM_TIME = require('./components/system-time')
 
 const mockScheme = {
   schemeName: 'Sustainable Farming Incentive',
@@ -20,7 +21,7 @@ const mockStatement1 = {
   sbi: 123456789,
   frn: 1234567890,
   email: EMAIL,
-  received: new Date(2022, 7, 5, 15, 30, 10, 120),
+  received: SYSTEM_TIME,
   ...mockScheme
 }
 
@@ -37,7 +38,7 @@ const mockStatement2 = {
   sbi: 123456788,
   frn: 1234567898,
   email: 'farmer2@farm.com',
-  received: new Date(2022, 7, 5, 15, 30, 10, 120),
+  received: SYSTEM_TIME,
   ...mockScheme
 }
 

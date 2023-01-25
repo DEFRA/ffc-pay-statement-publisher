@@ -28,11 +28,11 @@ components:
     CrmInvalidEmailResponse:
       type: object
       required:
-        - emailAddress
+        - email
         - errorMessage
         - frn
       properties:
-        emailAddress:
+        email:
           $ref: '#/components/schemas/Email'
         errorMessage:
           $ref: '#/components/schemas/ErrorMessage'
@@ -99,7 +99,7 @@ components:
       example: FFC Ltd
     Email:
       type: string
-      description: The business email address, must comply with Joi
+      description: The business email address
       example: farm@farms.com
     ErrorMessage:
       type: string
