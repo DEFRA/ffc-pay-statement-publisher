@@ -12,7 +12,6 @@ const sendMessage = require('../../../app/messaging/send-message')
 const sendCrmMessage = require('../../../app/messaging/send-crm-message')
 
 const { CRM: CRM_MESSAGE_TYPE } = require('../../../app/constants/message-types')
-const SOURCE = require('../../../app/constants/message-source')
 
 const outgoingMessage = require('../../mocks/messages/crm')
 
@@ -62,10 +61,10 @@ describe('Send invalid email message to CRM', () => {
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic and SOURCE', async () => {
+    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic', async () => {
       const message = getMessage()
       await sendCrmMessage(email, frn, reason)
-      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic, source: SOURCE })
+      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic })
     })
 
     test('should not throw', async () => {
@@ -153,10 +152,10 @@ describe('Send invalid email message to CRM', () => {
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic and SOURCE', async () => {
+    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic', async () => {
       const message = getMessage()
       try { await sendCrmMessage(email, frn, reason) } catch {}
-      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic, source: SOURCE })
+      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, { ...mockConfig.crmTopic })
     })
 
     test('should throw when sendMessage throws', async () => {

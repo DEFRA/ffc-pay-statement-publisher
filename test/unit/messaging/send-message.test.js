@@ -20,9 +20,7 @@ const SOURCE = require('../../../app/constants/message-source')
 const sendMessage = require('../../../app/messaging/send-message')
 
 const body = 'bluh'
-const config = {
-  source: SOURCE
-}
+const config = {}
 
 describe('Send message', () => {
   beforeEach(() => {
@@ -50,9 +48,9 @@ describe('Send message', () => {
     expect(createMessage).toHaveBeenCalledTimes(1)
   })
 
-  test('should call createMessage with body, CRM_MESSAGE_TYPE and config.source', async () => {
+  test('should call createMessage with body and CRM_MESSAGE_TYPE', async () => {
     await sendMessage(body, CRM_MESSAGE_TYPE, config)
-    expect(createMessage).toHaveBeenCalledWith(body, CRM_MESSAGE_TYPE, config.source)
+    expect(createMessage).toHaveBeenCalledWith(body, CRM_MESSAGE_TYPE)
   })
 
   test('should call mockSendMessage', async () => {

@@ -1,8 +1,10 @@
-const createMessage = (body, type, source) => {
+const SOURCE = require('../constants/message-source')
+
+const createMessage = (body, type) => {
   return {
     body,
     type,
-    source
+    source: SOURCE
   }
 }
 
