@@ -8,6 +8,7 @@ module.exports = {
   scheme: Joi.string().valid(...schemeNames).required()
     .messages({
       'any.only': `The scheme must be one of the following: ${schemeNames}.`,
-      'any.required': 'A scheme is required.'
+      'any.required': 'A scheme must be provided.',
+      '*': 'The scheme is invalid.'
     })
 }
