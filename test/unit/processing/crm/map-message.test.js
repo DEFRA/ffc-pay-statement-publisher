@@ -1,5 +1,5 @@
-jest.mock('../../../../app/processing/crm/map-crm-error-message')
-const mapCrmErrorMessage = require('../../../../app/processing/crm/map-crm-error-message')
+jest.mock('../../../../app/processing/crm/map-error-message')
+const mapErrorMessage = require('../../../../app/processing/crm/map-error-message')
 
 const mapMessage = require('../../../../app/processing/crm/map-message')
 
@@ -12,14 +12,14 @@ let errorMessage
 
 describe('Create CRM invalid email message from incoming message', () => {
   beforeEach(() => {
-    mapCrmErrorMessage.mockReturnValue(ERRONEOUS)
+    mapErrorMessage.mockReturnValue(ERRONEOUS)
 
     frn = require('../../../mocks/components/frn')
   })
 
   describe('When email couldn\'t be delivered and email is valid', () => {
     beforeEach(() => {
-      mapCrmErrorMessage.mockReturnValue(ERRONEOUS)
+      mapErrorMessage.mockReturnValue(ERRONEOUS)
 
       email = require('../../../mocks/components/email')
       reason = require('../../../../app/constants/failure-reasons').INVALID
