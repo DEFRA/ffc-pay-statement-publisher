@@ -22,8 +22,6 @@ let reason
 
 describe('Notify failed to deliver', () => {
   beforeEach(() => {
-    reason = require('../../../app/constants/failure-reasons').INVALID
-
     getStatementByStatementId.mockResolvedValue(statement)
     sendCrmMessage.mockResolvedValue(undefined)
     completeDelivery.mockResolvedValue(undefined)
@@ -35,6 +33,10 @@ describe('Notify failed to deliver', () => {
   })
 
   describe('When reason is INVALID', () => {
+    beforeEach(() => {
+      reason = require('../../../app/constants/failure-reasons').INVALID
+    })
+
     test('should call getStatementByStatementId', async () => {
       await failed(delivery, INVALID)
       expect(getStatementByStatementId).toHaveBeenCalled()

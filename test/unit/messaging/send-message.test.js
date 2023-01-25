@@ -19,7 +19,7 @@ const SOURCE = require('../../../app/constants/message-source')
 
 const sendMessage = require('../../../app/messaging/send-message')
 
-const body = 'bluh'
+const body = 'Hello World!'
 const config = {}
 
 describe('Send message', () => {

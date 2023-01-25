@@ -20,7 +20,7 @@ describe('Create CRM invalid email message from incoming message', () => {
     email = require('../../../mocks/components/email')
     frn = require('../../../mocks/components/frn')
     reason = require('../../../../app/constants/failure-reasons').INVALID
-    errorMessage = require('../../../../app/constants/crm-error-messages').INVALID
+    errorMessage = require('../../../../app/constants/crm-error-messages').ERRONEOUS
 
     mappedMessage = {
       email,
@@ -97,6 +97,7 @@ describe('Create CRM invalid email message from incoming message', () => {
 
     test('should return the errorMessage key with value errorMessage', () => {
       const result = getMessage(email, frn, reason)
+      console.log(result)
       expect(result.errorMessage).toStrictEqual(errorMessage)
     })
 
@@ -111,9 +112,8 @@ describe('Create CRM invalid email message from incoming message', () => {
     })
   })
 
-  describe('When incoming incomingMessage is invalid', () => {
+  describe('When validateMessage throws', () => {
     beforeEach(() => {
-      mapMessage.mockReturnValue(mappedMessage)
       validateMessage.mockImplementation(() => { throw new Error('Invalid message') })
     })
 

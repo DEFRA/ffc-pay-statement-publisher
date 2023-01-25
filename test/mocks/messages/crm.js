@@ -1,4 +1,4 @@
-const ERROR_MESSAGE = require('../../../app/constants/crm-error-messages').INVALID
+const ERROR_MESSAGE = require('../../../app/constants/crm-error-messages').ERRONEOUS
 
 const EMAIL = require('../components/email')
 const FRN = require('../components/frn')
