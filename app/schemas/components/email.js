@@ -1,11 +1,12 @@
 const Joi = require('joi')
 
 module.exports = {
-  email: Joi.string().email().required()
+  email: Joi.string().email({ tlds: true }).required()
     .messages({
-      'any.required': 'The statement cannot be emailed as no email address was provided.',
-      'string.empty': 'The statement cannot be emailed as no email address was provided.',
-      'string.email': 'We failed to send the statement because the email address provided was invalid.',
-      '*': 'We failed to send the statement because the email address provided was invalid.'
+      'string.base': 'Email must be a string.',
+      'string.empty': 'Email cannot be empty.',
+      'string.email': 'The email provided is not valid.',
+      'any.required': 'Email must be provided.',
+      '*': 'The email provided is invalid.'
     })
 }
