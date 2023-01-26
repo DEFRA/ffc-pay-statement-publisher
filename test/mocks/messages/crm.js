@@ -1,4 +1,4 @@
-const { EMPTY, ERRONEOUS } = require('../../../app/constants/crm-error-messages')
+const { EMPTY, INVALID } = require('../../../app/constants/crm-error-messages')
 
 const EMAIL = require('../components/email')
 const FRN = require('../components/frn')
@@ -7,8 +7,8 @@ const BASE_MESSAGE = require('../objects/message')
 
 const emptyMappedMessage = {
   email: EMAIL,
-  frn: FRN,
-  errorMessage: EMPTY
+  errorMessage: EMPTY,
+  frn: FRN
 }
 
 const emptyMessage = {
@@ -18,8 +18,8 @@ const emptyMessage = {
 
 const invalidMappedMessage = {
   email: EMAIL,
-  frn: FRN,
-  errorMessage: ERRONEOUS
+  errorMessage: INVALID,
+  frn: FRN
 }
 
 const invalidMessage = {

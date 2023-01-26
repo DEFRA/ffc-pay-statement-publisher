@@ -1,4 +1,4 @@
-const { EMPTY, ERRONEOUS } = require('../../../../app/constants/crm-error-messages')
+const { EMPTY, INVALID } = require('../../../../app/constants/crm-error-messages')
 
 const { errorMessage: schema } = require('../../../../app/schemas/components/errorMessage')
 
@@ -36,9 +36,9 @@ describe('CRM error message schema', () => {
     })
   })
 
-  describe('When errorMessage is ERRONEOUS', () => {
+  describe('When errorMessage is INVALID', () => {
     beforeEach(() => {
-      errorMessage = ERRONEOUS
+      errorMessage = INVALID
     })
 
     test('should return an object', async () => {

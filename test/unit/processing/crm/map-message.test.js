@@ -3,7 +3,7 @@ const mapErrorMessage = require('../../../../app/processing/crm/map-error-messag
 
 const mapMessage = require('../../../../app/processing/crm/map-message')
 
-const { ERRONEOUS } = require('../../../../app/constants/crm-error-messages')
+const { INVALID } = require('../../../../app/constants/crm-error-messages')
 
 let email
 let frn
@@ -12,18 +12,18 @@ let errorMessage
 
 describe('Create CRM invalid email message from incoming message', () => {
   beforeEach(() => {
-    mapErrorMessage.mockReturnValue(ERRONEOUS)
+    mapErrorMessage.mockReturnValue(INVALID)
 
     frn = require('../../../mocks/components/frn')
   })
 
   describe('When email couldn\'t be delivered and email is valid', () => {
     beforeEach(() => {
-      mapErrorMessage.mockReturnValue(ERRONEOUS)
+      mapErrorMessage.mockReturnValue(INVALID)
 
       email = require('../../../mocks/components/email')
       reason = require('../../../../app/constants/failure-reasons').INVALID
-      errorMessage = require('../../../../app/constants/crm-error-messages').ERRONEOUS
+      errorMessage = require('../../../../app/constants/crm-error-messages').INVALID
     })
 
     test('should return an object', () => {

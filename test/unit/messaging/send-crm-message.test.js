@@ -23,7 +23,7 @@ describe('Send invalid email message to CRM', () => {
   beforeEach(() => {
     email = require('../../mocks/components/email')
     frn = require('../../mocks/components/frn')
-    reason = require('../../../app/constants/failure-reasons').ERRONEOUS
+    reason = require('../../../app/constants/failure-reasons').INVALID
   })
 
   afterEach(() => {

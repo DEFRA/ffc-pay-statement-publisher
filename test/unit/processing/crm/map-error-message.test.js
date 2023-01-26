@@ -1,7 +1,7 @@
 const mapErrorMessage = require('../../../../app/processing/crm/map-error-message')
 
 const { EMPTY, INVALID, REJECTED } = require('../../../../app/constants/failure-reasons')
-const { EMPTY: EMPTY_ERROR, ERRONEOUS: INVALID_ERROR } = require('../../../../app/constants/crm-error-messages')
+const { EMPTY: EMPTY_ERROR, INVALID: INVALID_ERROR } = require('../../../../app/constants/crm-error-messages')
 
 let reason
 
