@@ -12,7 +12,7 @@ const failed = async (delivery, reason) => {
     const deliveryId = delivery.deliveryId
     console.log(`Unable to deliver statement ${statement.filename} to ${statement.email}: ${reason}`)
     await sendCrmMessage(statement.email, statement.frn, reason)
-    await completeDelivery(deliveryId)
+    await completeDelivery(deliveryId, transaction)
     await createFailure(deliveryId, reason, transaction)
     await transaction.commit()
   } catch (err) {

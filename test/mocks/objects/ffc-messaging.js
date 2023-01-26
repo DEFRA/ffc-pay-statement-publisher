@@ -1,19 +1,19 @@
-const sendMessage = jest.fn()
-const closeConnection = jest.fn()
+const mockSendMessage = jest.fn()
+const mockCloseConnection = jest.fn()
 
-const messageSender = jest.fn().mockImplementation(() => {
+const mockMessageSender = jest.fn().mockImplementation(() => {
   return {
-    sendMessage,
-    closeConnection
+    sendMessage: mockSendMessage,
+    closeConnection: mockCloseConnection
   }
 })
 
 jest.mock('ffc-messaging', () => {
   return {
-    MessageSender: messageSender
+    MessageSender: mockMessageSender
   }
 })
 
 module.exports = {
-  messageSender
+  mockMessageSender
 }

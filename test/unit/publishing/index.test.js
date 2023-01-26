@@ -26,11 +26,14 @@ let request
 
 describe('publish statement', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
     request = JSON.parse(JSON.stringify(require('../../mocks/request')))
     publish.mockResolvedValue({ data: { id: MOCK_ID } })
     getPersonalisation.mockReturnValue(MOCK_PERSONALISATION)
-    validateEmail.mockReturnValue(true)
+    validateEmail.mockReturnValue({ value: request.email })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   test('calls get personalisation once if valid email', async () => {
@@ -64,26 +67,26 @@ describe('publish statement', () => {
   })
 
   test('does not call get personalisation if invalid email', async () => {
-    validateEmail.mockReturnValue(false)
-    await publishStatement(request)
+    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
+    try { await publishStatement(request) } catch {}
     expect(getPersonalisation).not.toHaveBeenCalled()
   })
 
   test('does not call publish if invalid email', async () => {
-    validateEmail.mockReturnValue(false)
-    await publishStatement(request)
+    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
+    try { await publishStatement(request) } catch {}
     expect(publish).not.toHaveBeenCalled()
   })
 
   test('calls save request if invalid email', async () => {
-    validateEmail.mockReturnValue(false)
-    await publishStatement(request)
+    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
+    try { await publishStatement(request) } catch {}
     expect(saveRequest).toHaveBeenCalledTimes(1)
   })
 
   test('calls save request with correct arguments if invalid email', async () => {
-    validateEmail.mockReturnValue(false)
-    await publishStatement(request)
+    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
+    try { await publishStatement(request) } catch {}
     expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
   })
 })

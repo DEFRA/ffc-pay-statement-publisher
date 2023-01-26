@@ -5,6 +5,8 @@ const MOCK_REFERENCE = 'c8363cba-2093-4447-8812-697c09820614'
 let mockRequest
 let reference
 
+const { EMPTY } = require('../../../app/constants/failure-reasons')
+
 describe('save request', () => {
   beforeEach(async () => {
     mockRequest = JSON.parse(JSON.stringify(require('../../mocks/request')))
@@ -173,6 +175,6 @@ describe('save request', () => {
     reference = undefined
     await saveRequest(mockRequest, reference, EMAIL)
     const failure = await db.failure.findOne()
-    expect(failure.reason).toBe('No valid email address provided')
+    expect(failure.reason).toBe(EMPTY)
   })
 })

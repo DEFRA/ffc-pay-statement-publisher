@@ -1,23 +1,23 @@
-const commit = jest.fn()
-const rollback = jest.fn()
+const mockCommit = jest.fn()
+const mockRollback = jest.fn()
 
-const transaction = jest.fn().mockImplementation(() => {
+const mockTransaction = jest.fn().mockImplementation(() => {
   return {
-    commit,
-    rollback
+    commit: mockCommit,
+    rollback: mockRollback
   }
 })
 
-const sequelize = {
-  transaction
+const mockSequelize = {
+  transaction: mockTransaction
 }
 
 jest.mock('../../../app/data', () => {
   return {
-    sequelize
+    sequelize: mockSequelize
   }
 })
 
 module.exports = {
-  transaction
+  mockTransaction
 }

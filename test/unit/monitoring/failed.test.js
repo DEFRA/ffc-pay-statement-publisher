@@ -1,4 +1,4 @@
-const { transaction } = require('../../mocks/objects/data')
+const { mockTransaction } = require('../../mocks/objects/data')
 
 jest.mock('../../../app/monitoring/get-statement-by-statement-id')
 const getStatementByStatementId = require('../../../app/monitoring/get-statement-by-statement-id')
@@ -80,9 +80,9 @@ describe('Notify failed to deliver', () => {
       expect(completeDelivery).toHaveBeenCalledTimes(1)
     })
 
-    test('should call completeDelivery with delivery.deliveryId', async () => {
+    test('should call completeDelivery with delivery.deliveryId and mockTransaction', async () => {
       await failed(delivery, reason)
-      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId)
+      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId, mockTransaction())
     })
 
     test('should call createFailure', async () => {
@@ -95,24 +95,24 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).toHaveBeenCalledTimes(1)
     })
 
-    test('should call createFailure with delivery.deliveryId, INVALID and transaction()', async () => {
+    test('should call createFailure with delivery.deliveryId, INVALID and mockTransaction()', async () => {
       await failed(delivery, reason)
-      expect(createFailure).toHaveBeenCalledWith(delivery.deliveryId, INVALID, transaction())
+      expect(createFailure).toHaveBeenCalledWith(delivery.deliveryId, INVALID, mockTransaction())
     })
 
-    test('should call transaction().commit', async () => {
+    test('should call mockTransaction().commit', async () => {
       await failed(delivery, reason)
-      expect(transaction().commit).toHaveBeenCalled()
+      expect(mockTransaction().commit).toHaveBeenCalled()
     })
 
-    test('should call transaction().commit once', async () => {
+    test('should call mockTransaction().commit once', async () => {
       await failed(delivery, reason)
-      expect(transaction().commit).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().commit).toHaveBeenCalledTimes(1)
     })
 
-    test('should not call transaction().rollback', async () => {
+    test('should not call mockTransaction().rollback', async () => {
       await failed(delivery, reason)
-      expect(transaction().rollback).not.toHaveBeenCalled()
+      expect(mockTransaction().rollback).not.toHaveBeenCalled()
     })
 
     test('should not throw', async () => {
@@ -172,9 +172,9 @@ describe('Notify failed to deliver', () => {
       expect(completeDelivery).toHaveBeenCalledTimes(1)
     })
 
-    test('should call completeDelivery with delivery.deliveryId', async () => {
+    test('should call completeDelivery with delivery.deliveryId and mockTransaction', async () => {
       await failed(delivery, reason)
-      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId)
+      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId, mockTransaction())
     })
 
     test('should call createFailure', async () => {
@@ -187,24 +187,24 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).toHaveBeenCalledTimes(1)
     })
 
-    test('should call createFailure with delivery.deliveryId, REJECTED and transaction', async () => {
+    test('should call createFailure with delivery.deliveryId, REJECTED and mockTransaction', async () => {
       await failed(delivery, reason)
-      expect(createFailure).toHaveBeenCalledWith(delivery.deliveryId, REJECTED, transaction())
+      expect(createFailure).toHaveBeenCalledWith(delivery.deliveryId, REJECTED, mockTransaction())
     })
 
-    test('should call transaction().commit', async () => {
+    test('should call mockTransaction().commit', async () => {
       await failed(delivery, reason)
-      expect(transaction().commit).toHaveBeenCalled()
+      expect(mockTransaction().commit).toHaveBeenCalled()
     })
 
-    test('should call transaction().commit once', async () => {
+    test('should call mockTransaction().commit once', async () => {
       await failed(delivery, reason)
-      expect(transaction().commit).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().commit).toHaveBeenCalledTimes(1)
     })
 
-    test('should not call transaction().rollback', async () => {
+    test('should not call mockTransaction().rollback', async () => {
       await failed(delivery, reason)
-      expect(transaction().rollback).not.toHaveBeenCalled()
+      expect(mockTransaction().rollback).not.toHaveBeenCalled()
     })
 
     test('should not throw', async () => {
@@ -223,14 +223,14 @@ describe('Notify failed to deliver', () => {
       getStatementByStatementId.mockRejectedValue(new Error('Issue retreiving statement'))
     })
 
-    test('should call transaction().rollback', async () => {
+    test('should call mockTransaction().rollback', async () => {
       try { await failed(delivery, reason) } catch {}
-      expect(transaction().rollback).toHaveBeenCalled()
+      expect(mockTransaction().rollback).toHaveBeenCalled()
     })
 
-    test('should call transaction().rollback once', async () => {
+    test('should call mockTransaction().rollback once', async () => {
       try { await failed(delivery, reason) } catch {}
-      expect(transaction().rollback).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().rollback).toHaveBeenCalledTimes(1)
     })
 
     test('should throw', async () => {
@@ -263,9 +263,9 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).not.toHaveBeenCalled()
     })
 
-    test('should not call transaction().commit', async () => {
+    test('should not call mockTransaction().commit', async () => {
       try { await failed(delivery, reason) } catch {}
-      expect(transaction().commit).not.toHaveBeenCalled()
+      expect(mockTransaction().commit).not.toHaveBeenCalled()
     })
   })
 
@@ -274,14 +274,14 @@ describe('Notify failed to deliver', () => {
       sendCrmMessage.mockRejectedValue(new Error('Issue sending Service Bus message'))
     })
 
-    test('should call transaction().rollback', async () => {
+    test('should call mockTransaction().rollback', async () => {
       try { await failed(delivery, reason) } catch {}
-      expect(transaction().rollback).toHaveBeenCalled()
+      expect(mockTransaction().rollback).toHaveBeenCalled()
     })
 
-    test('should call transaction().rollback once', async () => {
+    test('should call mockTransaction().rollback once', async () => {
       try { await failed(delivery, reason) } catch {}
-      expect(transaction().rollback).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().rollback).toHaveBeenCalledTimes(1)
     })
 
     test('should throw', async () => {
@@ -324,9 +324,9 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).not.toHaveBeenCalled()
     })
 
-    test('should not call transaction().commit', async () => {
+    test('should not call mockTransaction().commit', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().commit).not.toHaveBeenCalled()
+      expect(mockTransaction().commit).not.toHaveBeenCalled()
     })
   })
 
@@ -335,14 +335,14 @@ describe('Notify failed to deliver', () => {
       completeDelivery.mockRejectedValue(new Error('Issue saving down to database'))
     })
 
-    test('should call transaction().rollback', async () => {
+    test('should call mockTransaction().rollback', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().rollback).toHaveBeenCalled()
+      expect(mockTransaction().rollback).toHaveBeenCalled()
     })
 
-    test('should call transaction().rollback once', async () => {
+    test('should call mockTransaction().rollback once', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().rollback).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().rollback).toHaveBeenCalledTimes(1)
     })
 
     test('should throw', async () => {
@@ -395,9 +395,9 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).not.toHaveBeenCalled()
     })
 
-    test('should not call transaction().commit', async () => {
+    test('should not call mockTransaction().commit', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().commit).not.toHaveBeenCalled()
+      expect(mockTransaction().commit).not.toHaveBeenCalled()
     })
   })
 
@@ -406,14 +406,14 @@ describe('Notify failed to deliver', () => {
       createFailure.mockRejectedValue(new Error('Issue saving down to database'))
     })
 
-    test('should call transaction().rollback', async () => {
+    test('should call mockTransaction().rollback', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().rollback).toHaveBeenCalled()
+      expect(mockTransaction().rollback).toHaveBeenCalled()
     })
 
-    test('should call transaction().rollback once', async () => {
+    test('should call mockTransaction().rollback once', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().rollback).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().rollback).toHaveBeenCalledTimes(1)
     })
 
     test('should throw', async () => {
@@ -471,30 +471,30 @@ describe('Notify failed to deliver', () => {
       expect(completeDelivery).toHaveBeenCalledTimes(1)
     })
 
-    test('should call completeDelivery with delivery.deliveryId', async () => {
+    test('should call completeDelivery with delivery.deliveryId and mockTransaction', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId)
+      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId, mockTransaction())
     })
 
-    test('should not call transaction().commit', async () => {
+    test('should not call mockTransaction().commit', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().commit).not.toHaveBeenCalled()
+      expect(mockTransaction().commit).not.toHaveBeenCalled()
     })
   })
 
-  describe('When transaction.commit throws', () => {
+  describe('When mockTransaction.commit throws', () => {
     beforeEach(() => {
-      transaction().commit.mockRejectedValue(new Error('Issue commiting database transaction'))
+      mockTransaction().commit.mockRejectedValue(new Error('Issue commiting database transaction'))
     })
 
-    test('should call transaction().rollback', async () => {
+    test('should call mockTransaction().rollback', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().rollback).toHaveBeenCalled()
+      expect(mockTransaction().rollback).toHaveBeenCalled()
     })
 
-    test('should call transaction().rollback once', async () => {
+    test('should call mockTransaction().rollback once', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().rollback).toHaveBeenCalledTimes(1)
+      expect(mockTransaction().rollback).toHaveBeenCalledTimes(1)
     })
 
     test('should throw', async () => {
@@ -552,9 +552,9 @@ describe('Notify failed to deliver', () => {
       expect(completeDelivery).toHaveBeenCalledTimes(1)
     })
 
-    test('should call completeDelivery with delivery.deliveryId', async () => {
+    test('should call completeDelivery with delivery.deliveryId and mockTransaction', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId)
+      expect(completeDelivery).toHaveBeenCalledWith(delivery.deliveryId, mockTransaction())
     })
 
     test('should call createFailure', async () => {
@@ -567,16 +567,16 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).toHaveBeenCalledTimes(1)
     })
 
-    test('should call createFailure with delivery.deliveryId, INVALID and transaction', async () => {
+    test('should call createFailure with delivery.deliveryId, INVALID and mockTransaction', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(createFailure).toHaveBeenCalledWith(delivery.deliveryId, INVALID, transaction())
+      expect(createFailure).toHaveBeenCalledWith(delivery.deliveryId, INVALID, mockTransaction())
     })
   })
 
-  describe('When transaction.rollback throws', () => {
+  describe('When mockTransaction.rollback throws', () => {
     beforeEach(() => {
       getStatementByStatementId.mockRejectedValue(new Error('Issue retreiving statement'))
-      transaction().rollback.mockRejectedValue(new Error('Issue rolling back database transaction'))
+      mockTransaction().rollback.mockRejectedValue(new Error('Issue rolling back database transaction'))
     })
 
     test('should throw', async () => {
@@ -609,9 +609,9 @@ describe('Notify failed to deliver', () => {
       expect(createFailure).not.toHaveBeenCalled()
     })
 
-    test('should not call transaction().commit', async () => {
+    test('should not call mockTransaction().commit', async () => {
       try { await failed(delivery, INVALID) } catch {}
-      expect(transaction().commit).not.toHaveBeenCalled()
+      expect(mockTransaction().commit).not.toHaveBeenCalled()
     })
   })
 })
