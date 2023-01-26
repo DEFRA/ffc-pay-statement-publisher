@@ -10,7 +10,7 @@ const saveRequest = require('../../../app/publishing/save-request')
 jest.mock('../../../app/publishing/validate-email')
 const validateEmail = require('../../../app/publishing/validate-email')
 
-const publishStatement = require('../../../app/publishing')
+const publishStatement = require('../../../app/publishing/publish-statement')
 
 const { EMAIL } = require('../../../app/constants/methods')
 const MOCK_ID = 'c8363cba-2093-4447-8812-697c09820614'
