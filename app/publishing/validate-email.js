@@ -1,4 +1,4 @@
-const { email: schema } = require('../schemas/components/email')
+const schema = require('../schemas/components/email')
 
 const validateEmail = (email) => {
   const result = schema.validate(email, {

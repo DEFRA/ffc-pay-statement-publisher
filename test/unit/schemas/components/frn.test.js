@@ -1,4 +1,4 @@
-const { frn: schema } = require('../../../../app/schemas/components/frn')
+const schema = require('../../../../app/schemas/components/frn')
 
 let frn
 

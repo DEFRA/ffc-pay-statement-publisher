@@ -1,4 +1,4 @@
-const { email: schema } = require('../../../../app/schemas/components/email')
+const schema = require('../../../../app/schemas/components/email')
 
 let email
 

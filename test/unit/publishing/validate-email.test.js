@@ -1,7 +1,7 @@
 const mockValidation = jest.fn()
 jest.mock('../../../app/schemas/components/email', () => {
   return {
-    email: { validate: mockValidation }
+    validate: mockValidation
   }
 })
 

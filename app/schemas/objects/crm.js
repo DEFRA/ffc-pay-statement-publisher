@@ -5,9 +5,9 @@ const frn = require('../components/frn')
 const errorMessage = require('../components/errorMessage')
 
 module.exports = Joi.object({
-  ...email,
-  ...frn,
-  ...errorMessage
+  email: email,
+  frn: frn,
+  errorMessage: errorMessage
 }).required()
   .messages({
     'object.base': 'CRM message must be an object.',
