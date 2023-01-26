@@ -1,6 +1,6 @@
-const mockConfig = { crmTopic: 'mockCRMTopic' }
+const config = { crmTopic: 'mockCRMTopic' }
 jest.mock('../../../app/config', () => {
-  return mockConfig
+  return config
 })
 
 jest.mock('../../../app/processing/crm/get-message')
@@ -61,10 +61,10 @@ describe('Send invalid email message to CRM', () => {
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic', async () => {
+    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with config.crmTopic', async () => {
       const message = getMessage()
       await sendCrmMessage(email, frn, reason)
-      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, mockConfig.crmTopic)
+      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, config.crmTopic)
     })
 
     test('should not throw', async () => {
@@ -152,10 +152,10 @@ describe('Send invalid email message to CRM', () => {
       expect(sendMessage).toHaveBeenCalledTimes(1)
     })
 
-    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with mockConfig.crmTopic', async () => {
+    test('should call sendMessage with getMessage return value, CRM_MESSAGE_TYPE and object with config.crmTopic', async () => {
       const message = getMessage()
       try { await sendCrmMessage(email, frn, reason) } catch {}
-      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, mockConfig.crmTopic)
+      expect(sendMessage).toHaveBeenCalledWith(message, CRM_MESSAGE_TYPE, config.crmTopic)
     })
 
     test('should throw when sendMessage throws', async () => {
