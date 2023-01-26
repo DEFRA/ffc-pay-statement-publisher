@@ -1,5 +1,5 @@
 module.exports = {
+  EMPTY: 'Empty email address',
   INVALID: 'Invalid email address',
-  REJECTED: 'Inbox full or rejected as spam',
-  NOTIFY_FAILURE: 'Notify service failure'
+  REJECTED: 'Inbox full or rejected as spam'
 }

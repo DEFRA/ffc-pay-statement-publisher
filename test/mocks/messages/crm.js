@@ -5,25 +5,31 @@ const FRN = require('../components/frn')
 
 const BASE_MESSAGE = require('../objects/message')
 
-const invalidMessage = {
-  ...BASE_MESSAGE,
-  body: {
-    email: EMAIL,
-    frn: FRN,
-    errorMessage: ERRONEOUS
-  }
+const emptyMappedMessage = {
+  email: EMAIL,
+  frn: FRN,
+  errorMessage: EMPTY
 }
 
 const emptyMessage = {
   ...BASE_MESSAGE,
-  body: {
-    email: EMAIL,
-    frn: FRN,
-    errorMessage: EMPTY
-  }
+  body: emptyMappedMessage
+}
+
+const invalidMappedMessage = {
+  email: EMAIL,
+  frn: FRN,
+  errorMessage: ERRONEOUS
+}
+
+const invalidMessage = {
+  ...BASE_MESSAGE,
+  body: invalidMappedMessage
 }
 
 module.exports = {
+  EMPTY_MAPPED: emptyMappedMessage,
   EMPTY: emptyMessage,
+  INVALID_MAPPED: invalidMappedMessage,
   INVALID: invalidMessage
 }

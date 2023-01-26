@@ -6,7 +6,7 @@ const validateMessage = require('../../../../app/processing/crm/validate-message
 
 const getMessage = require('../../../../app/processing/crm/get-message')
 
-const outgoingMessage = require('../../../mocks/messages/crm')
+const { EMPTY, INVALID } = require('../../../mocks/messages/crm')
 
 let email
 let frn
@@ -36,7 +36,7 @@ describe('Create CRM invalid email message from incoming message', () => {
   describe('When incoming message is valid', () => {
     beforeEach(() => {
       mapMessage.mockReturnValue(mappedMessage)
-      validateMessage.mockReturnValue(outgoingMessage)
+      validateMessage.mockReturnValue(mappedMessage)
     })
 
     test('should call mapMessage', () => {
@@ -97,7 +97,6 @@ describe('Create CRM invalid email message from incoming message', () => {
 
     test('should return the errorMessage key with value errorMessage', () => {
       const result = getMessage(email, frn, reason)
-      console.log(result)
       expect(result.errorMessage).toStrictEqual(errorMessage)
     })
 
@@ -106,9 +105,9 @@ describe('Create CRM invalid email message from incoming message', () => {
       expect(result.frn).toStrictEqual(frn)
     })
 
-    test('should return outgoingMessage', () => {
+    test('should return mappedMessage', () => {
       const result = getMessage(email, frn, reason)
-      expect(result).toStrictEqual(outgoingMessage)
+      expect(result).toStrictEqual(mappedMessage)
     })
   })
 
