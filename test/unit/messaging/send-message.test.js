@@ -1,11 +1,11 @@
-let sendSBMessage = jest.fn()
-let closeConnection = jest.fn()
+let mockSendMessage = jest.fn()
+let mockCloseConnection = jest.fn()
 jest.mock('ffc-messaging', () => {
   return {
     MessageSender: jest.fn().mockImplementation(() => {
       return {
-        sendSBMessage,
-        closeConnection
+        sendMessage: mockSendMessage,
+        closeConnection: mockCloseConnection
       }
     })
   }
@@ -24,8 +24,8 @@ const config = {}
 
 describe('Send message', () => {
   beforeEach(() => {
-    sendSBMessage = jest.fn()
-    closeConnection = jest.fn()
+    mockSendMessage = jest.fn()
+    mockCloseConnection = jest.fn()
 
     createMessage.mockReturnValue({
       body,
@@ -53,30 +53,30 @@ describe('Send message', () => {
     expect(createMessage).toHaveBeenCalledWith(body, CRM_MESSAGE_TYPE)
   })
 
-  test('should call sendSBMessage', async () => {
+  test('should call mockSendMessage', async () => {
     await sendMessage(body, CRM_MESSAGE_TYPE, config)
-    expect(sendSBMessage).toHaveBeenCalled()
+    expect(mockSendMessage).toHaveBeenCalled()
   })
 
-  test('should call sendSBMessage once', async () => {
+  test('should call mockSendMessage once', async () => {
     await sendMessage(body, CRM_MESSAGE_TYPE, config)
-    expect(sendSBMessage).toHaveBeenCalledTimes(1)
+    expect(mockSendMessage).toHaveBeenCalledTimes(1)
   })
 
-  test('should call sendSBMessage with createMessage return value', async () => {
+  test('should call mockSendMessage with createMessage return value', async () => {
     const message = createMessage()
     await sendMessage(body, CRM_MESSAGE_TYPE, config)
-    expect(sendSBMessage).toHaveBeenCalledWith(message)
+    expect(mockSendMessage).toHaveBeenCalledWith(message)
   })
 
-  test('should call closeConnection', async () => {
+  test('should call mockCloseConnection', async () => {
     await sendMessage(body, CRM_MESSAGE_TYPE, config)
-    expect(closeConnection).toHaveBeenCalled()
+    expect(mockCloseConnection).toHaveBeenCalled()
   })
 
-  test('should call closeConnection once', async () => {
+  test('should call mockCloseConnection once', async () => {
     await sendMessage(body, CRM_MESSAGE_TYPE, config)
-    expect(closeConnection).toHaveBeenCalledTimes(1)
+    expect(mockCloseConnection).toHaveBeenCalledTimes(1)
   })
 
   test('should return undefined', async () => {
@@ -84,8 +84,8 @@ describe('Send message', () => {
     expect(result).toBeUndefined()
   })
 
-  test('should throw error when sendSBMessage throws error ', async () => {
-    sendSBMessage.mockRejectedValue(new Error('FFC Messaging issue sending message'))
+  test('should throw error when mockSendMessage throws error ', async () => {
+    mockSendMessage.mockRejectedValue(new Error('FFC Messaging issue sending message'))
 
     const wrapper = async () => {
       await sendMessage(body, CRM_MESSAGE_TYPE, config)
@@ -94,8 +94,8 @@ describe('Send message', () => {
     expect(wrapper).rejects.toThrow()
   })
 
-  test('should throw Error when sendSBMessage throws Error', async () => {
-    sendSBMessage.mockRejectedValue(new Error('FFC Messaging issue sending message'))
+  test('should throw Error when mockSendMessage throws Error', async () => {
+    mockSendMessage.mockRejectedValue(new Error('FFC Messaging issue sending message'))
 
     const wrapper = async () => {
       await sendMessage(body, CRM_MESSAGE_TYPE, config)
@@ -104,8 +104,8 @@ describe('Send message', () => {
     expect(wrapper).rejects.toThrow(Error)
   })
 
-  test('should throw error with "FFC Messaging issue sending message" when sendSBMessage throws error with "FFC Messaging issue sending message"', async () => {
-    sendSBMessage.mockRejectedValue(new Error('FFC Messaging issue sending message'))
+  test('should throw error with "FFC Messaging issue sending message" when mockSendMessage throws error with "FFC Messaging issue sending message"', async () => {
+    mockSendMessage.mockRejectedValue(new Error('FFC Messaging issue sending message'))
 
     const wrapper = async () => {
       await sendMessage(body, CRM_MESSAGE_TYPE, config)
@@ -114,8 +114,8 @@ describe('Send message', () => {
     expect(wrapper).rejects.toThrow(/^FFC Messaging issue sending message$/)
   })
 
-  test('should throw error when closeConnection throws error ', async () => {
-    closeConnection.mockRejectedValue(new Error('FFC Messaging issue closing connection'))
+  test('should throw error when mockCloseConnection throws error ', async () => {
+    mockCloseConnection.mockRejectedValue(new Error('FFC Messaging issue closing connection'))
 
     const wrapper = async () => {
       await sendMessage(body, CRM_MESSAGE_TYPE, config)
@@ -124,8 +124,8 @@ describe('Send message', () => {
     expect(wrapper).rejects.toThrow()
   })
 
-  test('should throw error with "FFC Messaging issue closing connection" when closeConnection throws error with "FFC Messaging issue closing connection"', async () => {
-    closeConnection.mockRejectedValue(new Error('FFC Messaging issue closing connection'))
+  test('should throw error with "FFC Messaging issue closing connection" when mockCloseConnection throws error with "FFC Messaging issue closing connection"', async () => {
+    mockCloseConnection.mockRejectedValue(new Error('FFC Messaging issue closing connection'))
 
     const wrapper = async () => {
       await sendMessage(body, CRM_MESSAGE_TYPE, config)

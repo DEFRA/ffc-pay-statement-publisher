@@ -24,7 +24,7 @@ const MOCK_PERSONALISATION = {
 
 let request
 
-describe('publish statement', () => {
+describe('Publish incoming statement', () => {
   beforeEach(() => {
     request = JSON.parse(JSON.stringify(require('../../mocks/request')))
     publish.mockResolvedValue({ data: { id: MOCK_ID } })
@@ -36,57 +36,283 @@ describe('publish statement', () => {
     jest.clearAllMocks()
   })
 
-  test('calls get personalisation once if valid email', async () => {
-    await publishStatement(request)
-    expect(getPersonalisation).toHaveBeenCalledTimes(1)
+  describe('When statement has valid email', () => {
+    test('should call validateEmail', async () => {
+      await publishStatement(request)
+      expect(validateEmail).toHaveBeenCalled()
+    })
+
+    test('should call validateEmail once', async () => {
+      await publishStatement(request)
+      expect(validateEmail).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call validateEmail with request.email', async () => {
+      await publishStatement(request)
+      expect(validateEmail).toHaveBeenCalledWith(request.email)
+    })
+
+    test('should call getPersonalisation', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalled()
+    })
+
+    test('should call getPersonalisation once', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getPersonalisation with request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency and request.businessName', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalledWith(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
+    })
+
+    test('should call publish', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalled()
+    })
+
+    test('should call publish once', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call publish with request.email, request.filename and MOCK_PERSONALISATION', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalledWith(request.email, request.filename, MOCK_PERSONALISATION)
+    })
+
+    test('should call saveRequest', async () => {
+      await publishStatement(request)
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      await publishStatement(request)
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, MOCK_ID and EMAIL', async () => {
+      await publishStatement(request)
+      expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL)
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
   })
 
-  test('calls get personalisation with correct arguments if valid email', async () => {
-    await publishStatement(request)
-    expect(getPersonalisation).toHaveBeenCalledWith(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
+  describe('When validateEmail throws', () => {
+    beforeEach(() => {
+      validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
+    })
+
+    test('should call validateEmail', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalled()
+    })
+
+    test('should call validateEmail once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call validateEmail with request.email', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledWith(request.email)
+    })
+
+    test('should not call getPersonalisation', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(getPersonalisation).not.toHaveBeenCalled()
+    })
+
+    test('should not call publish', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(publish).not.toHaveBeenCalled()
+    })
+
+    test('should call saveRequest', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, undefined and EMAIL', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
   })
 
-  test('calls publish once if valid email', async () => {
-    await publishStatement(request)
-    expect(publish).toHaveBeenCalledTimes(1)
+  describe('When publish throws', () => {
+    beforeEach(() => {
+      publish.mockImplementation(() => { throw new Error('Issue publishing statement.') })
+    })
+
+    test('should call validateEmail', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalled()
+    })
+
+    test('should call validateEmail once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call validateEmail with request.email', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledWith(request.email)
+    })
+
+    test('should call getPersonalisation', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalled()
+    })
+
+    test('should call getPersonalisation once', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getPersonalisation with request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency and request.businessName', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalledWith(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
+    })
+
+    test('should call publish', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalled()
+    })
+
+    test('should call publish once', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call publish with request.email, request.filename and MOCK_PERSONALISATION', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalledWith(request.email, request.filename, MOCK_PERSONALISATION)
+    })
+
+    test('should call saveRequest', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, undefined and EMAIL', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
   })
 
-  test('calls publish with correct arguments if valid email', async () => {
-    await publishStatement(request)
-    expect(publish).toHaveBeenCalledWith(request.email, request.filename, MOCK_PERSONALISATION)
-  })
+  describe('When saveRequest throws', () => {
+    beforeEach(() => {
+      saveRequest.mockRejectedValue(new Error('Issue saving down request.'))
+    })
 
-  test('calls save request once if valid email', async () => {
-    await publishStatement(request)
-    expect(saveRequest).toHaveBeenCalledTimes(1)
-  })
+    test('should call validateEmail', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalled()
+    })
 
-  test('calls save request with correct arguments if valid email', async () => {
-    await publishStatement(request)
-    expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL)
-  })
+    test('should call validateEmail once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledTimes(1)
+    })
 
-  test('does not call get personalisation if invalid email', async () => {
-    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
-    try { await publishStatement(request) } catch {}
-    expect(getPersonalisation).not.toHaveBeenCalled()
-  })
+    test('should call validateEmail with request.email', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledWith(request.email)
+    })
 
-  test('does not call publish if invalid email', async () => {
-    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
-    try { await publishStatement(request) } catch {}
-    expect(publish).not.toHaveBeenCalled()
-  })
+    test('should call getPersonalisation', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalled()
+    })
 
-  test('calls save request if invalid email', async () => {
-    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
-    try { await publishStatement(request) } catch {}
-    expect(saveRequest).toHaveBeenCalledTimes(1)
-  })
+    test('should call getPersonalisation once', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalledTimes(1)
+    })
 
-  test('calls save request with correct arguments if invalid email', async () => {
-    validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
-    try { await publishStatement(request) } catch {}
-    expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
+    test('should call getPersonalisation with request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency and request.businessName', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).toHaveBeenCalledWith(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
+    })
+
+    test('should call publish', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalled()
+    })
+
+    test('should call publish once', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call publish with request.email, request.filename and MOCK_PERSONALISATION', async () => {
+      await publishStatement(request)
+      expect(publish).toHaveBeenCalledWith(request.email, request.filename, MOCK_PERSONALISATION)
+    })
+
+    test('should call saveRequest', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, MOCK_ID and EMAIL', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL)
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
   })
 })

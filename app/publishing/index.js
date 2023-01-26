@@ -14,7 +14,11 @@ const publishStatement = async (request) => {
   } catch (err) {
     console.log(err)
   } finally {
-    await saveRequest(request, response?.data.id, EMAIL)
+    try {
+      await saveRequest(request, response?.data.id, EMAIL)
+    } catch {
+      console.log('Could not save the request')
+    }
   }
 }
 
