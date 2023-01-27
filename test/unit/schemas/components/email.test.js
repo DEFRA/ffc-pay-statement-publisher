@@ -34,6 +34,68 @@ describe('Email schema', () => {
     })
   })
 
+  describe('When email is Notify\'s test temporary failure email address', () => {
+    beforeEach(() => {
+      email = 'temp-fail@simulator.notify'
+    })
+
+    test('should return an object', async () => {
+      const result = schema.validate(email)
+      expect(result).toBeInstanceOf(Object)
+    })
+
+    test('should return an object with 1 key', () => {
+      const result = schema.validate(email)
+      expect(Object.keys(result)).toHaveLength(1)
+    })
+
+    test('should return an object with keys: value', () => {
+      const result = schema.validate(email)
+      expect(Object.keys(result)).toStrictEqual(['value'])
+    })
+
+    test('should return email as value for key: value', () => {
+      const result = schema.validate(email)
+      expect(result.value).toStrictEqual(email)
+    })
+
+    test('should not return an object with key: error', () => {
+      const result = schema.validate(email)
+      expect(Object.keys(result)).not.toContain('error')
+    })
+  })
+
+  describe('When email is Notify\'s test permanent failure email address', () => {
+    beforeEach(() => {
+      email = 'perm-fail@simulator.notify'
+    })
+
+    test('should return an object', async () => {
+      const result = schema.validate(email)
+      expect(result).toBeInstanceOf(Object)
+    })
+
+    test('should return an object with 1 key', () => {
+      const result = schema.validate(email)
+      expect(Object.keys(result)).toHaveLength(1)
+    })
+
+    test('should return an object with keys: value', () => {
+      const result = schema.validate(email)
+      expect(Object.keys(result)).toStrictEqual(['value'])
+    })
+
+    test('should return email as value for key: value', () => {
+      const result = schema.validate(email)
+      expect(result.value).toStrictEqual(email)
+    })
+
+    test('should not return an object with key: error', () => {
+      const result = schema.validate(email)
+      expect(Object.keys(result)).not.toContain('error')
+    })
+  })
+
   describe('When email does not have a tld', () => {
     beforeEach(() => {
       email = 'email@domain'

@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-module.exports = Joi.string().email().required()
+module.exports = Joi.string().email({ tlds: { allow: ['notify'] } }).required()
   .messages({
     'string.base': 'Email must be a string.',
     'string.empty': 'Email cannot be empty.',
