@@ -1,10 +1,13 @@
+const { EMPTY, INVALID } = require('../constants/failure-reasons')
 const { EMAIL } = require('../constants/methods')
+
 const getPersonalisation = require('./get-personalisation')
 const publish = require('./publish')
 const saveRequest = require('./save-request')
 const validateEmail = require('./validate-email')
 
 const publishStatement = async (request) => {
+  let reason
   let response
   try {
     validateEmail(request.email)
@@ -13,9 +16,20 @@ const publishStatement = async (request) => {
     console.log(`Statement published: ${request.filename}`)
   } catch (err) {
     console.log(err)
+    switch (err.message) {
+      case ('Email is invalid: Email cannot be empty.'):
+        reason = EMPTY
+        break
+      case ('Email is invalid: The email provided is not valid.'):
+        reason = INVALID
+        break
+      default:
+        reason = undefined
+        break
+    }
   } finally {
     try {
-      await saveRequest(request, response?.data.id, EMAIL)
+      await saveRequest(request, response?.data.id, EMAIL, reason)
     } catch {
       console.log('Could not save the request')
     }

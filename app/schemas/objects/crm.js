@@ -1,13 +1,13 @@
 const Joi = require('joi')
 
-const email = require('../components/email')
+const email = require('../components/email-lenient')
 const frn = require('../components/frn')
 const errorMessage = require('../components/errorMessage')
 
 module.exports = Joi.object({
-  email: email,
-  frn: frn,
-  errorMessage: errorMessage
+  email,
+  frn,
+  errorMessage
 }).required()
   .messages({
     'object.base': 'CRM message must be an object.',

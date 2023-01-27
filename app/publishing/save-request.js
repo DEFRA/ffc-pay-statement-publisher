@@ -1,18 +1,18 @@
 const db = require('../data')
 
-const { EMPTY } = require('../constants/failure-reasons')
-
+const sendCrmMessage = require('../messaging/send-crm-message')
 const createFailure = require('../monitoring/create-failure')
 
-const saveRequest = async (request, reference, method) => {
+const saveRequest = async (request, reference, method, reason) => {
   const transaction = await db.sequelize.transaction()
   try {
     const timestamp = new Date()
     const statement = await saveStatement(request, timestamp, transaction)
     const delivery = await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
-    if (!reference) {
-      console.log(`Unable to deliver statement ${statement.filename} to ${statement.email}: ${EMPTY}`)
-      await createFailure(delivery.deliveryId, EMPTY, transaction)
+    if (reason) {
+      console.log(`Unable to deliver statement ${statement.filename} to "${statement.email}": ${reason}`)
+      await sendCrmMessage(statement.email, statement.frn, reason)
+      await createFailure(delivery.deliveryId, reason, transaction)
     }
     await transaction.commit()
   } catch (err) {
