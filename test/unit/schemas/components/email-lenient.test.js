@@ -1,3 +1,5 @@
+const { TEMPORARY, PERMANENT } = require('../../../../app/constants/notify-simulation-email-addresses')
+
 const schema = require('../../../../app/schemas/components/email-lenient')
 
 let email
@@ -36,7 +38,7 @@ describe('Lenient email schema', () => {
 
   describe('When email is Notify\'s test temporary failure email address', () => {
     beforeEach(() => {
-      email = 'temp-fail@simulator.notify'
+      email = TEMPORARY
     })
 
     test('should return an object', async () => {
@@ -67,7 +69,7 @@ describe('Lenient email schema', () => {
 
   describe('When email is Notify\'s test permanent failure email address', () => {
     beforeEach(() => {
-      email = 'perm-fail@simulator.notify'
+      email = PERMANENT
     })
 
     test('should return an object', async () => {
