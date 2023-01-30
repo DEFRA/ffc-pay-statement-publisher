@@ -12,6 +12,7 @@ const validateEmail = require('../../../app/publishing/validate-email')
 
 const publishStatement = require('../../../app/publishing/publish-statement')
 
+const { EMPTY, INVALID } = require('../../../app/constants/failure-reasons')
 const { EMAIL } = require('../../../app/constants/methods')
 const MOCK_ID = 'c8363cba-2093-4447-8812-697c09820614'
 const MOCK_PERSONALISATION = {
@@ -23,10 +24,13 @@ const MOCK_PERSONALISATION = {
 }
 
 let request
+let reason
 
 describe('Publish incoming statement', () => {
   beforeEach(() => {
     request = JSON.parse(JSON.stringify(require('../../mocks/request')))
+    reason = undefined
+
     publish.mockResolvedValue({ data: { id: MOCK_ID } })
     getPersonalisation.mockReturnValue(MOCK_PERSONALISATION)
     validateEmail.mockReturnValue({ value: request.email })
@@ -92,9 +96,9 @@ describe('Publish incoming statement', () => {
       expect(saveRequest).toHaveBeenCalledTimes(1)
     })
 
-    test('should call saveRequest with request, MOCK_ID and EMAIL', async () => {
+    test('should call saveRequest with request, MOCK_ID, EMAIL and reason', async () => {
       await publishStatement(request)
-      expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL)
+      expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL, reason)
     })
 
     test('should not throw', async () => {
@@ -108,9 +112,10 @@ describe('Publish incoming statement', () => {
     })
   })
 
-  describe('When validateEmail throws', () => {
+  describe('When validateEmail throws error with message "Email is invalid: Email cannot be empty."', () => {
     beforeEach(() => {
-      validateEmail.mockImplementation(() => { throw new Error('Invalid email address.') })
+      reason = EMPTY
+      validateEmail.mockImplementation(() => { throw new Error('Email is invalid: Email cannot be empty.') })
     })
 
     test('should call validateEmail', async () => {
@@ -148,9 +153,122 @@ describe('Publish incoming statement', () => {
       expect(saveRequest).toHaveBeenCalledTimes(1)
     })
 
-    test('should call saveRequest with request, undefined and EMAIL', async () => {
+    test('should call saveRequest with request, undefined, EMAIL and reason', async () => {
       try { await publishStatement(request) } catch {}
-      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL, reason)
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('When validateEmail throws error with message "Email is invalid: The email provided is not valid."', () => {
+    beforeEach(() => {
+      reason = INVALID
+      validateEmail.mockImplementation(() => { throw new Error('Email is invalid: The email provided is not valid.') })
+    })
+
+    test('should call validateEmail', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalled()
+    })
+
+    test('should call validateEmail once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call validateEmail with request.email', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledWith(request.email)
+    })
+
+    test('should not call getPersonalisation', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(getPersonalisation).not.toHaveBeenCalled()
+    })
+
+    test('should not call publish', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(publish).not.toHaveBeenCalled()
+    })
+
+    test('should call saveRequest', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, undefined, EMAIL and reason', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL, reason)
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('When validateEmail throws error with message "This is not a known validation error message."', () => {
+    beforeEach(() => {
+      validateEmail.mockImplementation(() => { throw new Error('This is not a known validation error message.') })
+    })
+
+    test('should call validateEmail', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalled()
+    })
+
+    test('should call validateEmail once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call validateEmail with request.email', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).toHaveBeenCalledWith(request.email)
+    })
+
+    test('should not call getPersonalisation', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(getPersonalisation).not.toHaveBeenCalled()
+    })
+
+    test('should not call publish', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(publish).not.toHaveBeenCalled()
+    })
+
+    test('should call saveRequest', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, undefined, EMAIL and reason', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL, reason)
     })
 
     test('should not throw', async () => {
@@ -224,9 +342,9 @@ describe('Publish incoming statement', () => {
       expect(saveRequest).toHaveBeenCalledTimes(1)
     })
 
-    test('should call saveRequest with request, undefined and EMAIL', async () => {
+    test('should call saveRequest with request, undefined, EMAIL and reason', async () => {
       try { await publishStatement(request) } catch {}
-      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL)
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL, reason)
     })
 
     test('should not throw', async () => {
@@ -300,9 +418,9 @@ describe('Publish incoming statement', () => {
       expect(saveRequest).toHaveBeenCalledTimes(1)
     })
 
-    test('should call saveRequest with request, MOCK_ID and EMAIL', async () => {
+    test('should call saveRequest with request, MOCK_ID, EMAIL and reason', async () => {
       try { await publishStatement(request) } catch {}
-      expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL)
+      expect(saveRequest).toHaveBeenCalledWith(request, MOCK_ID, EMAIL, reason)
     })
 
     test('should not throw', async () => {
