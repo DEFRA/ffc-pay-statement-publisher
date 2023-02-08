@@ -20,7 +20,7 @@ const publishStatement = async (request) => {
       case ('Email is invalid: Email cannot be empty.'):
         reason = EMPTY
         break
-      case ('Email is invalid: The email provided is not valid.'):
+      case ('Email is invalid: The email provided is invalid.'):
         reason = INVALID
         break
       default:

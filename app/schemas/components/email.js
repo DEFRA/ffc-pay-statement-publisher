@@ -8,8 +8,9 @@ module.exports = Joi.alternatives().try(
 ).required()
   .messages({
     'string.empty': 'Email cannot be empty.',
-    'string.email': 'The email provided is not valid.',
+    'string.email': 'The email provided is invalid.',
     'alternatives.types': 'Email must be a string.',
+    'alternatives.match': 'Email cannot be empty.',
     'any.required': 'Email must be provided.',
     '*': 'The email provided is invalid.'
   })

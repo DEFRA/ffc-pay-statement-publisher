@@ -169,10 +169,10 @@ describe('Publish incoming statement', () => {
     })
   })
 
-  describe('When validateEmail throws error with message "Email is invalid: The email provided is not valid."', () => {
+  describe('When validateEmail throws error with message "Email is invalid: The email provided is invalid."', () => {
     beforeEach(() => {
       reason = INVALID
-      validateEmail.mockImplementation(() => { throw new Error('Email is invalid: The email provided is not valid.') })
+      validateEmail.mockImplementation(() => { throw new Error('Email is invalid: The email provided is invalid.') })
     })
 
     test('should call validateEmail', async () => {

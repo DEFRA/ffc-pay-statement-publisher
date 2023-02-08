@@ -1,7 +1,8 @@
 const schema = require('../schemas/components/email')
 
 const validateEmail = (email) => {
-  console.log('before:', email)
+  console.log('before: "', email, '"')
+  console.log('type: "', typeof (email), '"')
 
   const result = schema.validate(email, {
     abortEarly: false

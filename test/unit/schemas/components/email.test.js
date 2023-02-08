@@ -128,9 +128,9 @@ describe('Email schema', () => {
       expect(result.error.details[0].type).toBe('string.email')
     })
 
-    test('should return "The email provided is not valid." as value for key: error.details[0].message', () => {
+    test('should return "The email provided is invalid." as value for key: error.details[0].message', () => {
       const result = schema.validate(email)
-      expect(result.error.details[0].message).toBe('The email provided is not valid.')
+      expect(result.error.details[0].message).toBe('The email provided is invalid.')
     })
   })
 
@@ -164,9 +164,9 @@ describe('Email schema', () => {
       expect(result.error.details[0].type).toBe('string.email')
     })
 
-    test('should return "The email provided is not valid." as value for key: error.details[0].message', () => {
+    test('should return "The email provided is invalid." as value for key: error.details[0].message', () => {
       const result = schema.validate(email)
-      expect(result.error.details[0].message).toBe('The email provided is not valid.')
+      expect(result.error.details[0].message).toBe('The email provided is invalid.')
     })
   })
 
@@ -200,9 +200,9 @@ describe('Email schema', () => {
       expect(result.error.details[0].type).toBe('string.email')
     })
 
-    test('should return "The email provided is not valid." as value for key: error.details[0].message', () => {
+    test('should return "The email provided is invalid." as value for key: error.details[0].message', () => {
       const result = schema.validate(email)
-      expect(result.error.details[0].message).toBe('The email provided is not valid.')
+      expect(result.error.details[0].message).toBe('The email provided is invalid.')
     })
   })
 
@@ -262,9 +262,9 @@ describe('Email schema', () => {
       expect(result.error.details[0].type).toBe('string.email')
     })
 
-    test('should return "The email provided is not valid." as value for key: error.details[0].message', () => {
+    test('should return "The email provided is invalid." as value for key: error.details[0].message', () => {
       const result = schema.validate(email)
-      expect(result.error.details[0].message).toBe('The email provided is not valid.')
+      expect(result.error.details[0].message).toBe('The email provided is invalid.')
     })
   })
 
@@ -298,9 +298,9 @@ describe('Email schema', () => {
       expect(result.error.details[0].type).toBe('string.email')
     })
 
-    test('should return "The email provided is not valid." as value for key: error.details[0].message', () => {
+    test('should return "The email provided is invalid." as value for key: error.details[0].message', () => {
       const result = schema.validate(email)
-      expect(result.error.details[0].message).toBe('The email provided is not valid.')
+      expect(result.error.details[0].message).toBe('The email provided is invalid.')
     })
   })
 
