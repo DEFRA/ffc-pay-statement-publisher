@@ -19,7 +19,7 @@ const publishStatement = async (request) => {
     console.error(err.data)
     console.error(err.data.errors)
     console.error(err.data.errors[0])
-    console.log(err)
+    // console.log(err)
     switch (err.message) {
       case ('Email is invalid: Email cannot be empty.'):
         reason = EMPTY
