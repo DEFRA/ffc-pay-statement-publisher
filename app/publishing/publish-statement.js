@@ -15,11 +15,6 @@ const publishStatement = async (request) => {
     response = await publish(request.email, request.filename, personalisation)
     console.log(`Statement published: ${request.filename}`)
   } catch (err) {
-    // console.error(err.request)
-    // console.error(err.data)
-    // console.error(err.data.errors)
-    // console.error(err.data.errors[0])
-    // console.log(err)
     switch (err.message) {
       case ('Email is invalid: Email cannot be empty.'):
         reason = EMPTY
