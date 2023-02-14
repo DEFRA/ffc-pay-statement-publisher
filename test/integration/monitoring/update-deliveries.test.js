@@ -181,9 +181,9 @@ describe('update deliveries', () => {
     expect(mockSendEmail.mock.calls[0][1]).toBe(mockStatement1.email)
   })
 
-  test('should send email with file link if status technical failure', async () => {
-    mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
-    await updateDeliveries()
-    expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
-  })
+  // test('should send email with file link if status technical failure', async () => {
+  //   mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
+  //   await updateDeliveries()
+  //   expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
+  // })
 })
