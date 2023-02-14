@@ -6,6 +6,8 @@ const publish = require('./publish')
 const saveRequest = require('./save-request')
 const validateEmail = require('./validate-email')
 
+const util = require('util')
+
 const publishStatement = async (request) => {
   let reason
   let response
@@ -15,7 +17,7 @@ const publishStatement = async (request) => {
     response = await publish(request.email, request.filename, personalisation)
     console.log(`Statement published: ${request.filename}`)
   } catch (err) {
-    console.log(err)
+    console.log(util.inspect(err, false, null, true))
     switch (err.message) {
       case ('Email is invalid: Email cannot be empty.'):
         reason = EMPTY
