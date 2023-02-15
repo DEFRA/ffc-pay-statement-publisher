@@ -8,7 +8,9 @@ const updateDeliveries = async () => {
   const outstanding = await getOutstandingDeliveries()
   for (const delivery of outstanding) {
     const response = await checkDeliveryStatus(delivery.reference)
-    console.log(util.inspect(response, false, null, true))
+    for (const x in Object.keys(response)) {
+      console.log(util.inspect(response[x], false, null, true))
+    }
     await updateDeliveryFromResponse(delivery, response)
   }
 }
