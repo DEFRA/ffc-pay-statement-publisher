@@ -14,7 +14,9 @@ const publishStatement = require('../../../app/publishing/publish-statement')
 
 const { EMPTY, INVALID } = require('../../../app/constants/failure-reasons')
 const { EMAIL } = require('../../../app/constants/methods')
-const MOCK_ID = 'c8363cba-2093-4447-8812-697c09820614'
+
+const NOTIFY_RESPONSE = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_DELIVERED))
+const MOCK_ID = NOTIFY_RESPONSE.data.id
 const MOCK_PERSONALISATION = {
   schemeName: 'Test Scheme',
   schemeShortName: 'TS',
@@ -31,7 +33,7 @@ describe('Publish incoming statement', () => {
     request = JSON.parse(JSON.stringify(require('../../mocks/request')))
     reason = undefined
 
-    publish.mockResolvedValue({ data: { id: MOCK_ID } })
+    publish.mockResolvedValue(NOTIFY_RESPONSE)
     getPersonalisation.mockReturnValue(MOCK_PERSONALISATION)
     validateEmail.mockReturnValue({ value: request.email })
   })

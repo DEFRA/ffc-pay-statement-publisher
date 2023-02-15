@@ -9,8 +9,9 @@ const { EMPTY, INVALID, REJECTED } = require('../../../app/constants/failure-rea
 const { EMPTY: EMPTY_ERROR, INVALID: INVALID_ERROR } = require('../../../app/constants/crm-error-messages')
 
 const SYSTEM_TIME = require('../../mocks/components/system-time')
-const MOCK_REFERENCE = 'c8363cba-2093-4447-8812-697c09820614'
+
 const MESSAGE = require('../../mocks/objects/message')
+const MOCK_REFERENCE = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_DELIVERED)).data.id
 
 let mockRequest
 let reference
