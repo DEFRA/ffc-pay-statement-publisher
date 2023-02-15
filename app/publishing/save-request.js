@@ -3,8 +3,6 @@ const db = require('../data')
 const sendCrmMessage = require('../messaging/send-crm-message')
 const createFailure = require('../monitoring/create-failure')
 
-const util = require('util')
-
 const saveRequest = async (request, reference, method, reason) => {
   const transaction = await db.sequelize.transaction()
   try {
@@ -12,9 +10,6 @@ const saveRequest = async (request, reference, method, reason) => {
     const statement = await saveStatement(request, timestamp, transaction)
     const delivery = await saveDelivery(statement.statementId, method, reference, timestamp, transaction)
     if (reason) {
-      for (const x in Object.keys(request)) {
-        console.log('key: ', request[x], util.inspect(request[x], false, null, true))
-      }
       console.log(`Unable to deliver statement ${statement.filename} to "${statement.email}": ${reason}`)
       await sendCrmMessage(statement.email, statement.frn, reason)
       await createFailure(delivery.deliveryId, reason, transaction)

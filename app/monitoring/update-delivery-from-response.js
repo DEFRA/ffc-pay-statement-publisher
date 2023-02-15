@@ -4,15 +4,7 @@ const completeDelivery = require('./complete-delivery')
 const failed = require('./failed')
 const rescheduleDelivery = require('./reschedule-delivery')
 
-const util = require('util')
-
 const updateDeliveryFromResponse = async (delivery, response) => {
-  console.log('whole', util.inspect(response, false, null, true))
-
-  for (const x in response) {
-    console.log('object', response[x], util.inspect(response[x], false, null, true))
-  }
-
   switch (response.data?.status) {
     case DELIVERED:
       await completeDelivery(delivery.deliveryId)

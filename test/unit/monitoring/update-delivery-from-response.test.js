@@ -11,7 +11,6 @@ const updateDeliveryFromResponse = require('../../../app/monitoring/update-deliv
 
 const { mockDelivery1: delivery } = require('../../mocks/delivery')
 const { INVALID, REJECTED } = require('../../../app/constants/failure-reasons')
-const { DELIVERED, PERMANENT_FAILURE, TEMPORARY_FAILURE, TECHNICAL_FAILURE } = require('../../../app/constants/statuses')
 
 let response
 
@@ -21,7 +20,7 @@ describe('Decide next step from Notify delivery reponse', () => {
     failed.mockResolvedValue(undefined)
     rescheduleDelivery.mockResolvedValue(undefined)
 
-    response = { data: { status: undefined } }
+    response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_DELIVERED))
   })
 
   afterEach(() => {
@@ -30,7 +29,7 @@ describe('Decide next step from Notify delivery reponse', () => {
 
   describe('When response is DELIVERED', () => {
     beforeEach(() => {
-      response.data.status = DELIVERED
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_DELIVERED))
     })
 
     test('should call completeDelivery', async () => {
@@ -71,7 +70,7 @@ describe('Decide next step from Notify delivery reponse', () => {
 
   describe('When response is PERMANENT_FAILURE', () => {
     beforeEach(() => {
-      response.data.status = PERMANENT_FAILURE
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_PERMANENT_FAILURE))
     })
 
     test('should call failed', async () => {
@@ -112,7 +111,7 @@ describe('Decide next step from Notify delivery reponse', () => {
 
   describe('When response is TEMPORARY_FAILURE', () => {
     beforeEach(() => {
-      response.data.status = TEMPORARY_FAILURE
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_TEMPORARY_FAILURE))
     })
 
     test('should call failed', async () => {
@@ -153,7 +152,7 @@ describe('Decide next step from Notify delivery reponse', () => {
 
   describe('When response is TECHNICAL_FAILURE', () => {
     beforeEach(() => {
-      response.data.status = TECHNICAL_FAILURE
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_TECHNICAL_FAILURE))
     })
 
     test('should call rescheduleDelivery', async () => {
@@ -257,7 +256,7 @@ describe('Decide next step from Notify delivery reponse', () => {
   describe('When completeDelivery throws', () => {
     beforeEach(() => {
       completeDelivery.mockRejectedValue(new Error('Issue saving down database'))
-      response.data.status = DELIVERED
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_DELIVERED))
     })
 
     test('should not call failed', async () => {
@@ -289,7 +288,7 @@ describe('Decide next step from Notify delivery reponse', () => {
   describe('When failed throws', () => {
     beforeEach(() => {
       failed.mockRejectedValue(new Error('Issue marking delivery as failed'))
-      response.data.status = PERMANENT_FAILURE
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_PERMANENT_FAILURE))
     })
 
     test('should not call completeDelivery', async () => {
@@ -321,7 +320,7 @@ describe('Decide next step from Notify delivery reponse', () => {
   describe('When rescheduleDelivery throws', () => {
     beforeEach(() => {
       rescheduleDelivery.mockRejectedValue(new Error('Issue rescheduling delivery'))
-      response.data.status = TECHNICAL_FAILURE
+      response = JSON.parse(JSON.stringify(require('../../mocks/objects/notify-response').NOTIFY_RESPONSE_TECHNICAL_FAILURE))
     })
 
     test('should not call completeDelivery', async () => {
