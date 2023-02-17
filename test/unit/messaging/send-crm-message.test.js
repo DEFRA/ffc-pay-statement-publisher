@@ -19,7 +19,6 @@ const { EMPTY: EMPTY_MESSAGE, INVALID: INVALID_MESSAGE } = require('../../mocks/
 let email
 let frn
 let reason
-
 let message
 
 describe('Send invalid email message to CRM', () => {
