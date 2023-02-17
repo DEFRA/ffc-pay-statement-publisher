@@ -152,10 +152,10 @@ describe('update delivery from response', () => {
     expect(mockSendEmail.mock.calls[0][1]).toBe(mockStatement1.email)
   })
 
-  // test('should send email with file link if status technical failure', async () => {
-  //   await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
-  //   expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
-  // })
+  test('should send email with file link if status technical failure', async () => {
+    await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
+    expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
+  })
 
   test('should send email with scheme name if status technical failure', async () => {
     await updateDeliveryFromResponse(mockDelivery1, { data: { status: TECHNICAL_FAILURE } })
