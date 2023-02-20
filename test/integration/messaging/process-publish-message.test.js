@@ -1,25 +1,34 @@
 const MOCK_REFERENCE = '78363cba-2093-4447-8812-697c09820614'
-let mockSendEmail
 const MOCK_PREPARED_FILE = 'mock-prepared-file'
+
+let mockSendEmail
 let mockPrepareUpload
+
 const mockNotifyClient = jest.fn().mockImplementation(() => {
   return {
     sendEmail: mockSendEmail,
     prepareUpload: mockPrepareUpload
   }
 })
+
 jest.mock('notifications-node-client', () => {
   return {
     NotifyClient: mockNotifyClient
   }
 })
+
 jest.mock('ffc-messaging')
+
 const { BlobServiceClient } = require('@azure/storage-blob')
 const { storageConfig, notifyApiKey } = require('../../../app/config')
+
 const db = require('../../../app/data')
+
 const processPublishMessage = require('../../../app/messaging/process-publish-message')
+
 const path = require('path')
-const { EMAIL } = require('../../../app/methods')
+
+const { EMAIL } = require('../../../app/constants/methods')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
@@ -33,7 +42,6 @@ let message
 describe('publish statement', () => {
   beforeEach(async () => {
     mockRequest = JSON.parse(JSON.stringify(require('../../mocks/request')))
-    jest.clearAllMocks()
     jest.useFakeTimers().setSystemTime(new Date(2022, 7, 5, 15, 30, 10, 120))
     blobServiceClient = BlobServiceClient.fromConnectionString(storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(storageConfig.container)
@@ -41,7 +49,6 @@ describe('publish statement', () => {
     await container.createIfNotExists()
     const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
-    await db.sequelize.truncate({ cascade: true })
 
     mockSendEmail = jest.fn().mockResolvedValue({ data: { id: MOCK_REFERENCE } })
     mockPrepareUpload = jest.fn().mockReturnValue(MOCK_PREPARED_FILE)
@@ -56,8 +63,12 @@ describe('publish statement', () => {
     }
   })
 
-  afterAll(async () => {
+  afterEach(async () => {
+    jest.clearAllMocks()
     await db.sequelize.truncate({ cascade: true })
+  })
+
+  afterAll(async () => {
     await db.sequelize.close()
   })
 

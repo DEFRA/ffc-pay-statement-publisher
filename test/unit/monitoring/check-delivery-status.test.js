@@ -1,4 +1,4 @@
-const { DELIVERED } = require('../../../app/statuses')
+const { DELIVERED } = require('../../../app/constants/statuses')
 const mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: DELIVERED } })
 jest.mock('notifications-node-client', () => {
   return {

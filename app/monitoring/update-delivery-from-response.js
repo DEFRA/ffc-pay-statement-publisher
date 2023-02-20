@@ -1,7 +1,7 @@
-const { INVALID, REJECTED } = require('../failure-reasons')
-const { DELIVERED, PERMANENT_FAILURE, TEMPORARY_FAILURE, TECHNICAL_FAILURE } = require('../statuses')
+const { INVALID, REJECTED } = require('../constants/failure-reasons')
+const { DELIVERED, PERMANENT_FAILURE, TEMPORARY_FAILURE, TECHNICAL_FAILURE } = require('../constants/statuses')
 const completeDelivery = require('./complete-delivery')
-const createFailure = require('./create-failure')
+const failed = require('./failed')
 const rescheduleDelivery = require('./reschedule-delivery')
 
 const updateDeliveryFromResponse = async (delivery, response) => {
@@ -10,10 +10,10 @@ const updateDeliveryFromResponse = async (delivery, response) => {
       await completeDelivery(delivery.deliveryId)
       break
     case PERMANENT_FAILURE:
-      await createFailure(delivery, INVALID)
+      await failed(delivery, INVALID)
       break
     case TEMPORARY_FAILURE:
-      await createFailure(delivery, REJECTED)
+      await failed(delivery, REJECTED)
       break
     case TECHNICAL_FAILURE:
       await rescheduleDelivery(delivery)

@@ -1,6 +1,6 @@
 const util = require('util')
-const { VALIDATION } = require('../errors')
-const publishStatement = require('../publishing')
+const { VALIDATION } = require('../constants/errors')
+const { publishStatement } = require('../publishing')
 const validateRequest = require('./validate-request')
 
 const processPublishMessage = async (message, receiver) => {

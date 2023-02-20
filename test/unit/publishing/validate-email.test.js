@@ -1,58 +1,90 @@
+const mockValidation = jest.fn()
+jest.mock('../../../app/schemas/components/email', () => {
+  return {
+    validate: mockValidation
+  }
+})
+
 const validateEmail = require('../../../app/publishing/validate-email')
 
-describe('validate email', () => {
-  test('returns true for valid email', () => {
-    const email = 'test@test.com'
-    expect(validateEmail(email)).toBe(true)
+let email
+
+describe('Validate email', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
-  test('returns false for invalid email', () => {
-    const email = 'test'
-    expect(validateEmail(email)).toBe(false)
+  describe('When email is valid', () => {
+    beforeEach(() => {
+      email = require('../../mocks/components/email')
+
+      mockValidation.mockReturnValue({ value: email })
+    })
+
+    test('should call mockValidation', async () => {
+      validateEmail(email)
+      expect(mockValidation).toHaveBeenCalled()
+    })
+
+    test('should call mockValidation once', async () => {
+      validateEmail(email)
+      expect(mockValidation).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call mockValidation with email and { abortEarly: false }', async () => {
+      validateEmail(email)
+      expect(mockValidation).toHaveBeenCalledWith(email, { abortEarly: false })
+    })
+
+    test('should not throw', async () => {
+      const wrapper = () => { validateEmail(email) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return mockValidation().value', async () => {
+      const result = validateEmail(email)
+      expect(result).toStrictEqual(mockValidation().value)
+    })
   })
 
-  test('returns false for empty email', () => {
-    const email = ''
-    expect(validateEmail(email)).toBe(false)
-  })
+  describe('When email is invalid', () => {
+    beforeEach(() => {
+      email = ''
 
-  test('returns false for null email', () => {
-    const email = null
-    expect(validateEmail(email)).toBe(false)
-  })
+      mockValidation.mockReturnValue({
+        value: email,
+        error: { message: 'Invalid email' }
+      })
+    })
 
-  test('returns false for undefined email', () => {
-    const email = undefined
-    expect(validateEmail(email)).toBe(false)
-  })
+    test('should call mockValidation', async () => {
+      try { validateEmail(email) } catch {}
+      expect(mockValidation).toHaveBeenCalled()
+    })
 
-  test('returns false for empty object email', () => {
-    const email = {}
-    expect(validateEmail(email)).toBe(false)
-  })
+    test('should call mockValidation once', async () => {
+      try { validateEmail(email) } catch {}
+      expect(mockValidation).toHaveBeenCalledTimes(1)
+    })
 
-  test('returns false for array email', () => {
-    const email = []
-    expect(validateEmail(email)).toBe(false)
-  })
+    test('should call mockValidation with email and { abortEarly: false }', async () => {
+      try { validateEmail(email) } catch {}
+      expect(mockValidation).toHaveBeenCalledWith(email, { abortEarly: false })
+    })
 
-  test('returns false for function email', () => {
-    const email = () => {}
-    expect(validateEmail(email)).toBe(false)
-  })
+    test('should throw', async () => {
+      const wrapper = () => { validateEmail(email) }
+      expect(wrapper).toThrow()
+    })
 
-  test('returns false for number email', () => {
-    const email = 123
-    expect(validateEmail(email)).toBe(false)
-  })
+    test('should throw Error', async () => {
+      const wrapper = () => { validateEmail(email) }
+      expect(wrapper).toThrow(Error)
+    })
 
-  test('returns false for boolean email', () => {
-    const email = true
-    expect(validateEmail(email)).toBe(false)
-  })
-
-  test('returns false for object email', () => {
-    const email = { email: 'test@test.com' }
-    expect(validateEmail(email)).toBe(false)
+    test('should throw error which starts "Email is invalid"', async () => {
+      const wrapper = () => { validateEmail(email) }
+      expect(wrapper).toThrow(/^Email is invalid/)
+    })
   })
 })

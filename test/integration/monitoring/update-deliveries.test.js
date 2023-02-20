@@ -18,10 +18,10 @@ const { BlobServiceClient } = require('@azure/storage-blob')
 const config = require('../../../app/config/storage')
 const db = require('../../../app/data')
 const path = require('path')
-const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/statuses')
+const { DELIVERED, SENDING, CREATED, TEMPORARY_FAILURE, PERMANENT_FAILURE, TECHNICAL_FAILURE } = require('../../../app/constants/statuses')
 const { mockStatement1, mockStatement2 } = require('../../mocks/statement')
 const { mockDelivery1, mockDelivery2 } = require('../../mocks/delivery')
-const { INVALID, REJECTED } = require('../../../app/failure-reasons')
+const { INVALID, REJECTED } = require('../../../app/constants/failure-reasons')
 const updateDeliveries = require('../../../app/monitoring/update-deliveries')
 
 const FILE_NAME = 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf'
@@ -178,7 +178,7 @@ describe('update deliveries', () => {
   test('should send email to requested email address if status technical failure', async () => {
     mockGetNotificationById = jest.fn().mockResolvedValue({ data: { status: TECHNICAL_FAILURE } })
     await updateDeliveries()
-    expect(mockSendEmail.mock.calls[0][1]).toBe('farmer1@farm.com')
+    expect(mockSendEmail.mock.calls[0][1]).toBe(mockStatement1.email)
   })
 
   test('should send email with file link if status technical failure', async () => {

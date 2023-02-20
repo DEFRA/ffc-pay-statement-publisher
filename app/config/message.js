@@ -12,6 +12,9 @@ const mqSchema = Joi.object({
     address: Joi.string(),
     topic: Joi.string(),
     type: Joi.string().default('subscription')
+  },
+  crmTopic: {
+    address: Joi.string()
   }
 })
 
@@ -27,6 +30,9 @@ const mqConfig = {
     address: process.env.PUBLISH_SUBSCRIPTION_ADDRESS,
     topic: process.env.PUBLISH_TOPIC_ADDRESS,
     type: 'subscription'
+  },
+  crmTopic: {
+    address: process.env.CRM_TOPIC_ADDRESS
   }
 }
 
@@ -34,13 +40,14 @@ const mqResult = mqSchema.validate(mqConfig, {
   abortEarly: false
 })
 
-// Throw if config is invalid
 if (mqResult.error) {
   throw new Error(`The message queue config is invalid. ${mqResult.error.message}`)
 }
 
 const publishSubscription = { ...mqResult.value.messageQueue, ...mqResult.value.publishSubscription }
+const crmTopic = { ...mqResult.value.messageQueue, ...mqResult.value.crmTopic }
 
 module.exports = {
-  publishSubscription
+  publishSubscription,
+  crmTopic
 }
