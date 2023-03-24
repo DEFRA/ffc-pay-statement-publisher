@@ -1,0 +1,16 @@
+const defaultObject = {
+  file: 'JVBERi0xLjMKJf////8KNSAwIG9iago8PAovVHlwZSAvWE9ia…M2MwOWI3ODk+XQo+PgpzdGFydHhyZWYKNTcxNTkKJSVFT0YK',
+  is_csv: false,
+  confirm_email_before_download: false,
+  retention_period: null
+}
+
+const confirmEmail = {
+  ...defaultObject,
+  confirm_email_before_download: true
+}
+
+module.exports = {
+  defaultObject,
+  confirmEmail
+}
