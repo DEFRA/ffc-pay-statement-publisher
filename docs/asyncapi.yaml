@@ -1,26 +1,26 @@
-asyncapi: 2.5.0
+asyncapi: 2.6.0
 info:
   title: FFC Payment Statement Publisher
-  version: 1.0.0
-  description: Publish PDF payment statements for Future Farming
+  version: 2.0.0
+  description: Publish PDF payment documents
 channels:
-  payment-statement/publish:
+  ffc-pay-statement-publish/ffc-pay-statement-publisher:
     subscribe:
       message:
         $ref: '#/components/messages/PublishRequest'
-  payment-statement/crm:
+  ffc-pay-statement-crm:
     publish:
       message:
         $ref: '#/components/messages/CrmInvalidEmailResponse'
 components:
   messages:
     CrmInvalidEmailResponse:
-      name: Payment statement invalid email response
+      name: Payment document invalid email response
       contentType: application/json
       payload:
         $ref: '#/components/schemas/CrmInvalidEmailResponse'
     PublishRequest:
-      name: Payment statement publish request
+      name: Payment document publish request
       contentType: application/json
       payload:
         $ref: '#/components/schemas/PublishRequest'
@@ -55,7 +55,9 @@ components:
         email:
           $ref: '#/components/schemas/Email'
         filename:
-          $ref: '#/components/schemas/Filename'
+          oneOf:
+            - $ref: '#/components/schemas/FilenameStatement'
+            - $ref: '#/components/schemas/FilenameSchedule'
         frn:
           $ref: '#/components/schemas/FRN'
         sbi:
@@ -64,31 +66,69 @@ components:
           $ref: '#/components/schemas/Scheme'
     Address:
       type: object
+      description: The business address
+      required:
+        - line1
+        - postcode
+      additionalProperties: false
       properties:
         line1:
-          type: string
-          description: The first line of the address
-          example: 1 The Street
+          $ref: '#/components/schemas/AddressLine1'
         line2:
-          type: string
-          description: The second line of the address
-          example: The Area
+          $ref: '#/components/schemas/AddressLine2'
         line3:
-          type: string
-          description: The third line of the address
-          example: The Town
+          $ref: '#/components/schemas/AddressLine3'
         line4:
-          type: string
-          description: The fourth line of the address
-          example: The Region
+          $ref: '#/components/schemas/AddressLine4'
         line5:
-          type: string
-          description: The fifth line of the address
-          example: The County
+          $ref: '#/components/schemas/AddressLine5'
         postcode:
-          type: string
-          description: The postcode
-          example: AB1 2CD
+          $ref: '#/components/schemas/AddressPostcode'
+    Scheme:
+      type: object
+      description: The claimed scheme
+      required:
+        - agreementNumber
+        - frequency
+        - name
+        - shortName
+        - year
+      additionalProperties: false
+      properties:
+        agreementNumber:
+          $ref: '#/components/schemas/AgreementNumber'
+        frequency:
+          $ref: '#/components/schemas/SchemeFrequency'
+        name:
+          $ref: '#/components/schemas/SchemeName'
+        shortName:
+          $ref: '#/components/schemas/SchemeShortName'
+        year:
+          $ref: '#/components/schemas/SchemeYear'
+    AddressLine1:
+      type: string
+      description: The first line of the address
+      example: 1 The Street
+    AddressLine2:
+      type: string
+      description: The second line of the address
+      example: The Area
+    AddressLine3:
+      type: string
+      description: The third line of the address
+      example: The Town
+    AddressLine4:
+      type: string
+      description: The fourth line of the address
+      example: The Region
+    AddressLine5:
+      type: string
+      description: The fifth line of the address
+      example: The County
+    AddressPostcode:
+      type: string
+      description: The postcode of the address
+      example: AB1 2CD
     AgreementNumber:
       type: string
       description: The agreement number
@@ -106,43 +146,40 @@ components:
       description: The invalid email reasoning
       enum:
         - The statement cannot be emailed as no email address was provided.
-        - We failed to send the statement because the email address provided was invalid.
-      example: We failed to send the statement because the email address provided was invalid.
+        - >-
+          We failed to send the statement because the email address provided was
+          invalid.
+      example: >-
+        We failed to send the statement because the email address provided was
+        invalid.
     FRN:
       type: number
-      description: Firm Reference Number
+      format: integer
+      minLength: 10
+      maxLength: 10
       minimum: 1000000000
       maximum: 9999999999
+      description: Firm Reference Number
       example: 1234567890
-    Filename:
+    FilenameSchedule:
       type: string
-      description: PDF filename
+      pattern: FFC_PaymentSchedule_$schemeShortName_$schemeYear_$frn_$timestamp.pdf
+      description: Payment schedule PDF filename
+      example: FFC_PaymentSchedule_SFI_2022_1234567890_2022080515300000.pdf
+    FilenameStatement:
+      type: string
+      pattern: FFC_PaymentStatement_$schemeShortName_$schemeYear_$frn_$timestamp.pdf
+      description: Payment statement PDF filename
       example: FFC_PaymentStatement_SFI_2022_1234567890_2022080515300000.pdf
     SBI:
       type: number
-      description: Single Business Identifier
+      format: integer
+      minLength: 9
+      maxLength: 9
       minimum: 105000000
       maximum: 999999999
+      description: Single Business Identifier
       example: 123456789
-    Scheme:
-      type: object
-      required:
-        - agreementNumber
-        - frequency
-        - name
-        - shortName        
-        - year
-      properties:
-        agreementNumber:
-          $ref: '#/components/schemas/AgreementNumber'
-        frequency:
-          $ref: '#/components/schemas/SchemeFrequency'
-        name:
-          $ref: '#/components/schemas/SchemeName'
-        shortName:
-          $ref: '#/components/schemas/SchemeShortName'
-        year:
-          $ref: '#/components/schemas/SchemeYear'
     SchemeName:
       type: string
       description: The name of the scheme
