@@ -68,7 +68,6 @@ components:
       type: object
       description: The business address
       required:
-        - line1
         - postcode
       additionalProperties: false
       properties:
