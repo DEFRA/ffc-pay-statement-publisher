@@ -69,6 +69,8 @@ Use Docker Compose to run service locally.
 ./scripts/start
 ```
 
+Sending an email via GOV.UK Notify will require the user to enter the email address associated with that document for security. Entering the wrong email will block them fromm downloading the file.
+
 ## Test structure
 
 The tests have been structured into subfolders of `./test` as per the
