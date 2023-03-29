@@ -1,6 +1,6 @@
-const { confirmEmail } = require('./notify-link-to-file')
+const { confirmEmailAndRetentionPeriodSet } = require('./notify-link-to-file')
 
-const mockPrepareUpload = jest.fn().mockReturnValue(confirmEmail)
+const mockPrepareUpload = jest.fn().mockReturnValue(confirmEmailAndRetentionPeriodSet)
 const mockSendEmail = jest.fn()
 
 const mockNotifyClient = jest.fn().mockImplementation(() => {

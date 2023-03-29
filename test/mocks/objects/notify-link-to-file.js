@@ -7,11 +7,23 @@ const defaultObject = {
 
 const confirmEmail = {
   ...defaultObject,
+  confirm_email_before_download: true
+}
+
+const retentionPeriodSet = {
+  ...defaultObject,
+  retention_period: '78 weeks'
+}
+
+const confirmEmailAndRetentionPeriodSet = {
+  ...defaultObject,
   confirm_email_before_download: true,
   retention_period: '78 weeks'
 }
 
 module.exports = {
   defaultObject,
-  confirmEmail
+  confirmEmail,
+  retentionPeriodSet,
+  confirmEmailAndRetentionPeriodSet
 }
