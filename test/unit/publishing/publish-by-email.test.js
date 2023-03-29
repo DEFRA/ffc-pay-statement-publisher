@@ -43,6 +43,11 @@ describe('Publish by email', () => {
     expect(mockNotifyClient().prepareUpload).toHaveBeenCalledWith(FILE_BUFFER, { confirmEmailBeforeDownload: true, retentionPeriod: `${config.retentionPeriodInWeeks} weeks` })
   })
 
+  test('should call mockNotifyClient.prepareUpload with FILE_BUFFER and { confirmEmailBeforeDownload: true, retentionPeriod: 78 weeks }', async () => {
+    await publishByEmail(EMAIL, FILE_BUFFER, PERSONALISATION)
+    expect(mockNotifyClient().prepareUpload).toHaveBeenCalledWith(FILE_BUFFER, { confirmEmailBeforeDownload: true, retentionPeriod: '78 weeks' })
+  })
+
   test('should call mockNotifyClient.sendEmail', async () => {
     await publishByEmail(EMAIL, FILE_BUFFER, PERSONALISATION)
     expect(mockNotifyClient().sendEmail).toHaveBeenCalled()
