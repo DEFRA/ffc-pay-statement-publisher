@@ -1,4 +1,6 @@
-const MARKETING_YEAR = require('../components/marketing-year')
+const BUSINESS_NAME = require('../components/business-name')
+const SBI = require('../components/sbi')
+const FRN = require('../components/frn')
 const {
   LINE_1,
   LINE_2,
@@ -8,18 +10,13 @@ const {
   POSTCODE
 } = require('../components/address')
 const EMAIL = require('../components/email')
-const FRN = require('../components/frn')
-const BUSINESS_NAME = require('../components/business-name')
-const SBI = require('../components/sbi')
-
-const { QUARTERLY: QUARTERLY_FREQUENCY } = require('../../../app/constants/frequencies')
-const { SHORT_NAMES, LONG_NAMES } = require('../../../app/constants/scheme-names')
-
-const MESSAGE_SOURCE = require('../../../app/constants/message-source')
-const { STATEMENT: STATEMENT_TYPE, SCHEDULE: SCHEDULE_TYPE } = require('../../../app/constants/document-types')
-
 const { STATEMENT: STATEMENT_FILENAME, SCHEDULE: SCHEDULE_FILENAME } = require('../components/filename')
+const { SHORT_NAMES, LONG_NAMES } = require('../../../app/constants/scheme-names')
+const MARKETING_YEAR = require('../components/marketing-year')
+const { QUARTERLY: QUARTERLY_FREQUENCY } = require('../../../app/constants/frequencies')
 const DOCUMENT_REFERENCE = require('../components/document-reference')
+const { STATEMENT: STATEMENT_TYPE, SCHEDULE: SCHEDULE_TYPE } = require('../../../app/constants/document-types')
+const MESSAGE_SOURCE = require('../../../app/constants/message-source')
 
 const BASE_MESSAGE = {
   body: {},
