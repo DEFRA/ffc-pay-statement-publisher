@@ -1,9 +1,12 @@
+const DOCUMENT_REFERENCE = require('./components/document-reference')
+
 module.exports = {
   businessName: 'Mr A Farmer',
   sbi: 123456789,
   frn: 1234567890,
   email: 'farmer@farms.com',
   filename: 'FFC_PaymentStatement_SFI_2022_1234567890_2022080515301012.pdf',
+  documentReference: DOCUMENT_REFERENCE,
   address: {
     line1: 'A Farm',
     line2: '',

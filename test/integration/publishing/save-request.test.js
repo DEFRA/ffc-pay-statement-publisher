@@ -31,7 +31,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
   })
 
   afterAll(async () => {
-    await db.sequelize.truncate({ cascade: true })
     await db.sequelize.close()
   })
 
@@ -122,6 +121,13 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
       const statement = await db.statement.findOne()
       expect(statement.postcode).toBe(mockRequest.address.postcode)
+    })
+
+    test('should save statement with document reference', async () => {
+      await saveRequest(mockRequest, reference, EMAIL, reason)
+
+      const statement = await db.statement.findOne()
+      expect(statement.documentReference).toBe(mockRequest.documentReference)
     })
 
     test('should save 1 delivery', async () => {
