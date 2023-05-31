@@ -4,7 +4,7 @@
     <tagDatabase tag="v1.2.0" />
   </changeSet>
   <changeSet author="Marc Templeton" id="2">
-    <addColumn tableName="generations">
+    <addColumn tableName="statements">
       <column name="documentReference" type="INTEGER" /> 
     </addColumn>
   </changeSet>
