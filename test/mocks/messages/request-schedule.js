@@ -2,7 +2,7 @@ const BUSINESS_NAME = require('../components/business-name')
 const SBI = require('../components/sbi')
 const FRN = require('../components/frn')
 const EMAIL = require('../components/email')
-
+const { SCHEDULE: FILENAME } = require('../components/filename')
 const DOCUMENT_REFERENCE = require('../components/document-reference')
 const {
   LINE_1,
@@ -23,7 +23,7 @@ module.exports = {
   sbi: Number(SBI),
   frn: Number(FRN),
   email: EMAIL,
-  filename: 'FFC_PaymentSchedule_SFI_2022_1234567890_2022080515301012.pdf',
+  filename: FILENAME,
   documentReference: DOCUMENT_REFERENCE,
   address: {
     line1: LINE_1,
