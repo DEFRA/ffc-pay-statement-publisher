@@ -13,7 +13,6 @@ const saveStatement = async (request, timestamp, transaction) => {
     schemeShortName: request.scheme.shortName,
     schemeYear: request.scheme.year,
     schemeFrequency: request.scheme.frequency,
-    documentReference: request.documentReference,
     received: timestamp
   },
   { transaction })
