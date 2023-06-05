@@ -1,48 +1,115 @@
 const validateRequest = require('../../../app/messaging/validate-request')
-const mockRequest = require('../../mocks/request')
 
-describe('validate message body can be processed as request', () => {
-  test('does not throw on valid request', async () => {
-    expect(() => validateRequest(mockRequest)).not.toThrow()
+let request
+
+describe('Validate request', () => {
+  beforeEach(() => {
+    request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish')))
   })
 
-  test('throws on undefined request', async () => {
-    expect(() => validateRequest(undefined)).toThrow()
+  describe('When request is a statement', () => {
+    beforeEach(() => {
+      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish')))
+    })
+
+    test('does not throw', async () => {
+      expect(() => validateRequest(request)).not.toThrow()
+    })
   })
 
-  test('throws on missing request', async () => {
-    expect(() => validateRequest()).toThrow()
+  describe('When request is undefined', () => {
+    beforeEach(() => {
+      request = undefined
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
   })
 
-  test('throws on empty request', async () => {
-    expect(() => validateRequest({})).toThrow()
+  describe('When request is not given', () => {
+    test('throws', async () => {
+      expect(() => validateRequest()).toThrow()
+    })
   })
 
-  test('throws on array request', async () => {
-    expect(() => validateRequest([])).toThrow()
+  describe('When request is {}', () => {
+    beforeEach(() => {
+      request = {}
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
   })
 
-  test('throws on true request', async () => {
-    expect(() => validateRequest(true)).toThrow()
+  describe('When request is []', () => {
+    beforeEach(() => {
+      request = []
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest([])).toThrow()
+    })
   })
 
-  test('throws on false request', async () => {
-    expect(() => validateRequest(false)).toThrow()
+  describe('When request is true', () => {
+    beforeEach(() => {
+      request = true
+    })
+
+    test('throws on true request', async () => {
+      expect(() => validateRequest(true)).toThrow()
+    })
   })
 
-  test('throws on 0 request', async () => {
-    expect(() => validateRequest(0)).toThrow()
+  describe('When request is false', () => {
+    beforeEach(() => {
+      request = false
+    })
+
+    test('throws on false request', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
   })
 
-  test('throws on 1 request', async () => {
-    expect(() => validateRequest(1)).toThrow()
+  describe('When request is 0', () => {
+    beforeEach(() => {
+      request = 0
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
   })
 
-  test('throws on empty string request', async () => {
-    expect(() => validateRequest('')).toThrow()
+  describe('When request is 1', () => {
+    beforeEach(() => {
+      request = 1
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
   })
 
-  test('throws on string request', async () => {
-    expect(() => validateRequest('request')).toThrow()
+  describe('When request is ""', () => {
+    beforeEach(() => {
+      request = ''
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
+  })
+
+  describe('When request is "request"', () => {
+    beforeEach(() => {
+      request = 'request'
+    })
+
+    test('throws', async () => {
+      expect(() => validateRequest(request)).toThrow()
+    })
   })
 })

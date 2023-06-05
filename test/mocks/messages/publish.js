@@ -8,7 +8,7 @@ const {
   POSTCODE
 } = require('../components/address')
 const EMAIL = require('../components/email')
-const FILENAME = require('../components/filename')
+const { SFI: FILENAME } = require('../components/filename')
 const FRN = require('../components/frn')
 const BUSINESS_NAME = require('../components/business-name')
 const SBI = require('../components/sbi')
