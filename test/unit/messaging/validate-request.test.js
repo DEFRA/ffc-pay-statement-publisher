@@ -65,6 +65,30 @@ describe('Validate request', () => {
     test('throws', async () => {
       expect(() => validateRequest()).toThrow()
     })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
+    })
   })
 
   describe('When request is {}', () => {
@@ -74,6 +98,30 @@ describe('Validate request', () => {
 
     test('throws', async () => {
       expect(() => validateRequest(request)).toThrow()
+    })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
     })
   })
 
@@ -85,6 +133,30 @@ describe('Validate request', () => {
     test('throws', async () => {
       expect(() => validateRequest([])).toThrow()
     })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
+    })
   })
 
   describe('When request is true', () => {
@@ -92,8 +164,32 @@ describe('Validate request', () => {
       request = true
     })
 
-    test('throws on true request', async () => {
+    test('throws', async () => {
       expect(() => validateRequest(true)).toThrow()
+    })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
     })
   })
 
@@ -102,8 +198,32 @@ describe('Validate request', () => {
       request = false
     })
 
-    test('throws on false request', async () => {
+    test('throws', async () => {
       expect(() => validateRequest(request)).toThrow()
+    })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
     })
   })
 
@@ -115,6 +235,30 @@ describe('Validate request', () => {
     test('throws', async () => {
       expect(() => validateRequest(request)).toThrow()
     })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
+    })
   })
 
   describe('When request is 1', () => {
@@ -125,6 +269,30 @@ describe('Validate request', () => {
     test('throws', async () => {
       expect(() => validateRequest(request)).toThrow()
     })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
+    })
   })
 
   describe('When request is ""', () => {
@@ -134,6 +302,30 @@ describe('Validate request', () => {
 
     test('throws', async () => {
       expect(() => validateRequest(request)).toThrow()
+    })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
     })
   })
 })
