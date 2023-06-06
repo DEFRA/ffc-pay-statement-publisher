@@ -12,8 +12,9 @@ describe('Validate request', () => {
       request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST))
     })
 
-    test('does not throw', async () => {
-      expect(() => validateRequest(request)).not.toThrow()
+    test('returns undefined', async () => {
+      const result = validateRequest(request)
+      expect(result).toBeUndefined()
     })
   })
 
@@ -22,8 +23,9 @@ describe('Validate request', () => {
       request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST))
     })
 
-    test('does not throw', async () => {
-      expect(() => validateRequest(request)).not.toThrow()
+    test('returns undefined', async () => {
+      const result = validateRequest(request)
+      expect(result).toBeUndefined()
     })
   })
 
