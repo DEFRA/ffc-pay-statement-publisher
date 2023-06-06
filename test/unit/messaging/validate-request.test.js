@@ -9,7 +9,17 @@ describe('Validate request', () => {
 
   describe('When request is a statement', () => {
     beforeEach(() => {
-      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish')))
+      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST))
+    })
+
+    test('does not throw', async () => {
+      expect(() => validateRequest(request)).not.toThrow()
+    })
+  })
+
+  describe('When request is a schedule', () => {
+    beforeEach(() => {
+      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST))
     })
 
     test('does not throw', async () => {
@@ -24,6 +34,30 @@ describe('Validate request', () => {
 
     test('throws', async () => {
       expect(() => validateRequest(request)).toThrow()
+    })
+
+    test('throws Error', async () => {
+      expect(() => validateRequest(request)).toThrow(Error)
+    })
+
+    test('throws error which starts "Statement request is invalid"', async () => {
+      expect(() => validateRequest(request)).toThrow(/^Statement request is invalid/)
+    })
+
+    test('throws error with category key', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error).toHaveProperty('category')
+      }
+    })
+
+    test('throws error with category value "validation"', async () => {
+      try {
+        validateRequest(request)
+      } catch (error) {
+        expect(error.category).toBe('validation')
+      }
     })
   })
 
@@ -96,16 +130,6 @@ describe('Validate request', () => {
   describe('When request is ""', () => {
     beforeEach(() => {
       request = ''
-    })
-
-    test('throws', async () => {
-      expect(() => validateRequest(request)).toThrow()
-    })
-  })
-
-  describe('When request is "request"', () => {
-    beforeEach(() => {
-      request = 'request'
     })
 
     test('throws', async () => {
