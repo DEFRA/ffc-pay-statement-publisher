@@ -388,6 +388,128 @@ describe('document reference schema', () => {
     })
   })
 
+  describe('when document reference is true', () => {
+    beforeEach(() => {
+      documentReference = true
+    })
+
+    test('returns an object', () => {
+      const res = schema.validate(documentReference)
+      expect(res).toBeInstanceOf(Object)
+    })
+
+    test('returns an object with 2 keys', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res)).toHaveLength(2)
+    })
+
+    test('returns an object with "value" key', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res)).toContain('value')
+    })
+
+    test('returns documentReference for key "value"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.value).toBe(documentReference)
+    })
+
+    test('returns an object with "error" key', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res)).toContain('error')
+    })
+
+    test('returns an Error for key "error"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.error).toBeInstanceOf(Error)
+    })
+
+    test('returns an object with 4 keys for key "error.details[0]"', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res.error.details[0])).toHaveLength(4)
+    })
+
+    test('returns an object with "type" key for key "error.details[0]"', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res.error.details[0])).toContain('type')
+    })
+
+    test('returns "number.base" for key "error.details[0].type"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.error.details[0].type).toBe('number.base')
+    })
+
+    test('returns an object with "message" key for key "error.details[0]"', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res.error.details[0])).toContain('message')
+    })
+
+    test('returns "The document reference must be a number." for key "error.details[0].message"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.error.details[0].message).toBe('The document reference must be a number.')
+    })
+  })
+
+  describe('when document reference is false', () => {
+    beforeEach(() => {
+      documentReference = false
+    })
+
+    test('returns an object', () => {
+      const res = schema.validate(documentReference)
+      expect(res).toBeInstanceOf(Object)
+    })
+
+    test('returns an object with 2 keys', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res)).toHaveLength(2)
+    })
+
+    test('returns an object with "value" key', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res)).toContain('value')
+    })
+
+    test('returns documentReference for key "value"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.value).toBe(documentReference)
+    })
+
+    test('returns an object with "error" key', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res)).toContain('error')
+    })
+
+    test('returns an Error for key "error"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.error).toBeInstanceOf(Error)
+    })
+
+    test('returns an object with 4 keys for key "error.details[0]"', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res.error.details[0])).toHaveLength(4)
+    })
+
+    test('returns an object with "type" key for key "error.details[0]"', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res.error.details[0])).toContain('type')
+    })
+
+    test('returns "number.base" for key "error.details[0].type"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.error.details[0].type).toBe('number.base')
+    })
+
+    test('returns an object with "message" key for key "error.details[0]"', () => {
+      const res = schema.validate(documentReference)
+      expect(Object.keys(res.error.details[0])).toContain('message')
+    })
+
+    test('returns "The document reference must be a number." for key "error.details[0].message"', () => {
+      const res = schema.validate(documentReference)
+      expect(res.error.details[0].message).toBe('The document reference must be a number.')
+    })
+  })
+
   describe('when document reference is null', () => {
     beforeEach(() => {
       documentReference = null
