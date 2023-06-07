@@ -45,6 +45,21 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         reason = undefined
       })
 
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
+        await saveRequest(request, reference, method, reason)
+
+        const statement = await db.statement.findOne()
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
+      })
+
       test('should save 1 statement', async () => {
         await saveRequest(request, reference, method, reason)
 
@@ -52,88 +67,67 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
+      test('should save string request key frn to statement column frn', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
+        expect(request.frn).toBeDefined()
+        expect(statement.frn).toBeDefined()
+        expect(statement.frn).toBe(String(request.frn))
       })
 
-      test('should save statement with sbi', async () => {
+      test('should save request key address.line1 to statement column addressLine1', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
-      })
-
-      test('should save statement with frn', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with method', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.method).toBe(request.method)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
-      })
-
-      test('should save statement with address line 1', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
+        expect(request.address.line1).toBeDefined()
+        expect(statement.addressLine1).toBeDefined()
         expect(statement.addressLine1).toBe(request.address.line1)
       })
 
-      test('should save statement with address line 2', async () => {
+      test('should save request key address.line2 to statement column addressLine2', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
+        expect(request.address.line2).toBeDefined()
+        expect(statement.addressLine2).toBeDefined()
         expect(statement.addressLine2).toBe(request.address.line2)
       })
 
-      test('should save statement with address line 3', async () => {
+      test('should save request key address.line3 to statement column addressLine3', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
+        expect(request.address.line3).toBeDefined()
+        expect(statement.addressLine3).toBeDefined()
         expect(statement.addressLine3).toBe(request.address.line3)
       })
 
-      test('should save statement with address line 4', async () => {
+      test('should save request key address.line4 to statement column addressLine4', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
+        expect(request.address.line4).toBeDefined()
+        expect(statement.addressLine4).toBeDefined()
         expect(statement.addressLine4).toBe(request.address.line4)
       })
 
-      test('should save statement with address line 5', async () => {
+      test('should save request key address.line5 to statement column addressLine5', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
+        expect(request.address.line5).toBeDefined()
+        expect(statement.addressLine5).toBeDefined()
         expect(statement.addressLine5).toBe(request.address.line5)
       })
 
-      test('should save statement with address postcode', async () => {
+      test('should save request key address.postcode to statement column postcode', async () => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
+        expect(request.address.postcode).toBeDefined()
+        expect(statement.postcode).toBeDefined()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -224,18 +218,19 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -243,20 +238,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with method', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.method).toBe(request.method)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
@@ -299,13 +280,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -438,18 +412,19 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -457,20 +432,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with method', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.method).toBe(request.method)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
@@ -513,13 +474,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -652,18 +606,20 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
+        await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        console.log(statement[column], request[key])
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -671,20 +627,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with email', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.email).toBe(request.email)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
@@ -727,13 +669,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -906,18 +841,19 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -925,20 +861,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with method', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.method).toBe(request.method)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
@@ -981,13 +903,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -1077,19 +992,19 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         const statement = await db.statement.findAll()
         expect(statement.length).toBe(1)
       })
-
-      test('should save statement with business name', async () => {
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -1097,20 +1012,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with method', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.method).toBe(request.method)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
@@ -1153,13 +1054,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -1292,18 +1186,19 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
         await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -1311,20 +1206,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with method', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.method).toBe(request.method)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
@@ -1367,13 +1248,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.postcode).toBe(request.address.postcode)
-      })
-
-      test('should save statement with document reference', async () => {
-        await saveRequest(request, reference, method, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.documentReference).toBe(request.documentReference)
       })
 
       test('should save 1 delivery', async () => {
@@ -1506,18 +1380,19 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
         expect(statement.length).toBe(1)
       })
 
-      test('should save statement with business name', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
+      test.each([
+        { key: 'businessName', column: 'businessName' },
+        { key: 'sbi', column: 'sbi' },
+        { key: 'filename', column: 'filename' },
+        { key: 'email', column: 'email' },
+        { key: 'documentReference', column: 'documentReference' }
+      ])('should save request key $key to statement column $column', async ({ key, column }) => {
+        await saveRequest(request, reference, method, reason)
 
         const statement = await db.statement.findOne()
-        expect(statement.businessName).toBe(request.businessName)
-      })
-
-      test('should save statement with sbi', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.sbi).toBe(request.sbi)
+        expect(request[key]).toBeDefined()
+        expect(statement[column]).toBeDefined()
+        expect(statement[column]).toBe(request[key])
       })
 
       test('should save statement with frn', async () => {
@@ -1525,20 +1400,6 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
 
         const statement = await db.statement.findOne()
         expect(statement.frn).toBe(request.frn.toString())
-      })
-
-      test('should save statement with email', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.email).toBe(request.email)
-      })
-
-      test('should save statement with filename', async () => {
-        await saveRequest(request, reference, EMAIL, reason)
-
-        const statement = await db.statement.findOne()
-        expect(statement.filename).toBe(request.filename)
       })
 
       test('should save statement with address line 1', async () => {
