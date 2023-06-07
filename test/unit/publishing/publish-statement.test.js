@@ -1,17 +1,20 @@
+jest.mock('../../../app/processing/publish/get-exisiting-document')
+const getExistingDocument = require('../../../app/processing/publish/get-exisiting-document')
+
+jest.mock('../../../app/publishing/validate-email')
+const validateEmail = require('../../../app/publishing/validate-email')
+
 jest.mock('../../../app/publishing/get-personalisation')
 const getPersonalisation = require('../../../app/publishing/get-personalisation')
-
-jest.mock('../../../app/publishing/handle-publish-reasoning')
-const handlePublishReasoning = require('../../../app/publishing/handle-publish-reasoning')
 
 jest.mock('../../../app/publishing/publish')
 const publish = require('../../../app/publishing/publish')
 
+jest.mock('../../../app/publishing/handle-publish-reasoning')
+const handlePublishReasoning = require('../../../app/publishing/handle-publish-reasoning')
+
 jest.mock('../../../app/publishing/save-request')
 const saveRequest = require('../../../app/publishing/save-request')
-
-jest.mock('../../../app/publishing/validate-email')
-const validateEmail = require('../../../app/publishing/validate-email')
 
 const publishStatement = require('../../../app/publishing/publish-statement')
 
@@ -36,10 +39,12 @@ describe('Publish incoming statement', () => {
     request = JSON.parse(JSON.stringify(require('../../mocks/request')))
     error = undefined
 
-    publish.mockResolvedValue(NOTIFY_RESPONSE)
-    handlePublishReasoning.mockReturnValue(undefined)
-    getPersonalisation.mockReturnValue(MOCK_PERSONALISATION)
+    getExistingDocument.mockResolvedValue(null)
     validateEmail.mockReturnValue({ value: request.email })
+    getPersonalisation.mockReturnValue(MOCK_PERSONALISATION)
+    handlePublishReasoning.mockReturnValue(undefined)
+    publish.mockResolvedValue(NOTIFY_RESPONSE)
+    saveRequest.mockResolvedValue(undefined)
   })
 
   afterEach(() => {
@@ -47,6 +52,21 @@ describe('Publish incoming statement', () => {
   })
 
   describe('When statement has valid email', () => {
+    test('should call getExistingDocument', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalled()
+    })
+
+    test('should call getExistingDocument once', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getExistingDocument with request.documentReference', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
+    })
+
     test('should call validateEmail', async () => {
       await publishStatement(request)
       expect(validateEmail).toHaveBeenCalled()
@@ -131,6 +151,21 @@ describe('Publish incoming statement', () => {
       handlePublishReasoning.mockReturnValue(EMPTY)
     })
 
+    test('should call getExistingDocument', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalled()
+    })
+
+    test('should call getExistingDocument once', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getExistingDocument with request.documentReference', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
+    })
+
     test('should call validateEmail', async () => {
       try { await publishStatement(request) } catch {}
       expect(validateEmail).toHaveBeenCalled()
@@ -203,6 +238,21 @@ describe('Publish incoming statement', () => {
 
       validateEmail.mockImplementation(() => { throw error })
       handlePublishReasoning.mockReturnValue(INVALID)
+    })
+
+    test('should call getExistingDocument', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalled()
+    })
+
+    test('should call getExistingDocument once', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getExistingDocument with request.documentReference', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
     })
 
     test('should call validateEmail', async () => {
@@ -279,6 +329,21 @@ describe('Publish incoming statement', () => {
       handlePublishReasoning.mockReturnValue(undefined)
     })
 
+    test('should call getExistingDocument', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalled()
+    })
+
+    test('should call getExistingDocument once', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getExistingDocument with request.documentReference', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
+    })
+
     test('should call validateEmail', async () => {
       try { await publishStatement(request) } catch {}
       expect(validateEmail).toHaveBeenCalled()
@@ -301,6 +366,84 @@ describe('Publish incoming statement', () => {
 
     test('should not call publish', async () => {
       try { await publishStatement(request) } catch {}
+      expect(publish).not.toHaveBeenCalled()
+    })
+
+    test('should call handlePublishReasoning', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(handlePublishReasoning).toHaveBeenCalled()
+    })
+
+    test('should call handlePublishReasoning once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(handlePublishReasoning).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call handlePublishReasoning with error', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(handlePublishReasoning).toHaveBeenCalledWith(error)
+    })
+
+    test('should call saveRequest', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalled()
+    })
+
+    test('should call saveRequest once', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call saveRequest with request, undefined, EMAIL and handlePublishReasoning', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL, handlePublishReasoning())
+    })
+
+    test('should not throw', async () => {
+      const wrapper = async () => { await publishStatement(request) }
+      expect(wrapper).not.toThrow()
+    })
+
+    test('should return undefined', async () => {
+      const result = await publishStatement(request)
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('When getExistingDocument throws', () => {
+    beforeEach(() => {
+      error = new Error('Issue retrieving document.')
+
+      getExistingDocument.mockRejectedValue(error)
+    })
+
+    test('should call getExistingDocument', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalled()
+    })
+
+    test('should call getExistingDocument once', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledTimes(1)
+    })
+
+    test('should call getExistingDocument with request.documentReference', async () => {
+      await publishStatement(request)
+      expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
+    })
+
+    test('should not call validateEmail', async () => {
+      try { await publishStatement(request) } catch {}
+      expect(validateEmail).not.toHaveBeenCalled()
+    })
+
+    test('should not call getPersonalisation', async () => {
+      await publishStatement(request)
+      expect(getPersonalisation).not.toHaveBeenCalled()
+    })
+
+    test('should not call publish', async () => {
+      await publishStatement(request)
       expect(publish).not.toHaveBeenCalled()
     })
 
