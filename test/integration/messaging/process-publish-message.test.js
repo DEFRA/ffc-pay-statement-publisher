@@ -5,21 +5,7 @@ getExistingDocument.mockResolvedValue(null)
 const MOCK_REFERENCE = '78363cba-2093-4447-8812-697c09820614'
 const MOCK_PREPARED_FILE = 'mock-prepared-file'
 
-let mockSendEmail
-let mockPrepareUpload
-
-const mockNotifyClient = jest.fn().mockImplementation(() => {
-  return {
-    sendEmail: mockSendEmail,
-    prepareUpload: mockPrepareUpload
-  }
-})
-
-jest.mock('notifications-node-client', () => {
-  return {
-    NotifyClient: mockNotifyClient
-  }
-})
+const { mockNotifyClient } = require('../../mocks/modules/notifications-node-client')
 
 jest.mock('ffc-messaging')
 
@@ -54,8 +40,8 @@ describe('publish statement', () => {
     const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${FILE_NAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
 
-    mockSendEmail = jest.fn().mockResolvedValue({ data: { id: MOCK_REFERENCE } })
-    mockPrepareUpload = jest.fn().mockReturnValue(MOCK_PREPARED_FILE)
+    mockNotifyClient().sendEmail.mockResolvedValue({ data: { id: MOCK_REFERENCE } })
+    mockNotifyClient().prepareUpload.mockResolvedValue(MOCK_PREPARED_FILE)
 
     receiver = {
       completeMessage: jest.fn(),
@@ -85,42 +71,43 @@ describe('publish statement', () => {
   test('should send email via Notify once', async () => {
     await processPublishMessage(message, receiver)
 
-    expect(mockSendEmail).toHaveBeenCalledTimes(1)
+    expect(mockNotifyClient().sendEmail).toHaveBeenCalledTimes(1)
   })
 
   test('should send email to requested email address', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][1]).toBe(mockRequest.email)
+    expect(mockNotifyClient().sendEmail.mock.calls[0][1]).toBe(mockRequest.email)
   })
 
   test('should send email with file link', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
+    console.log(await mockNotifyClient().prepareUpload())
+    expect(await mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
   })
 
   test('should send email with scheme name', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeName).toBe(mockRequest.scheme.name)
+    expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeName).toBe(mockRequest.scheme.name)
   })
 
   test('should send email with scheme short name', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(mockRequest.scheme.shortName)
+    expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(mockRequest.scheme.shortName)
   })
 
   test('should send email with scheme frequency', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockRequest.scheme.frequency.toLowerCase())
+    expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(mockRequest.scheme.frequency.toLowerCase())
   })
 
   test('should send email with scheme year', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(mockRequest.scheme.year)
+    expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(mockRequest.scheme.year)
   })
 
   test('should send email with business name', async () => {
     await processPublishMessage(message, receiver)
-    expect(mockSendEmail.mock.calls[0][2].personalisation.businessName).toBe(mockRequest.businessName)
+    expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.businessName).toBe(mockRequest.businessName)
   })
 
   test('saves one statement', async () => {
