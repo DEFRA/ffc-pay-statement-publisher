@@ -1,3 +1,7 @@
+jest.mock('../../../app/processing/publish/get-exisiting-document')
+const getExistingDocument = require('../../../app/processing/publish/get-exisiting-document')
+getExistingDocument.mockResolvedValue(null)
+
 const MOCK_REFERENCE = '78363cba-2093-4447-8812-697c09820614'
 const MOCK_PREPARED_FILE = 'mock-prepared-file'
 
