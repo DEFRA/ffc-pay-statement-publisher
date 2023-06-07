@@ -7,7 +7,7 @@ const MOCK_PREPARED_FILE = 'mock-prepared-file'
 
 const { mockNotifyClient } = require('../../mocks/modules/notifications-node-client')
 
-jest.mock('ffc-messaging')
+const { mockMessageReceiver } = require('../../mocks/modules/ffc-messaging')
 
 const { BlobServiceClient } = require('@azure/storage-blob')
 const { storageConfig, notifyApiKey } = require('../../../app/config')
@@ -43,10 +43,7 @@ describe('publish statement', () => {
     mockNotifyClient().sendEmail.mockResolvedValue({ data: { id: MOCK_REFERENCE } })
     mockNotifyClient().prepareUpload.mockResolvedValue(MOCK_PREPARED_FILE)
 
-    receiver = {
-      completeMessage: jest.fn(),
-      deadLetterMessage: jest.fn()
-    }
+    receiver = mockMessageReceiver()
 
     message = {
       body: mockRequest
