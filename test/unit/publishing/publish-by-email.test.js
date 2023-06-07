@@ -1,6 +1,6 @@
 const config = require('../../../app/config')
 
-const { mockNotifyClient } = require('../../mocks/objects/notifications-node-client')
+const { mockNotifyClient } = require('../../mocks/modules/notifications-node-client')
 
 const publishByEmail = require('../../../app/publishing/publish-by-email')
 
