@@ -7,25 +7,13 @@ describe('Validate request', () => {
     request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish')))
   })
 
-  describe('When request is a statement', () => {
-    beforeEach(() => {
-      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST))
-    })
-
-    test('returns undefined', async () => {
-      const result = validateRequest(request)
-      expect(result).toBeUndefined()
-    })
-  })
-
-  describe('When request is a schedule', () => {
-    beforeEach(() => {
-      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST))
-    })
-
-    test('returns undefined', async () => {
-      const result = validateRequest(request)
-      expect(result).toBeUndefined()
+  describe.each([
+    { name: 'statement', value: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST)), expected: undefined },
+    { name: 'schedule', value: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST)), expected: undefined }
+  ])('When request is $name', ({ name, value, expected }) => {
+    test(`returns ${expected}`, async () => {
+      const result = validateRequest(value)
+      expect(result).toBe(expected)
     })
   })
 
