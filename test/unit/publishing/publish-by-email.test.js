@@ -71,6 +71,6 @@ describe('Publish by email', () => {
 
   test('should return mockNotifyClient.sendEmail', async () => {
     const result = await publishByEmail(EMAIL, FILE_BUFFER, PERSONALISATION)
-    expect(result).toBe(mockNotifyClient().sendEmail())
+    expect(result).toBe(await mockNotifyClient().sendEmail())
   })
 })

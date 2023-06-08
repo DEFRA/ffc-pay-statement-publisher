@@ -5,9 +5,6 @@ getExistingDocument.mockResolvedValue(null)
 const SYSTEM_TIME = require('../../mocks/components/system-time')
 jest.useFakeTimers().setSystemTime(SYSTEM_TIME)
 
-const MOCK_REFERENCE = '78363cba-2093-4447-8812-697c09820614'
-const MOCK_PREPARED_FILE = 'mock-prepared-file'
-
 const { mockNotifyClient } = require('../../mocks/modules/notifications-node-client')
 
 const { mockMessageReceiver } = require('../../mocks/modules/ffc-messaging')
@@ -36,9 +33,6 @@ describe('Publish document', () => {
     container = blobServiceClient.getContainerClient(storageConfig.container)
     await container.deleteIfExists()
     await container.createIfNotExists()
-
-    mockNotifyClient().sendEmail.mockResolvedValue({ data: { id: MOCK_REFERENCE } })
-    mockNotifyClient().prepareUpload.mockResolvedValue(MOCK_PREPARED_FILE)
 
     receiver = mockMessageReceiver()
   })
@@ -82,8 +76,7 @@ describe('Publish document', () => {
 
     test('should send email with file link', async () => {
       await processPublishMessage(message, receiver)
-      console.log(await mockNotifyClient().prepareUpload())
-      expect(await mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(MOCK_PREPARED_FILE)
+      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(mockNotifyClient().prepareUpload())
     })
 
     test('should send email with scheme name', async () => {
