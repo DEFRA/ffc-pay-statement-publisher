@@ -14,16 +14,15 @@ const { storageConfig, notifyApiKey } = require('../../../app/config')
 
 const db = require('../../../app/data')
 
-const processPublishMessage = require('../../../app/messaging/process-publish-message')
-
 const path = require('path')
 
 const { EMAIL } = require('../../../app/constants/methods')
 
 const TEST_FILE = path.resolve(__dirname, '../../files/test.pdf')
 
+const processPublishMessage = require('../../../app/messaging/process-publish-message')
+
 let container
-let request
 let receiver
 let message
 
@@ -48,12 +47,12 @@ describe('Publish document', () => {
 
   describe('When document is a statement', () => {
     beforeEach(async () => {
-      request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST))
+      const request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST))
       message = {
         body: request
       }
 
-      const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${request.filename}`)
+      const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${message.body.filename}`)
       await blockBlobClient.uploadFile(TEST_FILE)
     })
 
@@ -71,7 +70,7 @@ describe('Publish document', () => {
 
     test('should send email to requested email address', async () => {
       await processPublishMessage(message, receiver)
-      expect(mockNotifyClient().sendEmail.mock.calls[0][1]).toBe(request.email)
+      expect(mockNotifyClient().sendEmail.mock.calls[0][1]).toBe(message.body.email)
     })
 
     test('should send email with file link', async () => {
@@ -81,27 +80,27 @@ describe('Publish document', () => {
 
     test('should send email with scheme name', async () => {
       await processPublishMessage(message, receiver)
-      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeName).toBe(request.scheme.name)
+      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeName).toBe(message.body.scheme.name)
     })
 
     test('should send email with scheme short name', async () => {
       await processPublishMessage(message, receiver)
-      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(request.scheme.shortName)
+      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(message.body.scheme.shortName)
     })
 
     test('should send email with scheme frequency', async () => {
       await processPublishMessage(message, receiver)
-      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(request.scheme.frequency.toLowerCase())
+      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(message.body.scheme.frequency.toLowerCase())
     })
 
     test('should send email with scheme year', async () => {
       await processPublishMessage(message, receiver)
-      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(request.scheme.year)
+      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(message.body.scheme.year)
     })
 
     test('should send email with business name', async () => {
       await processPublishMessage(message, receiver)
-      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.businessName).toBe(request.businessName)
+      expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.businessName).toBe(message.body.businessName)
     })
 
     test('saves one statement', async () => {
@@ -113,67 +112,67 @@ describe('Publish document', () => {
     test('saves statement with business name', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.businessName).toBe(request.businessName)
+      expect(statement.businessName).toBe(message.body.businessName)
     })
 
     test('saves statement with sbi', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.sbi).toBe(request.sbi)
+      expect(statement.sbi).toBe(message.body.sbi)
     })
 
     test('saves statement with frn', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.frn).toBe(request.frn.toString())
+      expect(statement.frn).toBe(message.body.frn.toString())
     })
 
     test('saves statement with email', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.email).toBe(request.email)
+      expect(statement.email).toBe(message.body.email)
     })
 
     test('saves statement with filename', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.filename).toBe(request.filename)
+      expect(statement.filename).toBe(message.body.filename)
     })
 
     test('saves statement with address line 1', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.addressLine1).toBe(request.address.line1)
+      expect(statement.addressLine1).toBe(message.body.address.line1)
     })
 
     test('saves statement with address line 2', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.addressLine2).toBe(request.address.line2)
+      expect(statement.addressLine2).toBe(message.body.address.line2)
     })
 
     test('saves statement with address line 3', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.addressLine3).toBe(request.address.line3)
+      expect(statement.addressLine3).toBe(message.body.address.line3)
     })
 
     test('saves statement with address line 4', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.addressLine4).toBe(request.address.line4)
+      expect(statement.addressLine4).toBe(message.body.address.line4)
     })
 
     test('saves statement with address line 5', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.addressLine5).toBe(request.address.line5)
+      expect(statement.addressLine5).toBe(message.body.address.line5)
     })
 
     test('saves statement with address postcode', async () => {
       await processPublishMessage(message, receiver)
       const statement = await db.statement.findOne()
-      expect(statement.postcode).toBe(request.address.postcode)
+      expect(statement.postcode).toBe(message.body.address.postcode)
     })
 
     test('saves one delivery', async () => {
