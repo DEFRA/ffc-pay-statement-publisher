@@ -6,8 +6,9 @@ describe('document reference schema', () => {
   describe.each([
     { name: 'DOCUMENT_REFERENCE', value: DOCUMENT_REFERENCE, expected: DOCUMENT_REFERENCE },
     { name: 'string DOCUMENT_REFERENCE', value: String(DOCUMENT_REFERENCE), expected: DOCUMENT_REFERENCE },
-    { name: 'undefined', value: undefined, expected: undefined },
-    { name: '1.0', value: 1.0, expected: 1.0 }
+    { name: '1.0', value: 1.0, expected: 1.0 },
+    { name: '"1.0"', value: '1.0', expected: 1.0 },
+    { name: 'undefined', value: undefined, expected: undefined }
   ])('when document reference is $name', ({ name, value, expected }) => {
     test('returns an object', () => {
       const result = schema.validate(value)
