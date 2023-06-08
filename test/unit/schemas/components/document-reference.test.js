@@ -8,6 +8,7 @@ describe('document reference schema', () => {
     { name: 'string DOCUMENT_REFERENCE', value: String(DOCUMENT_REFERENCE), expected: DOCUMENT_REFERENCE },
     { name: '1.0', value: 1.0, expected: 1.0 },
     { name: '"1.0"', value: '1.0', expected: 1.0 },
+    { name: 'null', value: null, expected: null },
     { name: 'undefined', value: undefined, expected: undefined }
   ])('when document reference is $name', ({ name, value, expected }) => {
     test('returns an object', () => {
@@ -156,8 +157,8 @@ describe('document reference schema', () => {
   })
 
   describe.each([
+    { name: '""', value: '', expected: '' },
     { name: '"a"', value: 'a', expected: 'a' },
-    { name: 'null', value: null, expected: null },
     { name: 'false', value: false, expected: false },
     { name: 'true', value: true, expected: true }
   ])('when document reference is $name', ({ name, value, expected }) => {
