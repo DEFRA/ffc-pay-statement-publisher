@@ -27,7 +27,7 @@ let container
 let message
 let receiver
 
-describe('Publish document', () => {
+describe('Process publish message', () => {
   beforeEach(async () => {
     const blobServiceClient = BlobServiceClient.fromConnectionString(storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(storageConfig.container)
