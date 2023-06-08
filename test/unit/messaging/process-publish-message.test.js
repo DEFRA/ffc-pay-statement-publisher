@@ -6,7 +6,6 @@ const publishStatement = require('../../../app/publishing/publish-statement')
 
 const { mockMessageReceiver } = require('../../mocks/modules/ffc-messaging')
 
-const mockRequest = require('../../mocks/request')
 const { VALIDATION } = require('../../../app/constants/errors')
 
 const processPublishMessage = require('../../../app/messaging/process-publish-message')
@@ -37,12 +36,6 @@ describe('Process publish message', () => {
     })
 
     describe('When successful', () => {
-      beforeEach(() => {
-        message = {
-          body: mockRequest
-        }
-      })
-
       test('should call validateRequest', async () => {
         await processPublishMessage(message, receiver)
         expect(validateRequest).toHaveBeenCalled()
