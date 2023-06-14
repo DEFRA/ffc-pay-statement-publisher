@@ -1,7 +1,7 @@
-asyncapi: 2.5.0
+asyncapi: 2.6.0
 info:
   title: FFC Payment Statement Publisher
-  version: 1.0.0
+  version: 1.0.1
   description: Publish PDF payment statements for Future Farming
 channels:
   payment-statement/publish:
@@ -43,6 +43,7 @@ components:
       required:
         - address
         - businessName
+        - documentReference
         - filename
         - frn
         - sbi
@@ -52,6 +53,8 @@ components:
           $ref: '#/components/schemas/Address'
         businessName:
           $ref: '#/components/schemas/BusinessName'
+        documentReference:
+          $ref: '#/components/schemas/DocumentReference'
         email:
           $ref: '#/components/schemas/Email'
         filename:
@@ -97,6 +100,11 @@ components:
       type: string
       description: The business name
       example: FFC Ltd
+    DocumentReference:
+      type: number
+      description: Unique identifier of the document
+      minimum: 1
+      example: 1
     Email:
       type: string
       description: The business email address
@@ -106,8 +114,12 @@ components:
       description: The invalid email reasoning
       enum:
         - The statement cannot be emailed as no email address was provided.
-        - We failed to send the statement because the email address provided was invalid.
-      example: We failed to send the statement because the email address provided was invalid.
+        - >-
+          We failed to send the statement because the email address provided was
+          invalid.
+      example: >-
+        We failed to send the statement because the email address provided was
+        invalid.
     FRN:
       type: number
       description: Firm Reference Number
@@ -130,7 +142,7 @@ components:
         - agreementNumber
         - frequency
         - name
-        - shortName        
+        - shortName
         - year
       properties:
         agreementNumber:
