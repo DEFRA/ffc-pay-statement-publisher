@@ -15,6 +15,17 @@ const publishStatement = async (request) => {
     const existingDocument = await getExistingDocument(request.documentReference)
     if (existingDocument) {
       console.info(`Duplicate document received, skipping ${existingDocument.documentReference}`)
+      return
+    }
+  } 
+    catch (err) {
+      console.log('Could not save the request')
+    }
+
+  try {
+    const existingDocument = await getExistingDocument(request.documentReference)
+    if (existingDocument) {
+      console.info(`Duplicate document received, skipping ${existingDocument.documentReference}`)
     } else {
       validateEmail(request.email)
       const personalisation = getPersonalisation(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
