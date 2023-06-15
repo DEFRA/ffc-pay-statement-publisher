@@ -13,7 +13,6 @@ const SYSTEM_TIME = require('../../mocks/components/system-time')
 
 const MESSAGE = require('../../mocks/objects/message')
 
-let request
 let reference
 let method
 let reason
@@ -43,7 +42,7 @@ describe('Save statement and delivery and send to CRM and save failure if so', (
       beforeEach(async () => {
         reason = undefined
       })
-      
+
       test('should save 1 statement', async () => {
         await saveRequest(request, reference, method, reason)
 
