@@ -17,22 +17,18 @@ const publishStatement = async (request) => {
       console.info(`Duplicate document received, skipping ${existingDocument.documentReference}`)
       return
     }
-  } 
-    catch (err) {
-      console.log('Could not save the request')
-    }
+  } catch (err) {
+    console.log('Could not save the request')
+    return
+  }
 
   try {
-    const existingDocument = await getExistingDocument(request.documentReference)
-    if (existingDocument) {
-      console.info(`Duplicate document received, skipping ${existingDocument.documentReference}`)
-    } else {
       validateEmail(request.email)
       const personalisation = getPersonalisation(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
       response = await publish(request.email, request.filename, personalisation)
       console.log(`Statement published: ${request.filename}`)
     }
-  } catch (err) {
+  catch (err) {
     reason = handlePublishReasoning(err)
   } finally {
     try {

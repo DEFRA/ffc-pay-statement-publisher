@@ -24,18 +24,14 @@ describe('Process publish message', () => {
   })
 
   describe.each([
-    { name: 'statement', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST)) },
-    { name: 'schedule', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST)) }
-  ])('When message is a $name', ({ name, request }) => {
-    beforeEach(async () => {
-      message = {
-        body: request
-      }
-
-      validateRequest.mockReturnValue({ value: message })
-    })
-
+    { name: 'statement', message: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_MESSAGE)) },
+    { name: 'schedule', message: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_MESSAGE)) }
+  ])('When message is a $name', ({ name, message }) => {
     describe('When successful', () => {
+      beforeEach(async () => {
+        validateRequest.mockReturnValue({ value: message })
+      })
+
       test('should call validateRequest', async () => {
         await processPublishMessage(message, receiver)
         expect(validateRequest).toHaveBeenCalled()

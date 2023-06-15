@@ -15,54 +15,70 @@ const { SHORT_NAMES, LONG_NAMES } = require('../../../app/constants/scheme-names
 const MARKETING_YEAR = require('../components/marketing-year')
 const { QUARTERLY: QUARTERLY_FREQUENCY } = require('../../../app/constants/frequencies')
 const DOCUMENT_REFERENCE = require('../components/document-reference')
+const { STATEMENT: STATEMENT_TYPE, SCHEDULE: SCHEDULE_TYPE } = require('../../../app/constants/document-types')
+const MESSAGE_SOURCE = require('../../../app/constants/message-source')
 
-const STATEMENT_REQUEST = {
-  businessName: BUSINESS_NAME,
-  sbi: Number(SBI),
-  frn: Number(FRN),
-  address: {
-    line1: LINE_1,
-    line2: LINE_2,
-    line3: LINE_3,
-    line4: LINE_4,
-    line5: LINE_5,
-    postcode: POSTCODE
-  },
-  email: EMAIL,
-  filename: STATEMENT_FILENAME,
-  scheme: {
-    name: LONG_NAMES.SFI,
-    shortName: SHORT_NAMES.SFI,
-    year: String(MARKETING_YEAR),
-    frequency: QUARTERLY_FREQUENCY
-  },
-  documentReference: DOCUMENT_REFERENCE
+const BASE_MESSAGE = {
+  body: {},
+  type: null,
+  source: MESSAGE_SOURCE
 }
 
-const SCHEDULE_REQUEST = {
-  businessName: BUSINESS_NAME,
-  sbi: Number(SBI),
-  frn: Number(FRN),
-  address: {
-    line1: LINE_1,
-    line2: LINE_2,
-    line3: LINE_3,
-    line4: LINE_4,
-    line5: LINE_5,
-    postcode: POSTCODE
+const STATEMENT_MESSAGE = {
+  ...BASE_MESSAGE,
+  body: {
+    businessName: BUSINESS_NAME,
+    sbi: Number(SBI),
+    frn: Number(FRN),
+    address: {
+      line1: LINE_1,
+      line2: LINE_2,
+      line3: LINE_3,
+      line4: LINE_4,
+      line5: LINE_5,
+      postcode: POSTCODE
+    },
+    email: EMAIL,
+    filename: STATEMENT_FILENAME,
+    scheme: {
+      name: LONG_NAMES.SFI,
+      shortName: SHORT_NAMES.SFI,
+      year: String(MARKETING_YEAR),
+      frequency: QUARTERLY_FREQUENCY
+    },
+    documentReference: DOCUMENT_REFERENCE
   },
-  email: EMAIL,
-  filename: SCHEDULE_FILENAME,
-  scheme: {
-    name: LONG_NAMES.SFI,
-    shortName: SHORT_NAMES.SFI,
-    year: String(MARKETING_YEAR),
-    frequency: QUARTERLY_FREQUENCY
+  type: `uk.gov.pay.${STATEMENT_TYPE.id}.publish`
+}
+
+const SCHEDULE_MESSAGE = {
+  ...BASE_MESSAGE,
+  body: {
+    businessName: BUSINESS_NAME,
+    sbi: Number(SBI),
+    frn: Number(FRN),
+    address: {
+      line1: LINE_1,
+      line2: LINE_2,
+      line3: LINE_3,
+      line4: LINE_4,
+      line5: LINE_5,
+      postcode: POSTCODE
+    },
+    email: EMAIL,
+    filename: SCHEDULE_FILENAME,
+    scheme: {
+      name: LONG_NAMES.SFI,
+      shortName: SHORT_NAMES.SFI,
+      year: String(MARKETING_YEAR),
+      frequency: QUARTERLY_FREQUENCY
+    },
+    documentReference: DOCUMENT_REFERENCE
   },
-  documentReference: DOCUMENT_REFERENCE
+  type: `uk.gov.pay.${SCHEDULE_TYPE.id}.publish`
 }
 
 module.exports = {
-  STATEMENT_REQUEST,
-  SCHEDULE_REQUEST
+  STATEMENT_MESSAGE,
+  SCHEDULE_MESSAGE
 }

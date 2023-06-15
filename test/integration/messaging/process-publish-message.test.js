@@ -43,14 +43,10 @@ describe('Process publish message', () => {
   })
 
   describe.each([
-    { name: 'statement', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST)) },
-    { name: 'schedule', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST)) }
-  ])('When message is a $name', ({ name, request }) => {
+    { name: 'statement', message: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_MESSAGE)) },
+    { name: 'schedule', message: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_MESSAGE)) }
+  ])('When message is a $name', ({ name, message }) => {
     beforeEach(async () => {
-      message = {
-        body: request
-      }
-
       const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${message.body.filename}`)
       await blockBlobClient.uploadFile(TEST_FILE)
     })

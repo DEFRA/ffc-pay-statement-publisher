@@ -36,7 +36,7 @@ let error
 
 describe('Publish incoming statement', () => {
   beforeEach(() => {
-    request = JSON.parse(JSON.stringify(require('../../mocks/request')))
+    request = JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_MESSAGE)).body
     error = undefined
 
     getExistingDocument.mockResolvedValue(null)
@@ -447,34 +447,14 @@ describe('Publish incoming statement', () => {
       expect(publish).not.toHaveBeenCalled()
     })
 
-    test('should call handlePublishReasoning', async () => {
+    test('should not call handlePublishReasoning', async () => {
       try { await publishStatement(request) } catch {}
-      expect(handlePublishReasoning).toHaveBeenCalled()
+      expect(handlePublishReasoning).not.toHaveBeenCalled()
     })
 
-    test('should call handlePublishReasoning once', async () => {
+    test('should not call saveRequest', async () => {
       try { await publishStatement(request) } catch {}
-      expect(handlePublishReasoning).toHaveBeenCalledTimes(1)
-    })
-
-    test('should call handlePublishReasoning with error', async () => {
-      try { await publishStatement(request) } catch {}
-      expect(handlePublishReasoning).toHaveBeenCalledWith(error)
-    })
-
-    test('should call saveRequest', async () => {
-      try { await publishStatement(request) } catch {}
-      expect(saveRequest).toHaveBeenCalled()
-    })
-
-    test('should call saveRequest once', async () => {
-      try { await publishStatement(request) } catch {}
-      expect(saveRequest).toHaveBeenCalledTimes(1)
-    })
-
-    test('should call saveRequest with request, undefined, EMAIL and handlePublishReasoning', async () => {
-      try { await publishStatement(request) } catch {}
-      expect(saveRequest).toHaveBeenCalledWith(request, undefined, EMAIL, handlePublishReasoning())
+      expect(saveRequest).not.toHaveBeenCalled()
     })
 
     test('should not throw', async () => {

@@ -215,8 +215,8 @@ describe('Publish request', () => {
   // })
 
   describe.each([
-    { name: 'statement', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST)) },
-    { name: 'schedule', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST)) }
+    { name: 'statement', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_MESSAGE)).body },
+    { name: 'schedule', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_MESSAGE)).body }
   ])('When $name request is a duplicate', ({ name, request }) => {
     beforeEach(async () => {
       const blockBlobClient = container.getBlockBlobClient(`${storageConfig.folder}/${request.filename}`)
@@ -229,7 +229,7 @@ describe('Publish request', () => {
 
     test('should not save the duplicate request', async () => {
       const statementBefore = await db.statement.findAll()
-      
+
       await publishStatement(request)
 
       const statementAfter = await db.statement.findAll()
@@ -241,160 +241,5 @@ describe('Publish request', () => {
       await publishStatement(request)
       expect(mockNotifyClient().sendEmail).not.toHaveBeenCalled()
     })
-
-    // test('should send email to requested email address', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][1]).toBe(request.email)
-    // })
-
-    // test('should send email with file link', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.link_to_file).toBe(mockNotifyClient().prepareUpload())
-    // })
-
-    // test('should send email with scheme name', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeName).toBe(request.scheme.name)
-    // })
-
-    // test('should send email with scheme short name', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeShortName).toBe(request.scheme.shortName)
-    // })
-
-    // test('should send email with scheme frequency', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeFrequency).toBe(request.scheme.frequency.toLowerCase())
-    // })
-
-    // test('should send email with scheme year', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.schemeYear).toBe(request.scheme.year)
-    // })
-
-    // test('should send email with business name', async () => {
-    //   await publishStatement(request)
-    //   expect(mockNotifyClient().sendEmail.mock.calls[0][2].personalisation.businessName).toBe(request.businessName)
-    // })
-
-    test('should save one statement', async () => {
-      await publishStatement(request)
-
-      const statement = await db.statement.findAll()
-      expect(statement.length).toBe(1)
-    })
-
-    // test('should save statement with business name', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.businessName).toBe(request.businessName)
-    // })
-
-    // test('should save statement with sbi', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.sbi).toBe(request.sbi)
-    // })
-
-    // test('should save statement with frn', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.frn).toBe(request.frn.toString())
-    // })
-
-    // test('should save statement with email', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.email).toBe(request.email)
-    // })
-
-    // test('should save statement with filename', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.filename).toBe(request.filename)
-    // })
-
-    // test('should save statement with address line 1', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.addressLine1).toBe(request.address.line1)
-    // })
-
-    // test('should save statement with address line 2', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.addressLine2).toBe(request.address.line2)
-    // })
-
-    // test('should save statement with address line 3', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.addressLine3).toBe(request.address.line3)
-    // })
-
-    // test('should save statement with address line 4', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.addressLine4).toBe(request.address.line4)
-    // })
-
-    // test('should save statement with address line 5', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.addressLine5).toBe(request.address.line5)
-    // })
-
-    // test('should save statement with address postcode', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   expect(statement.postcode).toBe(request.address.postcode)
-    // })
-
-    test('should save one delivery', async () => {
-      await publishStatement(request)
-
-      const delivery = await db.delivery.findAll()
-      expect(delivery.length).toBe(1)
-    })
-
-    // test('should save delivery with statement id', async () => {
-    //   await publishStatement(request)
-
-    //   const statement = await db.statement.findOne()
-    //   const delivery = await db.delivery.findOne()
-    //   expect(delivery.statementId).toBe(statement.statementId)
-    // })
-
-    // test('should save delivery with email method', async () => {
-    //   await publishStatement(request)
-
-    //   const delivery = await db.delivery.findOne()
-    //   expect(delivery.method).toBe(EMAIL)
-    // })
-
-    // test('should save delivery with requested date', async () => {
-    //   await publishStatement(request)
-
-    //   const delivery = await db.delivery.findOne()
-    //   expect(delivery.requested).toStrictEqual(SYSTEM_TIME)
-    // })
-
-    // test('should save delivery with null completed date', async () => {
-    //   await publishStatement(request)
-
-    //   const delivery = await db.delivery.findOne()
-    //   expect(delivery.completed).toBeNull()
-    // })
   })
 })
