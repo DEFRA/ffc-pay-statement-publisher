@@ -1,4 +1,10 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.19.0
-ignore: {}
+version: v1.22.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-DOTTIE-3332763:
+    - 'sequelize@6.29.3 > dottie@2.0.3':
+        reason: None given
+        expires: '2023-06-13T12:46:12.897Z'
 patch: {}
+
