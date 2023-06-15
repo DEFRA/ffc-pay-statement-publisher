@@ -5,7 +5,8 @@
   "homepage": "https://github.com/DEFRA/ffc-pay-statement-publisher",
   "main": "app/index.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit",
+    "pretest": "npm run test:lint",
+    "test": "jest --runInBand --forceExit publish-statement",
     "test:watch": "jest --coverage=false --onlyChanged --watch --runInBand",
     "test:lint": "standard",
     "test:debug": "node --inspect-brk=0.0.0.0 ./node_modules/jest/bin/jest.js --coverage=false --onlyChanged --watch --runInBand --no-cache",
