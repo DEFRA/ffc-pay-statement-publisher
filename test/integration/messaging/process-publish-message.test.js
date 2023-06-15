@@ -20,7 +20,6 @@ const processPublishMessage = require('../../../app/messaging/process-publish-me
 
 let container
 
-let message
 let receiver
 
 describe('Process publish message', () => {

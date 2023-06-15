@@ -10,7 +10,6 @@ const { VALIDATION } = require('../../../app/constants/errors')
 
 const processPublishMessage = require('../../../app/messaging/process-publish-message')
 
-let message
 let receiver
 
 describe('Process publish message', () => {
