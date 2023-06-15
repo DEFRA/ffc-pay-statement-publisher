@@ -1,7 +1,3 @@
-// jest.mock('../../../app/processing/publish/get-exisiting-document')
-// const getExistingDocument = require('../../../app/processing/publish/get-exisiting-document')
-// getExistingDocument.mockResolvedValue(null)
-
 const SYSTEM_TIME = require('../../mocks/components/system-time')
 jest.useFakeTimers().setSystemTime(SYSTEM_TIME)
 
@@ -49,7 +45,7 @@ describe('Process publish message', () => {
   describe.each([
     { name: 'statement', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').STATEMENT_REQUEST)) },
     { name: 'schedule', request: JSON.parse(JSON.stringify(require('../../mocks/messages/publish').SCHEDULE_REQUEST)) }
-  ])('When message is a $name', ({ name, request, expected }) => {
+  ])('When message is a $name', ({ name, request }) => {
     beforeEach(async () => {
       message = {
         body: request
