@@ -18,16 +18,14 @@ const publishStatement = async (request) => {
       return
     }
   } catch (err) {
-    console.log('Could not check for duplicate')
+    console.log('Could not check for duplicates')
     return
   }
 
   try {
-    console.log('No duplicates, processing')
     validateEmail(request.email)
-    // const personalisation = getPersonalisation(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
-    // response = await publish(request.email, request.filename, personalisation)
-    response = 'test'
+    const personalisation = getPersonalisation(request.scheme.name, request.scheme.shortName, request.scheme.year, request.scheme.frequency, request.businessName)
+    response = await publish(request.email, request.filename, personalisation)
     console.log(`Statement published: ${request.filename}`)
   } catch (err) {
     reason = handlePublishReasoning(err)
