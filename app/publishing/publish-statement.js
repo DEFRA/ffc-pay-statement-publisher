@@ -18,8 +18,7 @@ const publishStatement = async (request) => {
       return
     }
   } catch (err) {
-    console.log('Could not check for duplicates')
-    return
+    throw new Error('Could not check for duplicates')
   }
 
   try {

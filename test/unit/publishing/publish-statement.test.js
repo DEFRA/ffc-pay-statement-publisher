@@ -110,17 +110,17 @@ describe('Publish document', () => {
         })
 
         test('should call getExistingDocument', async () => {
-          await publishStatement(request)
+          try { await publishStatement(request) } catch {}
           expect(getExistingDocument).toHaveBeenCalled()
         })
 
         test('should call getExistingDocument once', async () => {
-          await publishStatement(request)
+          try { await publishStatement(request) } catch {}
           expect(getExistingDocument).toHaveBeenCalledTimes(1)
         })
 
         test('should call getExistingDocument with request.documentReference', async () => {
-          await publishStatement(request)
+          try { await publishStatement(request) } catch {}
           expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
         })
 
@@ -130,12 +130,12 @@ describe('Publish document', () => {
         })
 
         test('should not call getPersonalisation', async () => {
-          await publishStatement(request)
+          try { await publishStatement(request) } catch {}
           expect(getPersonalisation).not.toHaveBeenCalled()
         })
 
         test('should not call publish', async () => {
-          await publishStatement(request)
+          try { await publishStatement(request) } catch {}
           expect(publish).not.toHaveBeenCalled()
         })
 
@@ -149,14 +149,19 @@ describe('Publish document', () => {
           expect(saveRequest).not.toHaveBeenCalled()
         })
 
-        test('should not throw', async () => {
+        test('should throw', async () => {
           const wrapper = async () => { await publishStatement(request) }
-          expect(wrapper).not.toThrow()
+          expect(wrapper).rejects.toThrow()
         })
 
-        test('should return undefined', async () => {
-          const result = await publishStatement(request)
-          expect(result).toBeUndefined()
+        test('should throw Error', async () => {
+          const wrapper = async () => { await publishStatement(request) }
+          expect(wrapper).rejects.toThrow(Error)
+        })
+
+        test('should throw error with message "Could not check for duplicates"', async () => {
+          const wrapper = async () => { await publishStatement(request) }
+          expect(wrapper).rejects.toThrow(/^Could not check for duplicates$/)
         })
       })
     })
@@ -357,6 +362,69 @@ describe('Publish document', () => {
         test('should return undefined', async () => {
           const result = await publishStatement(request)
           expect(result).toBeUndefined()
+        })
+      })
+
+      describe('When getExistingDocument throws', () => {
+        beforeEach(() => {
+          error = new Error('Issue retrieving document.')
+
+          getExistingDocument.mockRejectedValue(error)
+        })
+
+        test('should call getExistingDocument', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(getExistingDocument).toHaveBeenCalled()
+        })
+
+        test('should call getExistingDocument once', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(getExistingDocument).toHaveBeenCalledTimes(1)
+        })
+
+        test('should call getExistingDocument with request.documentReference', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(getExistingDocument).toHaveBeenCalledWith(request.documentReference)
+        })
+
+        test('should not call validateEmail', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(validateEmail).not.toHaveBeenCalled()
+        })
+
+        test('should not call getPersonalisation', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(getPersonalisation).not.toHaveBeenCalled()
+        })
+
+        test('should not call publish', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(publish).not.toHaveBeenCalled()
+        })
+
+        test('should not call handlePublishReasoning', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(handlePublishReasoning).not.toHaveBeenCalled()
+        })
+
+        test('should not call saveRequest', async () => {
+          try { await publishStatement(request) } catch {}
+          expect(saveRequest).not.toHaveBeenCalled()
+        })
+
+        test('should throw', async () => {
+          const wrapper = async () => { await publishStatement(request) }
+          expect(wrapper).rejects.toThrow()
+        })
+
+        test('should throw Error', async () => {
+          const wrapper = async () => { await publishStatement(request) }
+          expect(wrapper).rejects.toThrow(Error)
+        })
+
+        test('should throw error with message "Could not check for duplicates"', async () => {
+          const wrapper = async () => { await publishStatement(request) }
+          expect(wrapper).rejects.toThrow(/^Could not check for duplicates$/)
         })
       })
     })
