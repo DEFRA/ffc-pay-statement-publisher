@@ -1,6 +1,6 @@
 const config = require('../../../app/config')
 
-const { mockNotifyClient } = require('../../mocks/objects/notifications-node-client')
+const { mockNotifyClient } = require('../../mocks/modules/notifications-node-client')
 
 const publishByEmail = require('../../../app/publishing/publish-by-email')
 
@@ -71,6 +71,6 @@ describe('Publish by email', () => {
 
   test('should return mockNotifyClient.sendEmail', async () => {
     const result = await publishByEmail(EMAIL, FILE_BUFFER, PERSONALISATION)
-    expect(result).toBe(mockNotifyClient().sendEmail())
+    expect(result).toBe(await mockNotifyClient().sendEmail())
   })
 })

@@ -1,6 +1,6 @@
 const db = require('../../../app/data')
 
-const { mockMessageSender } = require('../../mocks/objects/ffc-messaging')
+const { mockMessageSender } = require('../../mocks/modules/ffc-messaging')
 
 const saveRequest = require('../../../app/publishing/save-request')
 
