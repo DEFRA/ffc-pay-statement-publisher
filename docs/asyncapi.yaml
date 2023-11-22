@@ -4,22 +4,24 @@ info:
   version: 1.0.1
   description: Publish PDF payment statements for Future Farming
 channels:
-  payment-statement/publish:
+  ffc-pay-statement-publish/ffc-pay-statement-publisher:
     subscribe:
       message:
         $ref: '#/components/messages/PublishRequest'
-  payment-statement/crm:
+  ffc-pay-statement-crm:
     publish:
       message:
         $ref: '#/components/messages/CrmInvalidEmailResponse'
 components:
   messages:
     CrmInvalidEmailResponse:
+      title: Invalid Email Response
       name: Payment statement invalid email response
       contentType: application/json
       payload:
         $ref: '#/components/schemas/CrmInvalidEmailResponse'
     PublishRequest:
+      title: Publish request
       name: Payment statement publish request
       contentType: application/json
       payload:
