@@ -42,6 +42,16 @@ in any environment before the Docker container is started or tests are run.
 
 All message schemas are fully documented in an [AsyncAPI specification](docs/asyncapi.yaml).
 
+In order to verify the format set by RPA regarding the PDF filename structure, a regular expression has been created that will look for the following formats:
+Product Code ( example: FFC ) : 3 to 6 uppercase characters, 
+Descriptor ( example: PaymentStatement ) : any combination of words in PascalCase format, 
+Scheme ID ( example: SFI ) : 3 to 6 uppercase characters, 
+Scheme Year ( example : 2023 ) : 4 digits, 
+FRN ( example : 1234567890 ) : 10 digits, 
+Date and Time ( example : yyyymmddhhmmssxx ) : 12 digits
+File Designation ( example : .pdf ) : fixed to .pdf
+Each element is separated by an underscore ( example : _ ).
+
 ## Running the application
 
 The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
