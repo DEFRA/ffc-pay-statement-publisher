@@ -130,7 +130,7 @@ components:
       example: 1234567890
     Filename:
       type: string
-      description: PDF filename, formatted as product code using 3 to 6 uppercase characters, descriptor in PascalCase, Scheme ID using 3 to 6 uppercase characters, Scheme Year using 4 digits, FRN using 10 digits, date and time using 12 digits and then .pdf. All separated by underscore.
+      description: PDF filename, formatted as product code using 3 to 6 uppercase characters, descriptor in PascalCase, Scheme ID using 3 to 6 uppercase characters, Scheme Year using 4 digits, FRN using 10 digits, date and time using 16 digits and then .pdf. All separated by underscore.
       example: FFC_PaymentStatement_SFI_2022_1234567890_202208051530.pdf
       pattern: ^[A-Z]{3,6}\_[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\_[A-Z]{3,6}_\d{4}_\d{10}_\d{16}\.pdf$
     SBI:
