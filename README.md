@@ -50,7 +50,7 @@ Scheme Year ( example : 2023 ) : 4 digits,
 FRN ( example : 1234567890 ) : 10 digits, 
 Date and Time ( example : yyyymmddhhmmssxx ) : 16 digits,
 File Designation ( example : .pdf ) : fixed to .pdf,
-Each element is separated by an underscore ( example : _ )
+Each element is separated by an underscore ( example : _ ).
 
 ## Running the application
 
