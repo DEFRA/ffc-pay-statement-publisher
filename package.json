@@ -23,13 +23,13 @@
   "license": "OGL-UK-3.0",
   "dependencies": {
     "@azure/identity": "2.1.0",
-    "@azure/storage-blob": "12.10.0",
-    "applicationinsights": "2.3.4",
+    "@azure/storage-blob": "12.24.0",
+    "applicationinsights": "2.9.6",
     "ffc-messaging": "2.5.1",
     "joi": "17.6.0",
     "log-timestamp": "0.3.0",
-    "notifications-node-client": "7.0.4",
-    "pg": "8.7.3",
+    "notifications-node-client": "7.0.6",
+    "pg": "8.12.0",
     "pg-hstore": "2.3.4",
     "sequelize": "6.29.3"
   },
